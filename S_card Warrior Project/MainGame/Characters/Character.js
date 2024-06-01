@@ -8,7 +8,9 @@ class Character {
         this.attack = 0;
         this.defense = 0;
         this.hp = 0;
+        this.hpMax = 0;
         this.skillTurn = 0;
+        this.skillTurnMax = 0;
 
         this.initStatus();
     }
@@ -18,7 +20,7 @@ class Character {
         // 학년
 
         let degree = parseInt(this.id.charAt(5)); // 학위
-        print(`degree : ${degree}`);
+        // print(`degree : ${degree}`);
 
         if (degree === 2) {
             this.grade = 5;
@@ -42,7 +44,7 @@ class Character {
 
         // 체력
         let hp = parseInt(this.id.charAt(8));
-        this.hp = (hp === 0 ? 10 : hp) + 15;
+        this.hpMax = (hp === 0 ? 10 : hp) + 15;
 
         // Skill turn
         let skillTurn = parseInt(this.id.charAt(9));
@@ -50,11 +52,11 @@ class Character {
             skillTurn = 10;
         }
         if (skillTurn >= 1 && skillTurn <= 3) {
-            this.skillTurn = 2;
+            this.skillTurnMax = 2;
         } else if (skillTurn >= 4 && skillTurn <= 7) {
-            this.skillTurn = 3;
+            this.skillTurnMax = 3;
         } else if (skillTurn >= 8 && skillTurn <= 10) {
-            this.skillTurn = 4;
+            this.skillTurnMax = 4;
         }
     }
 

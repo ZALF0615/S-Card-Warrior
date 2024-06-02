@@ -101,7 +101,7 @@ function displayCommand() {
 
     // 화면 왼쪽 아래에 1P의 커맨드, 오른쪽 아래에 2P의 커맨드를 항상 표시
     // 1P가 공격인 턴과 2P가 공격인 턴을 구분
-    // 공격 측의 커맨드 : 위) 특수스킬 | 좌우 중 상대방에서 먼 쪽) 필살기 | 상대방에서 가까운 쪽) 일반공격
+    // 공격 측의 커맨드 : 위) 특수스킬 | 좌우 중 상대방에서 먼 쪽) 필살기 | 상대방에서 가까운 쪽) 공격
     // 수비 측의 커맨드 : 위) 특수스킬 | 좌우 중 상대방에서 먼 쪽) 카운터 | 상대방에서 가까운 쪽) 막기
     // 각 커맨드의 위치도, 한 점을 중심으로 위, 왼쪽, 오른쪽에 위치
 
@@ -135,7 +135,7 @@ function displayCommand() {
 
 
         switch (left_text) {
-            case "일반공격":
+            case "공격":
                 left_text += is1P ? ` (+${player1.attack})` : ` (+${player2.attack})`;
                 image(is1P ? command_ATACK_BG_1P : command_ATACK_BG_2P, x - 270 - rectWidth / 2, y - rectHeight / 2);
                 break;
@@ -165,7 +165,7 @@ function displayCommand() {
         // 우측 커맨드
 
         switch (right_text) {
-            case "일반공격":
+            case "공격":
                 right_text += is1P ? ` (+${player1.attack})` : ` (+${player2.attack})`;
                 image(is1P ? command_ATACK_BG_1P : command_ATACK_BG_2P, x + 270 - rectWidth / 2, y - rectHeight / 2);
                 break;
@@ -212,6 +212,7 @@ function displayCommand() {
     if (actionSelected_2P != -1) {
         fill(0, 0, 0, 200);
         noStroke();
+        rectMode(CORNER);
         rect(width / 2, height - 270, width / 2, 270);
 
         fill(255);
@@ -245,7 +246,11 @@ function displaySelectedCommand() {
 
     if (actionSelected_1P != -1 && actionSelected_2P != -1) {
         imageCenter(GetCommandBG(commandset_1p[actionSelected_1P], 1), x1, y);
+        fill(0)
+        text(commandset_1p[actionSelected_1P], x1, y)
         imageCenter(GetCommandBG(commandset_2p[actionSelected_2P], 2), x2, y);
+        fill(0)
+        text(commandset_2p[actionSelected_2P], x2, y)
     }
 
 }
@@ -262,8 +267,13 @@ function drawCharacters() {
 
     // 플레이어 1
     image(charaImg_1p, x1, y);
-    // 플레이어 2
-    image(charaImg_2p, x2, y);
+    // 플레이어 2 (좌우반전)
+    push();
+    translate(x2 + charaImg_2p.width, y);
+    scale(-1, 1);
+    image(charaImg_2p, 0, 0);
+    pop();
+
 }
 
 function GameStart() {
@@ -360,9 +370,9 @@ function ProcessCommand() {
 
     setTimeout(() => {
         // 플레이어 1, 2의 커맨드에 따라 상태 변경
-        if (attacker_command == "일반공격" && defender_command == "막기") {
+        if (attacker_command == "공격" && defender_command == "막기") {
             AttackVSBlock(turn);
-        } else if (attacker_command == "일반공격" && command_2P == "카운터") {
+        } else if (attacker_command == "공격" && defender_command == "카운터") {
             AttackVSCounter(turn);
         } else if (attacker_command == "필살기" && defender_command == "막기") {
             SpecialVSBlock(turn);
@@ -384,59 +394,58 @@ function ProcessCommand() {
 // 커맨드 결과 처리
 
 function AttackVSCounter(playerNum) {
-    // 일반공격 성공 (공격 - 카운터)
+    // 공격 성공 (공격 - 카운터)
     // playerNum : 1 or 2
-
+    print(`AttackVSCounter : ` + playerNum);
     let attack = playerNum == 1 ? player1.attack : player2.attack;
 
     if (playerNum == 1) {
-        player2.hp -= attack;
+        player2.hp = max(0, player2.hp - attack);
     } else {
-        player1.hp -= attack;
+        player1.hp = max(0, player1.hp - attack);
     }
 
-    let du = new FloatUI(playerNum == 1 ? width / 4 : width / 4 * 3, height / 2 - 300, `-${attack}`, 255, 0, 0);
+    let du = new FloatUI(playerNum == 1 ? width / 4 * 3 : width / 4, height / 2 - 300, `-${attack}`, 255, 0, 0);
     FloatUIs.push(du);
 
-    print(`일반공격 성공 : ${attack} 데미지`);
+    print(`공격 성공 : ${attack} 데미지`);
 }
 function AttackVSBlock(playerNum) {
-    // 일반공격 실패 (공격 - 막기)
+    // 공격 실패 (공격 - 막기)
     // 공격력 - 방어력 만큼의 데미지
     // playerNum : 1 or 2
-
+    print(`AttackVSBlock : ` + playerNum);
     let attack = playerNum == 1 ? player1.attack : player2.attack;
     let defense = playerNum == 1 ? player2.defense : player1.defense;
 
     let damage = max(0, attack - defense);
 
     if (playerNum == 1) {
-        player2.hp -= damage;
-
+        player2.hp = max(0, player2.hp - damage);
     }
     else {
-        player1.hp -= damage;
+        player1.hp = max(0, player1.hp - damage);
     }
 
-    let du = new FloatUI(playerNum == 1 ? width / 4 : width / 4 * 3, height / 2 - 300, `-${damage}`, 255, 0, 0);
+    let du = new FloatUI(playerNum == 1 ? width / 4 * 3 : width / 4, height / 2 - 300, `-${damage}`, 255, 0, 0);
     FloatUIs.push(du);
 
-    print(`일반공격 실패 : ${damage} 데미지`);
+    print(`공격 실패 : ${damage} 데미지`);
 }
 function SpecialVSCounter(playerNum) {
     // 필살기 실패 (필살기 - 카운터)
     // 카운터 성공. 상대 공격력 +2 만큼 반사
     // playerNum : 1 or 2
-
+    print(`SpecialVSCounter : ` + playerNum);
     let attack = playerNum == 1 ? player1.attack : player2.attack;
 
     let damage = max(0, attack + 2);
 
     if (playerNum == 1) {
-        player1.hp -= damage;
+        player1.hp = max(0, player1.hp - damage);
     }
     else {
-        player2.hp -= damage;
+        player2.hp = max(0, player2.hp - damage);
     }
 
     let du = new FloatUI(playerNum == 1 ? width / 4 : width / 4 * 3, height / 2 - 300, `-${damage}`, 255, 0, 0);
@@ -449,19 +458,19 @@ function SpecialVSBlock(playerNum) {
     // 필살기 성공 (필살기 - 막기)
     // 공격력 +2 만큼의 데미지
     // playerNum : 1 or 2
-
+    print(`SpecialVSBlock : ` + playerNum);
     let attack = playerNum == 1 ? player1.attack : player2.attack;
 
     let damage = max(0, attack + 2);
 
     if (playerNum == 1) {
-        player2.hp -= damage;
+        player2.hp = max(0, player2.hp - damage);
     }
     else {
-        player1.hp -= damage;
+        player1.hp = max(0, player1.hp - damage);
     }
 
-    let du = new FloatUI(playerNum == 1 ? width / 4 : width / 4 * 3, height / 2 - 300, `-${damage}`, 255, 0, 0);
+    let du = new FloatUI(playerNum == 1 ? width / 4 * 3 : width / 4, height / 2 - 300, `-${damage}`, 255, 0, 0);
     FloatUIs.push(du);
 
     print(`필살기 성공 : ${damage} 데미지`);
@@ -483,22 +492,23 @@ function TurnTaker() {
     if (turn == 1) {
         player1.skillTurn++;
 
-        commandset_1p = ["스킬", "필살기", "일반공격"];
+        commandset_1p = ["스킬", "필살기", "공격"];
         commandset_2p = ["스킬", "막기", "카운터"];
     } else {
         player2.skillTurn++;
 
         commandset_1p = ["스킬", "카운터", "막기"];
-        commandset_2p = ["스킬", "일반공격", "필살기"];
+        commandset_2p = ["스킬", "공격", "필살기"];
     }
 
 }
 
 
+let BGM;
 
 function preload() {
-    charaImg_1p = loadImage('Asset/Character/character_ksr.png');
-    charaImg_2p = loadImage('Asset/Character/character_agenia.png');
+    charaImg_1p = loadImage('Asset/Character/현자_준비.gif');
+    charaImg_2p = loadImage('Asset/Character/마법사_준비.gif');
 
     command_ATACK_BG_1P = loadImage('Asset/UI/command_ATTACK_1P.png');
     command_BLOCK_BG_1P = loadImage('Asset/UI/command_BLOCK_1P.png');
@@ -513,6 +523,8 @@ function preload() {
     command_DEFAULT = loadImage('Asset/UI/command_DEFAULT.png');
 
     commandBG = loadImage('Asset/UI/battle_command_bg.png');
+
+    BGM = loadSound('Asset/Audio/BGM/wakuwaku_arikui.mp3');
 }
 
 function setup() {
@@ -554,6 +566,8 @@ function draw() {
 
 }
 
+
+
 let prosessingCommand = false;
 
 function commanSelected(player, input) {
@@ -589,6 +603,9 @@ function keyPressed() {
     if (keyCode === ESCAPE) {
         print(player1);
         print(player2);
+
+        // BGM.loop();
+        BGM.setVolume(0.5);
     }
 
     // 커맨드 입력 (키보드 또는 키코드)
@@ -615,7 +632,7 @@ function keyPressed() {
 
 function GetCommandBG(command, playerNum) {
     switch (command) {
-        case "일반공격":
+        case "공격":
             return playerNum == 1 ? command_ATACK_BG_1P : command_ATACK_BG_2P;
         case "필살기":
             return playerNum == 1 ? command_SPECIAL_BG_1P : command_SPECIAL_BG_2P;

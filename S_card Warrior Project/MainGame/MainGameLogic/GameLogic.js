@@ -140,6 +140,8 @@ function displayStatus() {
 function displayaction() {
     if (!isGameStart) return;
 
+    textFont(font_galmuri11);
+
     let x1 = width / 4;
     let x2 = width / 4 * 3;
     let y = height - 80;
@@ -152,48 +154,48 @@ function displayaction() {
     // 1P의 액션 선택지 출력
 
     // 인풋 버튼 UI 출력
-    imageCenter(input_button_BG_1P, x1, y - 30);
+    imageCenter(input_button_BG_1P, x1, y - 20);
 
     fill(0);
     textSize(25);
     textAlign(CENTER, LEFT);
 
     // 왼쪽 액션 선택지 (공격시 : 필살, 수비시 : 카운터)
-    imageCenter(turn == 1 ? action_SPECIAL_1P : action_COUNTER_1P, x1 - padding, y, rectWidth, rectHeight);
-    let left_text = turn == 1 ? `필살기 (+${player1.attack + 2})` : `카운터 (반사)`;
-    text(left_text, x1 - padding, y - 4);
+    imageCenter(turn == 1 ? action_SPECIAL_1P : action_COUNTER_1P, x1 - padding, y);
+    let left_text = turn == 1 ? `데미지 +${player1.attack + 2}` : `데미지 반사`;
+    text(left_text, x1 - padding, y - 40);
 
     // 위 액션 선택지 (특수 스킬)
-    imageCenter(action_DEFAULT, x1, y - 120, rectWidth, rectHeight);
+    imageCenter(action_DEFAULT, x1, y - 120);
     text("스킬", x1, y - 120 - 4);
 
     // 오른쪽 액션 선택지 (공격시 : 공격, 수비시 : 막기)
-    imageCenter(turn == 1 ? action_ATTACK_1P : action_BLOCK_1P, x1 + padding + 20, y, rectWidth, rectHeight);
-    let right_text = turn == 1 ? `공격 (+${player1.attack})` : `막기 (-${player1.defense})`;
-    text(right_text, x1 + padding, y - 4);
+    imageCenter(turn == 1 ? action_ATTACK_1P : action_BLOCK_1P, x1 + padding, y);
+    let right_text = turn == 1 ? `데미지 +${player1.attack}` : `데미지 -${player1.defense}`;
+    text(right_text, x1 + padding, y - 40);
 
     // 2P의 액션 선택지 출력
 
     // 인풋 버튼 UI 출력
-    imageCenter(input_button_BG_2P, x2, y - 30);
+    imageCenter(input_button_BG_2P, x2, y - 20);
 
     fill(0);
     textSize(25);
     textAlign(CENTER, LEFT);
 
     // 왼쪽 액션 선택지 (공격시 : 공격, 수비시 : 막기)
-    imageCenter(turn == -1 ? action_ATTACK_2P : action_BLOCK_2P, x2 - padding, y, rectWidth, rectHeight);
-    left_text = turn == -1 ? `공격 (+${player2.attack})` : `막기 (-${player2.defense})`;
-    text(left_text, x2 - padding, y - 4);
+    imageCenter(turn == -1 ? action_ATTACK_2P : action_BLOCK_2P, x2 - padding, y);
+    left_text = turn == -1 ? `데미지 +${player2.attack}` : `데미지 -${player2.defense}`;
+    text(left_text, x2 - padding, y - 40);
 
     // 위 액션 선택지 (특수 스킬)
-    imageCenter(action_DEFAULT, x2, y - 120, rectWidth, rectHeight);
+    imageCenter(action_DEFAULT, x2, y - 120);
     text("스킬", x2, y - 120 - 4);
 
     // 오른쪽 액션 선택지 (공격시 : 필살, 수비시 : 카운터)
-    imageCenter(turn == -1 ? action_SPECIAL_2P : action_COUNTER_2P, x2 + padding + 20, y, rectWidth, rectHeight);
-    right_text = turn == -1 ? `필살기 (+${player2.attack + 2})` : `카운터 (반사)`;
-    text(right_text, x2 + padding + 20, y - 4);
+    imageCenter(turn == -1 ? action_SPECIAL_2P : action_COUNTER_2P, x2 + padding, y);
+    right_text = turn == -1 ? `데미지 +${player2.attack + 2}` : `카운터 (반사)`;
+    text(right_text, x2 + padding, y - 40);
 
     // 커맨드 선택 완료 시
     // 1P 선택 완료, 2P 선택 미완료 시
@@ -651,15 +653,15 @@ function preload() {
     // 액션 선택지 이미지
     action_DEFAULT = loadImage('Asset/UI/command_DEFAULT.png');
 
-    action_ATTACK_1P = loadImage('Asset/UI/battle_command_ATTACK.png');
-    action_BLOCK_1P = loadImage('Asset/UI/battle_command_DEFENSE.png');
-    action_COUNTER_1P = loadImage('Asset/UI/battle_command_COUNTER.png');
-    action_SPECIAL_1P = loadImage('Asset/UI/battle_command_SPECIAL.png');
+    action_ATTACK_1P = loadImage('Asset/UI/command_ATTACK_1P.png');
+    action_BLOCK_1P = loadImage('Asset/UI/command_BLOCK_1P.png');
+    action_COUNTER_1P = loadImage('Asset/UI/command_COUNTER_1P.png');
+    action_SPECIAL_1P = loadImage('Asset/UI/command_SPECIAL_1P.png');
 
-    action_ATTACK_2P = loadImage('Asset/UI/battle_command_ATTACK.png');
-    action_BLOCK_2P = loadImage('Asset/UI/battle_command_DEFENSE.png');
-    action_COUNTER_2P = loadImage('Asset/UI/battle_command_COUNTER.png');
-    action_SPECIAL_2P = loadImage('Asset/UI/battle_command_SPECIAL.png');
+    action_ATTACK_2P = loadImage('Asset/UI/command_ATTACK_2P.png');
+    action_BLOCK_2P = loadImage('Asset/UI/command_BLOCK_2P.png');
+    action_COUNTER_2P = loadImage('Asset/UI/command_COUNTER_2P.png');
+    action_SPECIAL_2P = loadImage('Asset/UI/command_SPECIAL_2P.png');
 
     // 인풋 버튼 UI 이미지
     input_button_BG_1P = loadImage('Asset/UI/battle_input_button_bg_1P.png');
@@ -670,6 +672,9 @@ function preload() {
 
     // 배경 이미지
     BG = loadImage('Asset/BG/IBK_1.png');
+
+    // 폰트(Galmuri11-Bold.ttf)
+    font_galmuri11 = loadFont('Asset/Font/Galmuri11-Bold.ttf');
 
 }
 

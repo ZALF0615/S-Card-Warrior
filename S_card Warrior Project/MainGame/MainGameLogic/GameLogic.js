@@ -11,6 +11,8 @@ let actionset_2p = [];  // 2P의 액션 선택
 let currenthp_1P, currenthp_2P;
 let charaImg_1p, charaImg_2p;
 
+let animation_done_1P, animation_done_2P = false;
+
 
 function displayPlayerInfo() {
 
@@ -43,7 +45,8 @@ function displayPlayerInfo() {
 
     // 체력바 그리기
     image(hp_bar_total_image, x + leftpadding, y + upperpadding, barwidth, barheight);
-    image(hp_bar_remain_image, x + leftpadding, y + upperpadding, barwidth * (player1.hp / player1.hpMax), barheight);
+    if (player1.hp > 0) { image(hp_bar_remain_image, x + leftpadding, y + upperpadding, barwidth * (player1.hp / player1.hpMax), barheight); }
+
 
     // 체력 텍스트
     fill(0);
@@ -70,7 +73,7 @@ function displayPlayerInfo() {
 
     // 체력바 그리기
     image(hp_bar_total_image, x + 70, y + upperpadding, barwidth, barheight);
-    image(hp_bar_remain_image, x + 70, y + upperpadding, barwidth * (player2.hp / player2.hpMax), barheight);
+    if (player2.hp > 0) { image(hp_bar_remain_image, x + 70, y + upperpadding, barwidth * (player2.hp / player2.hpMax), barheight); }
 
     // 체력 텍스트
     fill(0);
@@ -253,6 +256,11 @@ function displaySelectedaction() {
     if (actionSelected_1P != -1 && actionSelected_2P != -1) {
         imageCenter(getActionImage(actionset_1p[actionSelected_1P], 1), x1, y);
         imageCenter(getActionImage(actionset_2p[actionSelected_2P], 2), x2, y);
+        textSize(30);
+        fill(0);
+        textAlign(CENTER, CENTER);
+        text(actionset_1p[actionSelected_1P], x1, y);
+        text(actionset_2p[actionSelected_2P], x2, y);
     }
 
 }
@@ -262,18 +270,19 @@ function drawCharacters() {
     // 플레이어 1은 왼쪽, 플레이어 2는 오른쪽에 위치
     // 플레이어 1은 오른쪽을 바라보고, 플레이어 2는 왼쪽을 바라봄
 
-    let x1 = width / 4 - charaImg_1p.width / 2;
-    let x2 = width / 4 * 3 - charaImg_1p.width / 2;
+    let x1 = 460;
+    let x2 = width - 460;
 
-    let y = height / 2 - charaImg_1p.height / 2;
+    let y = height / 2 + 270;
 
     // 플레이어 1
-    image(charaImg_1p, x1, y);
+    imageButtom(charaImg_1p, x1, y, LEFT);
+
     // 플레이어 2 (좌우반전)
     push();
-    translate(x2 + charaImg_2p.width, y);
+    translate(x2, y);
     scale(-1, 1);
-    image(charaImg_2p, 0, 0);
+    imageButtom(charaImg_2p, 0, 0, LEFT);
     pop();
 
 }
@@ -341,9 +350,12 @@ function Processaction() {
 
     // 플레이어 1, 2의 액션를 확인
     // 액션가 선택되지 않았을 경우 함수 종료
+
     if (actionSelected_1P == -1 || actionSelected_2P == -1 || prosessingaction) {
         return;
     }
+
+    print('process action');
 
     let action_1P = actionset_1p[actionSelected_1P];
     print(`action_1P : ${action_1P}`);
@@ -365,12 +377,6 @@ function Processaction() {
         } else if (attacker_action == "필살기" && defender_action == "카운터") {
             SpecialVSCounter(turn);
         }
-
-        actionSelected_1P = -1;
-        actionSelected_2P = -1;
-        prosessingaction = false;
-
-        TurnTaker();
     }, 1000);
 }
 
@@ -382,16 +388,21 @@ function AttackVSCounter(playerNum) {
     print(`AttackVSCounter : ` + playerNum);
     let attack = playerNum == 1 ? player1.attack : player2.attack;
 
-    if (playerNum == 1) {
-        player2.hp = max(0, player2.hp - attack);
-    } else {
-        player1.hp = max(0, player1.hp - attack);
-    }
+    let attack_duration = 3000;
 
-    let du = new FloatUI(playerNum == 1 ? width / 4 * 3 : width / 4, height / 2 - 300, `-${attack}`, 255, 0, 0);
-    FloatUIs.push(du);
+    // 데미지 이펙트  (수행자 : 공격, 대상 : 데미지)
+    Effect(playerNum, 3, attack_duration);
+    setTimeout(() => {
+        // 데미지 이펙트
+        Effect(-1 * playerNum, 2, 1000, attack);
+        if (playerNum == 1) {
+            player2.hp = max(0, player2.hp - attack);
+        } else {
+            player1.hp = max(0, player1.hp - attack);
+        }
+    }, attack_duration);
 
-    print(`공격 성공 : ${attack} 데미지`);
+
 }
 function AttackVSBlock(playerNum) {
     // 공격 실패 (공격 - 막기)
@@ -403,17 +414,22 @@ function AttackVSBlock(playerNum) {
 
     let damage = max(0, attack - defense);
 
-    if (playerNum == 1) {
-        player2.hp = max(0, player2.hp - damage);
-    }
-    else {
-        player1.hp = max(0, player1.hp - damage);
-    }
+    let attack_duration = 3000;
 
-    let du = new FloatUI(playerNum == 1 ? width / 4 * 3 : width / 4, height / 2 - 300, `-${damage}`, 255, 0, 0);
-    FloatUIs.push(du);
+    // 공격 이펙트
+    Effect(playerNum, 3, attack_duration);
+    Effect(-1 * playerNum, 4, 4000);
 
-    print(`공격 실패 : ${damage} 데미지`);
+    setTimeout(() => {
+        // 데미지 이펙트
+        Effect(-1 * playerNum, 2, 1000, damage);
+        if (playerNum == 1) {
+            player2.hp = max(0, player2.hp - damage);
+        }
+        else {
+            player1.hp = max(0, player1.hp - damage);
+        }
+    }, attack_duration);
 }
 function SpecialVSCounter(playerNum) {
     // 필살기 실패 (필살기 - 카운터)
@@ -424,17 +440,24 @@ function SpecialVSCounter(playerNum) {
 
     let damage = max(0, attack + 2);
 
-    if (playerNum == 1) {
-        player1.hp = max(0, player1.hp - damage);
-    }
-    else {
-        player2.hp = max(0, player2.hp - damage);
-    }
+    let special_duration = 4000;
+    let counter_duration = 4000;
 
-    let du = new FloatUI(playerNum == 1 ? width / 4 : width / 4 * 3, height / 2 - 300, `-${damage}`, 255, 0, 0);
-    FloatUIs.push(du);
+    // 플레이어 공격 ->  상대 카운터 -> 플레이어 데미지
 
-    print(`카운터 성공 : ${damage} 데미지`);
+    Effect(playerNum, 6, special_duration);  // 필살기 이펙트
+    Effect(-1 * playerNum, 5, counter_duration);  // 카운터 이펙트
+
+    setTimeout(() => {
+        Effect(playerNum, 2, 1000, damage); // 데미지 이펙트
+        if (playerNum == 1) {
+            player1.hp = max(0, player1.hp - damage);
+        }
+        else {
+            player2.hp = max(0, player2.hp - damage);
+        }
+    }, counter_duration);
+
 }
 function SpecialVSBlock(playerNum) {
     // 필살기 성공 (필살기 - 막기)
@@ -445,15 +468,19 @@ function SpecialVSBlock(playerNum) {
 
     let damage = max(0, attack + 2);
 
-    if (playerNum == 1) {
-        player2.hp = max(0, player2.hp - damage);
-    }
-    else {
-        player1.hp = max(0, player1.hp - damage);
-    }
+    let special_duration = 4000;
 
-    let du = new FloatUI(playerNum == 1 ? width / 4 * 3 : width / 4, height / 2 - 300, `-${damage}`, 255, 0, 0);
-    FloatUIs.push(du);
+    Effect(playerNum, 6, special_duration);  // 필살기 이펙트
+    setTimeout(() => {
+        // 데미지 이펙트
+        Effect(-1 * playerNum, 2, 1000, damage);
+        if (playerNum == 1) {
+            player2.hp = max(0, player2.hp - damage);
+        }
+        else {
+            player1.hp = max(0, player1.hp - damage);
+        }
+    }, special_duration);
 
     print(`필살기 성공 : ${damage} 데미지`);
 }
@@ -478,11 +505,69 @@ function getActionImage(action, playerNum) {
 
 }
 
+// 이펙트 관련
+function Effect(playerNum, animIdx, duration, damage = null) {
+
+    if (damage != null) {
+        let du = new FloatUI(playerNum == 1 ? width / 4 : width / 4 * 3, height / 2, `-${damage}`, 255, 0, 0);
+        FloatUIs.push(du);
+    }
+
+    //  캐릭터 이미지 변경
+    //  1 : 준비
+    //  2 : 데미지
+    //  3 : 공격
+    //  4 : 방어
+    //  5 : 카운터
+    //  6 : 필살기
+    //  7 : 특수스킬
+    //  8 : 승리
+    //  9 : 패배
+
+    if (playerNum == 1) {
+        charaImg_1p = charaImgSet_1P[animIdx]; // 이미지 변경
+        setTimeout(() => {
+            charaImg_1p = charaImgSet_1P[1];
+            animation_done_1P = true;
+        }, duration);
+    } else {
+        charaImg_2p = charaImgSet_2P[animIdx];
+        setTimeout(() => {
+            charaImg_2p = charaImgSet_2P[1];
+            animation_done_2P = true;
+        }, duration);
+    }
+}
+
 function TurnTaker() {
 
     // HP가 0 이하 일 경우 게임 종료
     if (player1.hp <= 0 || player2.hp <= 0) {
         isGameStart = false;
+
+        // 1P WIN or 2P WIN 텍스트 띄우기
+        if (player1.hp <= 0) {
+            print("2P WIN");
+
+            fill(255);
+            textSize(100);
+            textAlign(CENTER, CENTER);
+            text("2P WIN", width / 2, height / 2);
+
+            charaImg_1p = charaImgSet_1P[9];    // 1P 패배 이미지
+            charaImg_2p = charaImgSet_2P[8];    // 2P 승리 이미지
+        } else {
+            print("1P WIN");
+
+            fill(255);
+            textSize(100);
+            textAlign(CENTER, CENTER);
+            text("1P WIN", width / 2, height / 2);
+
+            charaImg_1p = charaImgSet_1P[8];    // 1P 승리 이미지
+            charaImg_2p = charaImgSet_2P[9];    // 2P 패배 이미지
+        }
+
         return;
     }
 
@@ -502,17 +587,52 @@ function TurnTaker() {
         actionset_2p = ["스킬", "공격", "필살기"];
     }
 
+    actionSelected_1P = -1;
+    actionSelected_2P = -1;
+    prosessingaction = false;
+
 }
 
-
 let BGM;
+let BG;
+
+let charaImgSet_1P = [];
+let charaImgSet_2P = [];
+
+let sage_images = [];
+let mage_images = [];
 
 function preload() {
 
-    charaImg_1p = loadImage('Asset/Character/현자_준비.gif');
-    charaImg_2p = loadImage('Asset/Character/마법사_준비.gif');
+    charaImg_1p = loadImage('Asset/Character/현자/현자_준비.gif');
+    charaImg_2p = loadImage('Asset/Character/마법사/마법사_준비.gif');
 
-    BGM = loadSound('Asset/Audio/BGM/wakuwaku_arikui.mp3');
+    // 캐릭터 이미지 로드
+    // 현자 (기본, 준비, 데미지, 공격, 방어, 카운터, 필살, 특수스킬, 승리, 패배)
+    sage_images.push(loadImage('Asset/Character/현자/현자_기본.gif'));
+    sage_images.push(loadImage('Asset/Character/현자/현자_준비.gif'));
+    sage_images.push(loadImage('Asset/Character/현자/현자_데미지.gif'));
+    sage_images.push(loadImage('Asset/Character/현자/현자_공격.gif'));
+    sage_images.push(loadImage('Asset/Character/현자/현자_방어.gif'));
+    sage_images.push(loadImage('Asset/Character/현자/현자_카운터.gif'));
+    sage_images.push(loadImage('Asset/Character/현자/현자_필살.gif'));
+    sage_images.push(loadImage('Asset/Character/현자/현자_특수스킬.gif'));
+    sage_images.push(loadImage('Asset/Character/현자/현자_승리.gif'));
+    sage_images.push(loadImage('Asset/Character/현자/현자_패배.gif'));
+
+    // 마법사 (기본, 준비, 데미지, 공격, 방어, 카운터, 필살, 특수스킬, 승리, 패배)
+    mage_images.push(loadImage('Asset/Character/마법사/마법사_기본.gif'));
+    mage_images.push(loadImage('Asset/Character/마법사/마법사_준비.gif'));
+    mage_images.push(loadImage('Asset/Character/마법사/마법사_데미지.gif'));
+    mage_images.push(loadImage('Asset/Character/마법사/마법사_공격.gif'));
+    mage_images.push(loadImage('Asset/Character/마법사/마법사_방어.gif'));
+    mage_images.push(loadImage('Asset/Character/마법사/마법사_카운터.gif'));
+    mage_images.push(loadImage('Asset/Character/마법사/마법사_필살.gif'));
+    mage_images.push(loadImage('Asset/Character/마법사/마법사_특수스킬.gif'));
+    mage_images.push(loadImage('Asset/Character/마법사/마법사_승리.gif'));
+    mage_images.push(loadImage('Asset/Character/마법사/마법사_패배.gif'));
+
+
 
     // 턴 표시 이미지
     turn_ATTACK_icon = loadImage('Asset/UI/battle_turn_icon_ATTACK.png');
@@ -531,19 +651,25 @@ function preload() {
     // 액션 선택지 이미지
     action_DEFAULT = loadImage('Asset/UI/command_DEFAULT.png');
 
-    action_ATTACK_1P = loadImage('Asset/UI/command_ATTACK_1P.png');
-    action_BLOCK_1P = loadImage('Asset/UI/command_BLOCK_1P.png');
-    action_COUNTER_1P = loadImage('Asset/UI/command_COUNTER_1P.png');
-    action_SPECIAL_1P = loadImage('Asset/UI/command_SPECIAL_1P.png');
+    action_ATTACK_1P = loadImage('Asset/UI/battle_command_ATTACK.png');
+    action_BLOCK_1P = loadImage('Asset/UI/battle_command_DEFENSE.png');
+    action_COUNTER_1P = loadImage('Asset/UI/battle_command_COUNTER.png');
+    action_SPECIAL_1P = loadImage('Asset/UI/battle_command_SPECIAL.png');
 
-    action_ATTACK_2P = loadImage('Asset/UI/command_ATTACK_2P.png');
-    action_BLOCK_2P = loadImage('Asset/UI/command_BLOCK_2P.png');
-    action_COUNTER_2P = loadImage('Asset/UI/command_COUNTER_2P.png');
-    action_SPECIAL_2P = loadImage('Asset/UI/command_SPECIAL_2P.png');
+    action_ATTACK_2P = loadImage('Asset/UI/battle_command_ATTACK.png');
+    action_BLOCK_2P = loadImage('Asset/UI/battle_command_DEFENSE.png');
+    action_COUNTER_2P = loadImage('Asset/UI/battle_command_COUNTER.png');
+    action_SPECIAL_2P = loadImage('Asset/UI/battle_command_SPECIAL.png');
 
     // 인풋 버튼 UI 이미지
     input_button_BG_1P = loadImage('Asset/UI/battle_input_button_bg_1P.png');
     input_button_BG_2P = loadImage('Asset/UI/battle_input_button_bg_2P.png');
+
+    // 배경음
+    BGM = loadSound('Asset/Audio/BGM/wakuwaku_arikui.mp3');
+
+    // 배경 이미지
+    BG = loadImage('Asset/BG/IBK_1.png');
 
 }
 
@@ -552,18 +678,27 @@ function setup() {
     player1 = new Character("고수렐리우스", "2023-16798", 1);
     player2 = new Character("이게니아", "2000-14567", 2);
 
+    charaImgSet_1P = sage_images;
+    charaImgSet_2P = mage_images;
+
     GameStart();
 }
 
 let FloatUIs = [];
 
 function draw() {
-    background('gray');
+    background(255);
+    tint(150, 100);
+    image(BG, 0, 0, width, height);
+    tint(255);
 
     displayPlayerInfo();   // 플레이어 정보 출력
-    displayStatus();    // 플레이어 스테이터스 출력
+    // displayStatus();    // 플레이어 스테이터스 출력
 
     drawCharacters();
+
+    if (!isGameStart) { return; }
+
     displayTurn();
 
     displayaction();
@@ -572,6 +707,18 @@ function draw() {
     if (actionSelected_1P != -1 && actionSelected_2P != -1) {
         Processaction();
         prosessingaction = true;
+    }
+
+    if (prosessingaction) {
+        if (animation_done_1P && animation_done_2P) {
+
+            print("액션 처리 완료");
+
+            animation_done_1P = false;
+            animation_done_2P = false;
+
+            TurnTaker();
+        }
     }
 
     if (FloatUIs.length > 0) {
@@ -631,10 +778,31 @@ function keyPressed() {
     else if (keyCode === RIGHT_ARROW) {
         actionSelected(player2, 2);
     }
+
+    // 1을 누르면 현자 1번 이미지, 2를 누르면 현자 2번 이미지...
+    if (key === '1') {
+        charaImg_1p = sage_images[0];
+    } else if (key === '2') {
+        charaImg_1p = sage_images[1];
+    } else if (key === '3') {
+        charaImg_1p = sage_images[2];
+    } else if (key === '4') {
+        charaImg_1p = sage_images[3];
+    }
 }
 
 function imageCenter(img, x, y, w = img.width, h = img.height) {
     image(img, x - img.width / 2, y - img.height / 2, w, h);
+}
+
+function imageButtom(img, x, y, mode = CENTER, w = img.width, h = img.height) {
+    if (mode == CENTER) {
+        image(img, x - img.width / 2, y - img.height, w, h);
+    } else if (mode == LEFT) {
+        image(img, x, y - img.height, w, h);
+    } else if (mode == RIGHT) {
+        image(img, x - img.width, y - img.height, w, h);
+    }
 }
 
 class FloatUI {

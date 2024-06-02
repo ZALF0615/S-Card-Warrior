@@ -1,4 +1,5 @@
 let isGameStart = false;
+let isGameOver = 0; // 1이면 진행중, 1이면 1P 승리, 2이면 2P 승리
 
 let player1, player2;
 let turn;  // 1P의 턴인지 2P의 턴인지 구분 (1 : 1P, -1 : 2P)
@@ -27,6 +28,8 @@ function displayPlayerInfo() {
 
     // 1P배경 사각형 그리기
     image(player_Info_BG, x, y, rectWidth, rectHeight);
+
+    textFont(font_galmuri7);
 
     // 이름
     fill(0);
@@ -86,55 +89,67 @@ function displayPlayerInfo() {
 
 }
 function displayStatus() {
-    // 화면 가운데에 캐릭터 스테이터스 출력
-    // 5개의 네모를 띄움
-    // 1번 사각형 : 플레이어 1의 학년 | "GD" | 플레이어 2의 학년
-    // 2번 사각형 : 플레이어 1의 공격력 | "AT" | 플레이어 2의 공격력
-    // 3번 사각형 : 플레이어 1의 방어력 | "DF" | 플레이어 2의 방어력
-    // 4번 사각형 : 플레이어 1의 체력 | "HP" | 플레이어 2의 체력
-    // 5번 사각형 : 플레이어 1의 스킬턴 | "SK" | 플레이어 2의 스킬턴
+    // 화면 좌우에 플레이어 1, 2의 스탯을 출력
+    // 화면 왼족에는 플레이어 1의 스탯을 출력
+    // 화면 오른쪽에는 플레이어 2의 스탯을 출력
 
-    let x = width / 2;
-    let y = height / 2;
-    let rectWidth = 300;
-    let rectHeight = 50;
+    // 1P
+    // 기준점 좌표
+    x = 20;
+    y = 190;
 
+    // 각 플레이어 스탯
     let player1Stat = [player1.id.slice(0, 6), player1.attack, player1.defense, player1.id.charAt(8), player1.skillTurnMax];
     let player2Stat = [player2.id.slice(0, 6), player2.attack, player2.defense, player1.id.charAt(8), player2.skillTurnMax];
 
-    for (let i = 0; i < 5; i++) {
-        fill(255);
-        stroke(0);
-        rectMode(CENTER);
+    // 1P 
+    fill(0, 0, 0, 150);
+    noStroke();
+    rect(x, y, 350, 270);
 
-        rect(x, y + i * 60, rectWidth, rectHeight);
+    textFont(font_galmuri7);
+    fill(255);
+    textSize(30);
+    textAlign(LEFT, CENTER);
 
-        fill(0);
-        textSize(20);
-        textAlign(CENTER, CENTER);
-        text(`${player1Stat[i]}`, x - 80, y + i * 60);
-        text(`${player2Stat[i]}`, x + 80, y + i * 60);
+    text("GD", x + 70, y + 30);
+    text("AT", x + 70, y + 80);
+    text("DF", x + 70, y + 130);
+    text("HP", x + 70, y + 180);
+    text("SK", x + 70, y + 230);
 
-        textSize(30);
-
-        switch (i) {
-            case 0:
-                text("GD", x, y + i * 60);
-                break;
-            case 1:
-                text("AT", x, y + i * 60);
-                break;
-            case 2:
-                text("DF", x, y + i * 60);
-                break;
-            case 3:
-                text("HP", x, y + i * 60);
-                break;
-            case 4:
-                text("SK", x, y + i * 60);
-                break;
-        }
+    // 각 항목의 값 출력
+    for (let i = 0; i < player1Stat.length; i++) {
+        player1Stat[i] = player1Stat[i] == 10 ? "0 (10)" : player1Stat[i];
+        text(player1Stat[i], x + 180, y + 30 + 50 * i);
     }
+
+    // 2P
+    x = width - 370;
+    y = 190;
+    
+    // 2P
+
+    fill(0, 0, 0, 150   );
+    noStroke();
+    rect(x, y, 350, 270);
+
+    fill(255);
+    textSize(30);
+    textAlign(LEFT, CENTER);
+
+    text("GD", x + 70, y + 30);
+    text("AT", x + 70, y + 80);
+    text("DF", x + 70, y + 130);
+    text("HP", x + 70, y + 180);
+    text("SK", x + 70, y + 230);
+
+    // 각 항목의 값 출력
+    for (let i = 0; i < player2Stat.length; i++) {
+        player2Stat[i] = player2Stat[i] == 10 ? "0 (10)" : player2Stat[i];
+        text(player2Stat[i], x + 180, y + 30 + 50 * i);
+    }
+
 }
 
 function displayaction() {
@@ -258,11 +273,11 @@ function displaySelectedaction() {
     if (actionSelected_1P != -1 && actionSelected_2P != -1) {
         imageCenter(getActionImage(actionset_1p[actionSelected_1P], 1), x1, y);
         imageCenter(getActionImage(actionset_2p[actionSelected_2P], 2), x2, y);
-        textSize(30);
-        fill(0);
-        textAlign(CENTER, CENTER);
-        text(actionset_1p[actionSelected_1P], x1, y);
-        text(actionset_2p[actionSelected_2P], x2, y);
+        // textSize(30);
+        // fill(0);
+        // textAlign(CENTER, CENTER);
+        // text(actionset_1p[actionSelected_1P], x1, y);
+        // text(actionset_2p[actionSelected_2P], x2, y);
     }
 
 }
@@ -511,7 +526,7 @@ function getActionImage(action, playerNum) {
 function Effect(playerNum, animIdx, duration, damage = null) {
 
     if (damage != null) {
-        let du = new FloatUI(playerNum == 1 ? width / 4 : width / 4 * 3, height / 2, `-${damage}`, 255, 0, 0);
+        let du = new FloatUI(playerNum == 1 ? width / 4 + 50 : width / 4 * 3 - 50, height / 2, `-${damage}`, 255, 0, 0);
         FloatUIs.push(du);
     }
 
@@ -550,21 +565,13 @@ function TurnTaker() {
         // 1P WIN or 2P WIN 텍스트 띄우기
         if (player1.hp <= 0) {
             print("2P WIN");
-
-            fill(255);
-            textSize(100);
-            textAlign(CENTER, CENTER);
-            text("2P WIN", width / 2, height / 2);
+            isGameOver = -1
 
             charaImg_1p = charaImgSet_1P[9];    // 1P 패배 이미지
             charaImg_2p = charaImgSet_2P[8];    // 2P 승리 이미지
         } else {
             print("1P WIN");
-
-            fill(255);
-            textSize(100);
-            textAlign(CENTER, CENTER);
-            text("1P WIN", width / 2, height / 2);
+            isGameOver = 1
 
             charaImg_1p = charaImgSet_1P[8];    // 1P 승리 이미지
             charaImg_2p = charaImgSet_2P[9];    // 2P 패배 이미지
@@ -675,6 +682,7 @@ function preload() {
 
     // 폰트(Galmuri11-Bold.ttf)
     font_galmuri11 = loadFont('Asset/Font/Galmuri11-Bold.ttf');
+    font_galmuri7 = loadFont('Asset/Font/Galmuri7.ttf');
 
 }
 
@@ -698,12 +706,20 @@ function draw() {
     tint(255);
 
     displayPlayerInfo();   // 플레이어 정보 출력
-    // displayStatus();    // 플레이어 스테이터스 출력
+
 
     drawCharacters();
 
+    if (isGameOver != 0) {
+        fill(0);
+        textSize(100);
+        textAlign(CENTER, CENTER);
+        text(isGameOver == 1 ? "1P WIN" : "2P WIN", width / 2, height / 2);
+    }
+
     if (!isGameStart) { return; }
 
+    displayStatus();    // 플레이어 스테이터스 출력
     displayTurn();
 
     displayaction();
@@ -784,16 +800,39 @@ function keyPressed() {
         actionSelected(player2, 2);
     }
 
-    // 1을 누르면 현자 1번 이미지, 2를 누르면 현자 2번 이미지...
-    if (key === '1') {
-        charaImg_1p = sage_images[0];
-    } else if (key === '2') {
-        charaImg_1p = sage_images[1];
-    } else if (key === '3') {
-        charaImg_1p = sage_images[2];
-    } else if (key === '4') {
-        charaImg_1p = sage_images[3];
+    // 엔터키 누르면 양쪽 hp 1로 설정
+    if (keyCode === ENTER) {
+        player1.hp = 1;
+        player2.hp = 1;
     }
+
+    // 1번 누르면 1p를 고수렐리우스로 바꿈
+    if (key === '1') {
+        player1 = new Character("고수라테스", "2019-16798", 1);
+        player1.hp = player1.hpMax;
+    } else if (key === '2') {
+        player1 = new Character("김한빈치", "2020-16224", 1);
+        player1.hp = player1.hpMax;
+    } else if (key === '3') {
+        player1 = new Character("임주빈치", "2020-12056", 1);
+        player1.hp = player1.hpMax;
+    } else if (key === '4') {
+        player1 = new Character("최정라테스", "2020-19875", 1);
+        player1.hp = player1.hpMax;
+    } else if (key === '5') {
+        player2 = new Character("고수라테스", "2019-16798", 1);
+        player2.hp = player2.hpMax;
+    } else if (key === '6') {
+        player2 = new Character("김한빈치", "2020-16224", 1);
+        player2.hp = player2.hpMax;
+    } else if (key === '7') {
+        player2 = new Character("임주빈치", "2020-12056", 1);
+        player2.hp = player2.hpMax;
+    } else if (key === '8') {
+        player2 = new Character("최정라테스", "2020-19875", 1);
+        player2.hp = player2.hpMax;
+    }
+
 }
 
 function imageCenter(img, x, y, w = img.width, h = img.height) {

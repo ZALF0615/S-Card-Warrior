@@ -245,8 +245,8 @@ function displaySelectedaction() {
     // 선택된 액션를 화면에 출력
     // 1P의 액션는 왼쪽, 2P의 액션는 오른쪽에 출력
 
-    let x1 = width / 2 - action_DEFAULT.width / 2;
-    let x2 = width / 2 + action_DEFAULT.width / 2;
+    let x1 = width / 2 - action_ATTACK_1P.width / 2;
+    let x2 = width / 2 + action_ATTACK_1P.width / 2;
 
     let y = 350;
 
@@ -254,7 +254,7 @@ function displaySelectedaction() {
     if (actionSelected_1P != -1 && actionSelected_2P == -1) {
         imageCenter(action_DEFAULT, x1, y);
         textSize(30);
-        fill(0);
+        fill(255);
         textAlign(CENTER, CENTER);
         text("???", x1, y);
     }
@@ -263,7 +263,7 @@ function displaySelectedaction() {
     if (actionSelected_2P != -1 && actionSelected_1P == -1) {
         imageCenter(action_DEFAULT, x2, y);
         textSize(30);
-        fill(0);
+        fill(255);
         textAlign(CENTER, CENTER);
         text("???", x2, y);
     }
@@ -641,8 +641,6 @@ function preload() {
     mage_images.push(loadImage('Asset/Character/마법사/마법사_승리.gif'));
     mage_images.push(loadImage('Asset/Character/마법사/마법사_패배.gif'));
 
-
-
     // 턴 표시 이미지
     turn_ATTACK_icon = loadImage('Asset/UI/battle_turn_icon_ATTACK.png');
     turn_DEFENSE_icon = loadImage('Asset/UI/battle_turn_icon_DEFENSE.png');
@@ -658,17 +656,17 @@ function preload() {
     vs_icon = loadImage('Asset/UI/battle_vs_icon.png');
 
     // 액션 선택지 이미지
-    action_DEFAULT = loadImage('Asset/UI/command_DEFAULT.png');
+    action_DEFAULT = loadImage('Asset/UI/battle_command_DEFAULT.png');
 
-    action_ATTACK_1P = loadImage('Asset/UI/command_ATTACK_1P.png');
-    action_BLOCK_1P = loadImage('Asset/UI/command_BLOCK_1P.png');
-    action_COUNTER_1P = loadImage('Asset/UI/command_COUNTER_1P.png');
-    action_SPECIAL_1P = loadImage('Asset/UI/command_SPECIAL_1P.png');
+    action_ATTACK_1P = loadImage('Asset/UI/battle_command_ATTACK_1P.png');
+    action_BLOCK_1P = loadImage('Asset/UI/battle_command_DEFENSE_1P.png');
+    action_COUNTER_1P = loadImage('Asset/UI/battle_command_COUNTER_1P.png');
+    action_SPECIAL_1P = loadImage('Asset/UI/battle_command_SPECIAL_1P.png');
 
-    action_ATTACK_2P = loadImage('Asset/UI/command_ATTACK_2P.png');
-    action_BLOCK_2P = loadImage('Asset/UI/command_BLOCK_2P.png');
-    action_COUNTER_2P = loadImage('Asset/UI/command_COUNTER_2P.png');
-    action_SPECIAL_2P = loadImage('Asset/UI/command_SPECIAL_2P.png');
+    action_ATTACK_2P = loadImage('Asset/UI/battle_command_ATTACK_2P.png');
+    action_BLOCK_2P = loadImage('Asset/UI/battle_command_DEFENSE_2P.png');
+    action_COUNTER_2P = loadImage('Asset/UI/battle_command_COUNTER_2P.png');
+    action_SPECIAL_2P = loadImage('Asset/UI/battle_command_SPECIAL_2P.png');
 
     // 인풋 버튼 UI 이미지
     input_button_BG_1P = loadImage('Asset/UI/battle_input_button_bg_1P.png');
@@ -683,7 +681,6 @@ function preload() {
     // 폰트(Galmuri11-Bold.ttf)
     font_galmuri11 = loadFont('Asset/Font/Galmuri11-Bold.ttf');
     font_galmuri7 = loadFont('Asset/Font/Galmuri7.ttf');
-
 }
 
 function setup() {
@@ -830,6 +827,14 @@ function keyPressed() {
         player2.hp = player2.hpMax;
     } else if (key === '8') {
         player2 = new Character("최정라테스", "2020-19875", 1);
+        player2.hp = player2.hpMax;
+    }else if (key === '9'){
+        let r = int(random(1000, 10000));
+        player1 = new Character("오종우니아", `2024-1${r}`);
+        player1.hp = player1.hpMax;
+    }else if(key === '0'){
+        let r = int(random(1000, 10000));
+        player2 = new Character("오종우니아", `2024-1${r}`);
         player2.hp = player2.hpMax;
     }
 

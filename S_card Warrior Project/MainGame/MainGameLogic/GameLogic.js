@@ -25,22 +25,16 @@ function draw_gameLogic() {
         temporal_winside = GetWinSide(selectedAction_1p, selectedAction_2p);
 
         setTimeout(() => {
-            showActions = false;
-
-            setTimeout(() => {
-                // 낸 손 밝히기
-                setTimeout(() => {
-                    processActions();
-                }, 1000);
-            }, 1000); // 
+            showActions = false; // 액션 선택지 숨기기 & 낸 손 모양 밝히기
+            processActions(); // 애니메이션 처리
 
         }, 1000); // 1초 후에 액션 처리
 
     }
 
     if (showActions) {
-        displayAction(350, height - 200, 1);
-        displayAction(width - 350, height - 200, 2);
+        displayAction(300, height - 200, 1);
+        displayAction(width - 300, height - 200, 2);
     }
 
     if (selectedAction_1p != 0) {
@@ -94,21 +88,35 @@ function processActions() {
         if (winSide == 0) {
             // 비김
             print_log("비김");
+            setTimeout(TurnTaker, 1000);
         } else if (winSide == 1) {
             // 1p 승리
             print_log("1p 승리");
-            Damage(damage, 2);
+            Attack(1, selectedAction_1p);   // 성공 애니메이션
+            Attack(-1, -selectedAction_2p); // 실패 애니메이션
+            let damage_timing = 22 * animSpeed_1p / 60 * 1000;
+            setTimeout(() => {
+                Damage(damage, -1);
+                setTimeout(TurnTaker, 12 * animSpeed_1p / 60 * 1000);
+            }, damage_timing);
         } else if (winSide == -1) {
             // 2p 승리
             print_log("2p 승리");
-            Damage(damage, 1);
+            Attack(-1, selectedAction_2p);   // 성공 애니메이션
+            Attack(1, -selectedAction_1p);   // 실패 애니메이션
+            let damage_timing = 22 * animSpeed_2p / 60 * 1000;
+            setTimeout(() => {
+                Damage(damage, 1);
+                setTimeout(TurnTaker, 12 * animSpeed_2p / 60 * 1000);
+            }, damage_timing);
         }
 
     }
-    selectedAction_1p = 0;
-    selectedAction_2p = 0;
 
-    TurnTaker();
+
+
+
+
 }
 
 function Damage(damage, playerNum) {
@@ -119,7 +127,6 @@ function Damage(damage, playerNum) {
         let du = new FloatUI(630, height / 2, `-${damage}`, 255, 0, 0);
         FloatUIs.push(du);
 
-        ChangeAnimation(1, '데미지', 1);
         PlaySEOneShot(damageSE, 0.1);
 
         print_log(`player1.skillPoint : ${player1.skillPoint}`);
@@ -130,12 +137,34 @@ function Damage(damage, playerNum) {
         let du = new FloatUI(width - 630, height / 2, `-${damage}`, 255, 0, 0);
         FloatUIs.push(du);
 
-        ChangeAnimation(2, '데미지', 1);
         PlaySEOneShot(damageSE, 0.1);
 
         print_log(`player2.skillPoint : ${player2.skillPoint}`);
     }
 
+}
+function Attack(playerNum, hand) {
+
+    switch (hand) {
+        case 1: // 가위
+            ChangeAnimation(playerNum, '가위_성공', -1);
+            break;
+        case 2: // 바위
+            ChangeAnimation(playerNum, '바위_성공', -1);
+            break;
+        case 3: // 보
+            ChangeAnimation(playerNum, '보_성공', -1);
+            break;
+        case -1: // 가위 실패
+            ChangeAnimation(playerNum, '가위_실패', -1);
+            break;
+        case -2: // 바위 실패
+            ChangeAnimation(playerNum, '바위_실패', -1);
+            break;
+        case -3: // 보 실패
+            ChangeAnimation(playerNum, '보_실패', -1);
+            break;
+    }
 }
 
 
@@ -175,8 +204,17 @@ function keyPressed_gamelogic() {
         }
 
         if (key === 'Enter') {
+            print_log("system : set HP to 1");
             player1.hp = 1;
             player2.hp = 1;
+        }
+
+        if (key === ' ') {
+            //  각 에니메이션 상태와 속도 출력
+            print_log(`currentAnimation_1p : ${currentAnimation_1p}`);
+            print_log(`animSpeed_1p : ${animSpeed_1p}`);
+            print_log(`currentAnimation_2p : ${currentAnimation_2p}`);
+            print_log(`animSpeed_2p : ${animSpeed_2p}`);
         }
     }
 

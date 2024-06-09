@@ -200,16 +200,19 @@ function displayAction(x, y, playerNum) {
 function displaySelectedAction(playerNum) {
 
     if (showActions) { // 액션 숨기기
-        imageCenter(command_skill_BG, playerNum == 1 ? 630 : width - 630, 400, 130, 130);
+        imageCenter(command_skill_BG, playerNum == 1 ? 630 : width - 630, 380, 130, 130);
         fill(0);
         textAlign(CENTER, CENTER);
         textSize(60);
-        text("?", playerNum == 1 ? 630 + 5 : width - 630 + 5, 400);
+        text("?", playerNum == 1 ? 630 + 5 : width - 630 + 5, 380);
     } else { // 액션 보이기
+
+        print_log("액션 보이기");
+
         textSize(70);
         textAlign(CENTER, CENTER);
         let x = playerNum == 1 ? 630 : width - 630;
-        let y = 400;
+        let y = 380;
         let action = playerNum == 1 ? selectedAction_1p : selectedAction_2p;
 
         stroke(0);
@@ -281,7 +284,7 @@ function displaySelectedAction(playerNum) {
         fill(255);
         stroke(0);
         strokeWeight(10);
-        text("+", width / 2, 400);
+        text("+", width / 2, 380);
 
         noStroke();
     }

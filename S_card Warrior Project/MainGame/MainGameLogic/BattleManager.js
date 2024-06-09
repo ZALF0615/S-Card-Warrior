@@ -18,7 +18,7 @@ function InitGame() {
     print_log(`idx2 : ${idx2}`);
 
     player1 = new Character("고수창", "2019-16798", "인문대학 언어학과");
-    player2 = new Character("위스마", "2022-16531", "?????");
+    player2 = new Character("위스마", "2022-16531", "자연과학대학 화학부");
 
     TurnTaker();
 
@@ -26,7 +26,7 @@ function InitGame() {
     isGameOver = 0;
 
     ChangeAnimation(1, '준비');
-    ChangeAnimation(2, '준비');
+    ChangeAnimation(-1, '준비');
 }
 
 function TurnTaker() {
@@ -42,6 +42,9 @@ function TurnTaker() {
     actionsInProgress = false;
     showActions = true;
 
+    selectedAction_1p = 0;
+    selectedAction_2p = 0;
+    
     turnNum++;
     print_log(`turnNum : ${turnNum}`);
 
@@ -63,12 +66,12 @@ function GameOver(winside) {
         print_log("1P WIN");
 
         ChangeAnimation(1, '승리');
-        ChangeAnimation(2, '패배');
+        ChangeAnimation(-1, '패배');
     } else if (winside == -1) {
         print_log("2P WIN");
 
         ChangeAnimation(1, '패배');
-        ChangeAnimation(2, '승리');
+        ChangeAnimation(-1, '승리');
     }
 
     setTimeout(() => {

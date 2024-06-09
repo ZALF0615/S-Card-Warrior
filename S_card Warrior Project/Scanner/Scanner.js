@@ -69,10 +69,23 @@ function processOCR() {
                 GetDepartmentList().forEach(department => {
                     if (department.includes(college) && department.includes(major)) {
                         print(`감지된 전공: ${department}`);
+
+                        isDebugMode = true;
+                        // 캐릭터 생성 (임시)
+                        let char = new Character(extractedName, extractedIDs[0], department);
+                        player1 = char;
+
+                        print_log(`player1: ${player1.name}, ${player1.id}, ${player1.major}`);
+                        print_log('3초 뒤에 메인 화면으로 이동합니다.');
+
+                        setTimeout(() => {
+                            ChangeScene('MainGame');
+                        }, 3000);
                     }
                 });
             });
         });
+
 
         isProcessing = false;
     }).catch(err => {

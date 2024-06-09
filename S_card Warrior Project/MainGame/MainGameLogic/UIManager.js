@@ -207,8 +207,6 @@ function displaySelectedAction(playerNum) {
         text("?", playerNum == 1 ? 630 + 5 : width - 630 + 5, 380);
     } else { // 액션 보이기
 
-        print_log("액션 보이기");
-
         textSize(70);
         textAlign(CENTER, CENTER);
         let x = playerNum == 1 ? 630 : width - 630;

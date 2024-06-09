@@ -13,14 +13,8 @@ function InitGame() {
 
     // PlayBGM(bgm, 0.1);
 
-    let idx1 = GetIdxByDepartment("인문대학 언어학과");
-    print_log(`idx1 : ${idx1}`);
-
-    let idx2 = GetIdxByDepartment("음악대학 음악학과");
-    print_log(`idx2 : ${idx2}`);
-
-    player1 = new Character("고수창", "2019-16798", "인문대학 언어학과");
-    player2 = new Character("위스마", "2022-16531", "자연과학대학 화학부");
+    player1 = new Character("트루기므", "2019-16798", "인문대학 언어학과");
+    player2 = new Character("위스마", "2022-16531", "?????");
 
     TurnTaker();
 

@@ -9,6 +9,7 @@ function setup() {
 function draw() {
 
   if (currentSceneName == 'Title') { draw_title(); }
+  else if (currentSceneName == 'Tutorial') { draw_tutorial(); }
   else if (currentSceneName == 'Scanner') { draw_scanner(); }
   else if (currentSceneName == 'MainGame') { draw_battle(); }
 
@@ -44,8 +45,9 @@ function draw() {
 
 function ChangeScene(sceneName) {
   currentSceneName = sceneName;
-
+  print_log("씬 전환: " + sceneName);
   if (sceneName == 'Title') { setup_title(); }
+  if (sceneName == 'Tutorial') { setup_tutorial(); }
   else if (sceneName == 'Scanner') { setup_scanner(); }
   else if (sceneName == 'MainGame') { setup_battle(); }
 }
@@ -81,6 +83,7 @@ function keyPressed() {
   }
 
   if (currentSceneName == 'Title') { presskey_title() };
+  if (currentSceneName == 'Tutorial') { keyPressed_tutorial(); }
   if (currentSceneName == 'Scanner') { keyPressed_scanner(); }
   if (currentSceneName == 'MainGame') { keyPressed_gamelogic() };
 

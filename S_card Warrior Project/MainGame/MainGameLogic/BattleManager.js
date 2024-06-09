@@ -45,6 +45,16 @@ function TurnTaker() {
     actionsInProgress = false;
     showActions = true;
 
+    if(selectedAction_1p == 4){
+        player1.skillPoint = 0;
+        isSkillAvailable_1p = false;
+    }
+
+    if(selectedAction_2p == 4){
+        player2.skillPoint = 0;
+        isSkillAvailable_2p = false;
+    }
+
     selectedAction_1p = 0;
     selectedAction_2p = 0;
     

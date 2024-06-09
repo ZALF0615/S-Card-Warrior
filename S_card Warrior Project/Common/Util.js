@@ -13,7 +13,7 @@ function imageButtom(img, x, y, mode = CENTER, w = img.width, h = img.height) {
 }
 
 let messages = [];
-let isDebugMode = false;
+let isDebugMode = true;
 
 function print_log(msg) {
     console.log(msg);

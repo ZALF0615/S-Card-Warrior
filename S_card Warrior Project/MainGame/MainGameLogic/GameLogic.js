@@ -155,7 +155,7 @@ function keyPressed_gamelogic() {
         }
     }
 
-    if (selectedAction_2p == 0) {
+    if (selectedAction_2p == 0 & selected_mode == 2) {
         if (keyCode === LEFT_ARROW) {
             selectedAction_2p = 1;
         } else if (keyCode === UP_ARROW) {

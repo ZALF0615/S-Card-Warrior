@@ -23,6 +23,10 @@ function InitGame() {
     TurnTaker();
 
     isGameStart = true;
+    isGameOver = 0;
+
+    ChangeAnimation(1, '준비');
+    ChangeAnimation(2, '준비');
 }
 
 function TurnTaker() {
@@ -66,6 +70,10 @@ function GameOver(winside) {
         ChangeAnimation(1, '패배');
         ChangeAnimation(2, '승리');
     }
+
+    setTimeout(() => {
+        ChangeScene("Title");
+    }, 5000);
 }
 
 let FloatUIs = [];

@@ -96,3 +96,33 @@ function GetIdxByDepartment(departmentName) {
     }
     return null; // 찾지 못한 경우 null 반환
 }
+
+function GetDepartmentList(){
+    let departmentList = [];
+    for (const [key, value] of Object.entries(characterData)) {
+        if (!departmentList.includes(value.department) && value.department !== "") {
+            departmentList.push(value.department);
+        }
+    }
+    return departmentList;
+}
+
+function GetCollegeList(){
+    let collegeList = [];
+    for (const [key, value] of Object.entries(characterData)) {
+        if (!collegeList.includes(value.college) && value.college !== "") {
+            collegeList.push(value.college);
+        }
+    }
+    return collegeList;
+}
+
+function GetMajorList(){
+    let majorList = [];
+    for (const [key, value] of Object.entries(characterData)) {
+        if (!majorList.includes(value.major) && value.major !== "") {
+            majorList.push(value.major);
+        }
+    }
+    return majorList;
+}

@@ -7,6 +7,8 @@ let isGameOver = 0; // 1이면 진행중, 1이면 1P 승리, 2이면 2P 승리
 let player1, player2;
 let turnNum = 0;
 
+let isCPUmode = false;
+
 function InitGame() {
 
     // PlayBGM(bgm, 0.1);
@@ -49,7 +51,7 @@ function TurnTaker() {
     print_log(`turnNum : ${turnNum}`);
 
     // 랜덤한 시간 뒤(2~5초)에 CPU 플레이어가 선택(player2)
-    if (selected_mode == 1) { // 1P vs CPU
+    if (isCPUmode) { // 1P vs CPU
         let randomTime = random(1, 3);
         setTimeout(() => {
             processCPUAction();

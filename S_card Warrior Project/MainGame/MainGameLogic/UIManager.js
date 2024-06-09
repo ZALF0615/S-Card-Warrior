@@ -162,7 +162,7 @@ function displayAction(x, y, playerNum) {
     imageCenter(playerNum == 1 ? skill_icon_SAGE : skill_icon_WIZARD, x, y, 100, 100);
 
     tint(255);
-    if (playerNum == 1 || (playerNum == 2 && selected_mode == 2)) { imageCenter(playerNum == 1 ? input_button_S : input_button_DOWN, x, y + 75); }
+    if (playerNum == 1 || (playerNum == 2 && !isCPUmode)) { imageCenter(playerNum == 1 ? input_button_S : input_button_DOWN, x, y + 75); }
     textAlign(CENTER, CENTER);
     textSize(40);
 
@@ -170,18 +170,18 @@ function displayAction(x, y, playerNum) {
     strokeWeight(15);
 
     imageCenter(command_scissors, x - 135, y + 100); // 가위
-    if (playerNum == 1 || (playerNum == 2 && selected_mode == 2)) { imageCenter(playerNum == 1 ? input_button_A : input_button_LEFT, x - 135, y + 100 - 75); }
+    if (playerNum == 1 || (playerNum == 2 && !isCPUmode)) { imageCenter(playerNum == 1 ? input_button_A : input_button_LEFT, x - 135, y + 100 - 75); }
 
     fill('green');
     text(playerNum == 1 ? player1.scissors : player2.scissors, x - 135 + 50, y + 100 + 30);
 
     imageCenter(command_rock, x, y - 160); // 바위
-    if (playerNum == 1 || (playerNum == 2 && selected_mode == 2)) { imageCenter(playerNum == 1 ? input_button_W : input_button_UP, x, y - 160 - 75); }
+    if (playerNum == 1 || (playerNum == 2 && !isCPUmode)) { imageCenter(playerNum == 1 ? input_button_W : input_button_UP, x, y - 160 - 75); }
     fill('red');
     text(playerNum == 1 ? player1.rock : player2.rock, x + 50, y - 160 + 30);
 
     imageCenter(command_paper, x + 135, y + 100); // 보
-    if (playerNum == 1 || (playerNum == 2 && selected_mode == 2)) { imageCenter(playerNum == 1 ? input_button_D : input_button_RIGHT, x + 135, y + 100 - 75); }
+    if (playerNum == 1 || (playerNum == 2 && !isCPUmode)) { imageCenter(playerNum == 1 ? input_button_D : input_button_RIGHT, x + 135, y + 100 - 75); }
     fill('blue');
     text(playerNum == 1 ? player1.paper : player2.paper, x + 135 + 50, y + 100 + 30);
 

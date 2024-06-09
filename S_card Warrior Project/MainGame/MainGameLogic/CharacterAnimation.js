@@ -8,7 +8,7 @@ let currentAnimation_2p = '준비';
 let animSpeed_1p = 7; // 5프레임에 한번씩 움직임 (커질수록 느려짐)
 let animSpeed_2p = 7; // 5프레임에 한번씩 움직임 (커질수록 느려짐)
 
-const jobs = { 1:'현자', 5: '음유시인', 8:'정보대마왕' }; // 직업 리스트
+const jobs = { 1: '현자', 2: '마법사', 5: '음유시인', 6: '탐험가', 8: '정보대마왕' }; // 직업 리스트
 const animations = ['준비', '데미지', '승리', '패배', '공격', '바위_성공', '바위_실패', '가위_성공', '가위_실패', '보_성공', '보_실패', '특수스킬'];
 
 function drawCharacters() {
@@ -71,7 +71,7 @@ let animationTimeout_1p;
 let animationTimeout_2p;
 
 function ChangeAnimation(player, anim, duration = 0) {
-print_log(`ChangeAnimation(${player}, ${anim}, ${duration})`);
+    print_log(`ChangeAnimation(${player}, ${anim}, ${duration})`);
 
     if (player === 1) {
         currentAnimation_1p = anim;
@@ -90,7 +90,7 @@ print_log(`ChangeAnimation(${player}, ${anim}, ${duration})`);
             }, duration * 1000); // duration 초 후에 '준비' 상태로 돌아가게
         }
 
-        if(duration == -1){ // duration이 -1이면 애니메이션 시간을 계산하여 종료 후 준비 상태로 돌아감
+        if (duration == -1) { // duration이 -1이면 애니메이션 시간을 계산하여 종료 후 준비 상태로 돌아감
             let anim_framecount = charaAnimations[jobs[player1.jobIdx]][anim].length; // 애니메이션 프레임 수
             duration = anim_framecount * animSpeed_1p / 60 * 1000; // 애니메이션 시간 계산
             animationTimeout_1p = setTimeout(() => {
@@ -115,7 +115,7 @@ print_log(`ChangeAnimation(${player}, ${anim}, ${duration})`);
             }, duration * 1000); // duration 초 후에 '준비' 상태로 돌아가게
         }
 
-        if(duration == -1){ // duration이 -1이면 애니메이션 시간을 계산하여 종료 후 준비 상태로 돌아감
+        if (duration == -1) { // duration이 -1이면 애니메이션 시간을 계산하여 종료 후 준비 상태로 돌아감
             let anim_framecount = charaAnimations[jobs[player2.jobIdx]][anim].length; // 애니메이션 프레임 수
             duration = anim_framecount * animSpeed_2p / 60 * 1000; // 애니메이션 시간 계산
             animationTimeout_2p = setTimeout(() => {
@@ -125,7 +125,7 @@ print_log(`ChangeAnimation(${player}, ${anim}, ${duration})`);
     }
 }
 
-function GetAnimSpeed(anim){
+function GetAnimSpeed(anim) {
     switch (anim) {
         case '준비':
             return 7;

@@ -13,13 +13,16 @@ function InitGame() {
 
     // PlayBGM(bgm, 0.1);
 
-    player1 = new Character("트루기므", "2019-16798", "인문대학 언어학과");
+    player1 = new Character("멘디", "2019-16798", "자연과학대학 통계학과");
 
     // 랜덤한 4자리 숫자 생성
     let randomID = random(1000, 9999);
 
     player2 = new Character("", `9999-9${randomID}`, "?????");
-    
+
+    isSkillAvailable_1p = false;
+    isSkillAvailable_2p = false;
+
     TurnTaker();
 
     isGameStart = true;
@@ -47,6 +50,14 @@ function TurnTaker() {
     
     turnNum++;
     print_log(`turnNum : ${turnNum}`);
+
+    if(player1.skillPoint ==  100) {
+        isSkillAvailable_1p = true;
+    }
+
+    if(player2.skillPoint ==  100) {
+        isSkillAvailable_2p = true;
+    }
 
     // 랜덤한 시간 뒤(2~5초)에 CPU 플레이어가 선택(player2)
     if (isCPUmode) { // 1P vs CPU

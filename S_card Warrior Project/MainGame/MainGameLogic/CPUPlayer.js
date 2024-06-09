@@ -57,7 +57,7 @@ function CPU_wise() {
 function CPU_random() {
     // 무작위로 선택합니다.
     print_log("CPU_random");
-    let actionOptions = [1, 2, 3].filter(action => action !== previousAction_2p);
+    let actionOptions = [1, 2, 3, 4].filter(action => action !== previousAction_2p);
     selectedAction_2p = random(actionOptions);
     previousAction_2p = selectedAction_2p;
 
@@ -67,6 +67,8 @@ function CPU_random() {
         print_log(`selectedAction_2p : ${selectedAction_2p} (rock)`);
     } else if (selectedAction_2p == 3) {
         print_log(`selectedAction_2p : ${selectedAction_2p} (paper)`);
+    }else if (selectedAction_2p == 4) {
+        print_log(`selectedAction_2p : ${selectedAction_2p} (skill)`);
     }
 }
 

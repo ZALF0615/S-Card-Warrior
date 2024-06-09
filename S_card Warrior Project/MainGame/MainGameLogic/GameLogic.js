@@ -4,6 +4,9 @@ let selectedAction_2p = 0; //  1: 가위, 2: 바위, 3: 보 4: 특수 스킬
 let prevSelectedAction_1p = 0;
 let prevSelectedAction_2p = 0;
 
+let isSkillAvailable_1p = false;
+let isSkillAvailable_2p = false;
+
 let actionsInProgress = false;
 
 let temporal_winside = 0;
@@ -35,7 +38,7 @@ function draw_gameLogic() {
 
     if (showActions) {
         displayAction(300, height - 200, 1);
-        displayAction(width - 300, height - 200, 2);
+        displayAction(width - 300, height - 200, -1);
     }
 
     if (selectedAction_1p != 0) {
@@ -111,8 +114,8 @@ function processActions() {
 
             let damage_timing = 22 * animSpeed_1p / 60 * 1000;
             setTimeout(() => {
-                Damage(0, 1);
-                Damage(0, -1);
+                Damage(1, 1);
+                Damage(1, -1);
                 player1.skillPoint = min(100, player1.skillPoint + 10);
                 player2.skillPoint = min(100, player2.skillPoint + 10);
                 setTimeout(TurnTaker, 12 * animSpeed_2p / 60 * 1000);
@@ -214,7 +217,13 @@ function keyPressed_gamelogic() {
         } else if (key === 'd') {
             selectedAction_1p = 3;
         } else if (key === 's') {
-            selectedAction_1p = 4;
+
+            if(isSkillAvailable_1p){
+                selectedAction_1p = 4;
+            }else{
+                print_log("system : 스킬 포인트가 부족합니다.");
+                PlaySEOneShot(cancelSE, 0.1);
+            }
         }
     }
 
@@ -228,7 +237,12 @@ function keyPressed_gamelogic() {
             selectedAction_2p = 3;
         }
         else if (keyCode === DOWN_ARROW) {
-            selectedAction_2p = 4;
+            if(isSkillAvailable_2p){
+                selectedAction_2p = 4;
+            }else{
+                print_log("system : 스킬 포인트가 부족합니다.");
+                PlaySEOneShot(cancelSE, 0.1);
+            }
         }
     }
 

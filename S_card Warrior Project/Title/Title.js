@@ -66,7 +66,7 @@ function preload_title() {
 function presskey_title() {
     if ((key == 'Enter' || key == ' ') && selected_mode != 0) {
         PlaySEOneShot(selectSE, 0.2);
-        ChangeScene('MainGame');
+        ChangeScene('Scanner');
     }
 
     // 좌우 또는 A, D 키로 버튼 선택

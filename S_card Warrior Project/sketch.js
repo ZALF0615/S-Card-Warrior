@@ -1,5 +1,8 @@
+let currentSceneName = 'Title';
+
 function setup() {
   createCanvas(1920, 1080);
+  setup_menu();
 }
 
 
@@ -8,6 +11,10 @@ function draw() {
   if (currentSceneName == 'Title') { draw_title(); }
   else if (currentSceneName == 'Scanner') { draw_scanner(); }
   else if (currentSceneName == 'MainGame') { draw_battle(); }
+
+  if (isGamePaused) {
+    displayMenu();
+  }
 
   if (isDebugMode) {
     for (let i = 0; i < messages.length; i++) {
@@ -33,7 +40,7 @@ function draw() {
 
 }
 
-let currentSceneName = 'Title';
+
 
 function ChangeScene(sceneName) {
   currentSceneName = sceneName;
@@ -43,20 +50,44 @@ function ChangeScene(sceneName) {
   else if (sceneName == 'MainGame') { setup_battle(); }
 }
 
+let isGamePaused = false;
+
+function pauseGame() {
+  isGamePaused = true;
+  disp
+
+}
 
 let debugSequence = ['+', '+', '+', '+', '+', '+', '+', '+'];
 let currentSequenceIndex = 0;
 
 function keyPressed() {
 
+  // esc 키를 누르면 게임 일시정지
+  if (keyCode === ESCAPE) {
+
+    if (currentSceneName == 'Title') { return; } // 타이틀 화면에서는 일시정지 불가
+
+    if (isGamePaused) {
+      isGamePaused = false;
+    } else {
+      pauseGame();
+    }
+  }
+
+  if (isGamePaused) {
+    keyPressed_menu()
+    return;
+  }
+
   if (currentSceneName == 'Title') { presskey_title() };
   if (currentSceneName == 'Scanner') { keyPressed_scanner(); }
   if (currentSceneName == 'MainGame') { keyPressed_gamelogic() };
 
-
   // 디버그 모드 진입
   const keyName = key.toUpperCase();
   const expectedKey = debugSequence[currentSequenceIndex];
+
 
   if (keyName === expectedKey) {
     currentSequenceIndex++;

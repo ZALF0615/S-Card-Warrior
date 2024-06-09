@@ -26,8 +26,9 @@ function draw_gameLogic() {
 
         setTimeout(() => {
             showActions = false; // 액션 선택지 숨기기 & 낸 손 모양 밝히기
-            processActions(); // 애니메이션 처리
-
+            setTimeout(() => {
+                processActions(); // 애니메이션 처리
+            }, 700);
         }, 1000); // 1초 후에 액션 처리
 
     }

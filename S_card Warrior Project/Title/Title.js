@@ -1,7 +1,8 @@
 
 
 function setup_title() {
-
+    bgm.stop();
+    bgm.play();
 }
 
 function draw_title() {
@@ -68,6 +69,11 @@ function draw_title() {
     textAlign(CENTER, CENTER);
     text('← A, D → 로 이동   SPACE 로 결정', width / 2, height - 50);
 
+    // Shift로 배경음 끄기 텍스트 (좌측 상단)
+    fill(0);
+    textSize(20);
+    textAlign(LEFT, TOP);
+    text('Shift를 눌러 배경음 끄기', 10, 10);
 }
 
 let title_logo;

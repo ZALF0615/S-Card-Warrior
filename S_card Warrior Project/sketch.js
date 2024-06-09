@@ -3,6 +3,8 @@ let currentSceneName = 'Title';
 function setup() {
   createCanvas(1920, 1080);
   setup_menu();
+
+  PlayBGM(bgm, 0.1);
 }
 
 
@@ -86,6 +88,12 @@ function keyPressed() {
   if (currentSceneName == 'Tutorial') { keyPressed_tutorial(); }
   if (currentSceneName == 'Scanner') { keyPressed_scanner(); }
   if (currentSceneName == 'MainGame') { keyPressed_gamelogic() };
+
+  // 쉬프트 키를 누르면 배경음악 꺼져 있으면 켜고 있으면 꺼짐
+  if (keyCode === SHIFT) {
+    if (bgm.isPlaying()) { bgm.pause(); }
+    else { bgm.play(); }
+  }
 
   // 디버그 모드 진입
   const keyName = key.toUpperCase();

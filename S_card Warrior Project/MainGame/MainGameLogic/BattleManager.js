@@ -11,9 +11,8 @@ let isCPUmode = false;
 
 function InitGame() {
 
-    // PlayBGM(bgm, 0.1);
 
-    player1 = new Character("멘디", "2019-16798", "자연과학대학 통계학과");
+    player1 = new Character("멘디", "2019-16798", "인문대학 미학과");
 
     // 랜덤한 4자리 숫자 생성
     let randomID = random(1000, 9999);

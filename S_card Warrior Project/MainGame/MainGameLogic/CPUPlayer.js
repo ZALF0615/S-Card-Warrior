@@ -2,7 +2,7 @@ function processCPUAction() {
     // 크게 이기고 있을 때에는 coward, 크게 지고 있을 때에는 brave, 그 외에는 wise로 행동합니다.
     // 그거와 별개로 10%의 확률로 random 행동을 합니다.
 
-    let winRate = (player1.hp - player2.hp) / (player1.hp + player2.hp);
+    let winRate = (player2.hp - player1.hp) / (player1.hp + player2.hp);
     print_log(`winRate : ${winRate.toFixed(2)}`);
 
     let randomValue = random(0, 1);
@@ -20,6 +20,8 @@ function processCPUAction() {
     }
 }
 
+let previousAction_2p = 0;
+
 function CPU_wise() {
     // 기대치가 최대가 되는 수를 선택합니다.
     print_log("CPU_wise");
@@ -32,35 +34,39 @@ function CPU_wise() {
     print_log(`exp_rock : ${exp_rock}`);
     print_log(`exp_paper : ${exp_paper}`);
 
-    let maxExp = max(exp_scissors, exp_rock, exp_paper);
-    if (maxExp == exp_scissors) {
-        selectedAction_2p = 1;
-    } else if (maxExp == exp_rock) {
-        selectedAction_2p = 2;
-    } else if (maxExp == exp_paper) {
-        selectedAction_2p = 3;
+    let choices = [exp_scissors, exp_rock, exp_paper];
+    if(previousAction_2p !== 0) {
+        choices[previousAction_2p - 1] -= 10; // 이전 선택의 가중치를 줄임
     }
 
+    let maxExp = max(...choices);
+    let possibleChoices = choices.map((exp, index) => exp === maxExp ? index + 1 : null).filter(choice => choice !== null);
+    
+    selectedAction_2p = random(possibleChoices);
+    previousAction_2p = selectedAction_2p;
+
     if (selectedAction_2p == 1) {
-        print_log(`selectedAction_1p : ${selectedAction_2p} (scissors)`);
+        print_log(`selectedAction_2p : ${selectedAction_2p} (scissors)`);
     } else if (selectedAction_2p == 2) {
-        print_log(`selectedAction_1p : ${selectedAction_2p} (rock)`);
+        print_log(`selectedAction_2p : ${selectedAction_2p} (rock)`);
     } else if (selectedAction_2p == 3) {
-        print_log(`selectedAction_1p : ${selectedAction_2p} (paper)`);
+        print_log(`selectedAction_2p : ${selectedAction_2p} (paper)`);
     }
 }
 
 function CPU_random() {
     // 무작위로 선택합니다.
     print_log("CPU_random");
-    selectedAction_2p = int(random(1, 4));
+    let actionOptions = [1, 2, 3].filter(action => action !== previousAction_2p);
+    selectedAction_2p = random(actionOptions);
+    previousAction_2p = selectedAction_2p;
 
     if (selectedAction_2p == 1) {
-        print_log(`selectedAction_1p : ${selectedAction_2p} (scissors)`);
+        print_log(`selectedAction_2p : ${selectedAction_2p} (scissors)`);
     } else if (selectedAction_2p == 2) {
-        print_log(`selectedAction_1p : ${selectedAction_2p} (rock)`);
+        print_log(`selectedAction_2p : ${selectedAction_2p} (rock)`);
     } else if (selectedAction_2p == 3) {
-        print_log(`selectedAction_1p : ${selectedAction_2p} (paper)`);
+        print_log(`selectedAction_2p : ${selectedAction_2p} (paper)`);
     }
 }
 
@@ -72,26 +78,27 @@ function CPU_brave() {
     let exp_rock = player1.scissors + player2.rock;
     let exp_paper = player1.rock + player2.paper;
 
+    let choices = [exp_scissors, exp_rock, exp_paper];
+    if(previousAction_2p !== 0) {
+        choices[previousAction_2p - 1] -= 10; // 이전 선택의 가중치를 줄임
+    }
+
     print_log(`exp_scissors : ${exp_scissors}`);
     print_log(`exp_rock : ${exp_rock}`);
     print_log(`exp_paper : ${exp_paper}`);
 
-    let maxExp = max(exp_scissors, exp_rock, exp_paper);
+    let maxExp = max(...choices);
+    let possibleChoices = choices.map((exp, index) => exp === maxExp ? index + 1 : null).filter(choice => choice !== null);
 
-    if (maxExp == exp_scissors) {
-        selectedAction_2p = 1;
-    } else if (maxExp == exp_rock) {
-        selectedAction_2p = 2;
-    } else if (maxExp == exp_paper) {
-        selectedAction_2p = 3;
-    }
+    selectedAction_2p = random(possibleChoices);
+    previousAction_2p = selectedAction_2p;
 
     if (selectedAction_2p == 1) {
-        print_log(`selectedAction_1p : ${selectedAction_2p} (scissors)`);
+        print_log(`selectedAction_2p : ${selectedAction_2p} (scissors)`);
     } else if (selectedAction_2p == 2) {
-        print_log(`selectedAction_1p : ${selectedAction_2p} (rock)`);
+        print_log(`selectedAction_2p : ${selectedAction_2p} (rock)`);
     } else if (selectedAction_2p == 3) {
-        print_log(`selectedAction_1p : ${selectedAction_2p} (paper)`);
+        print_log(`selectedAction_2p : ${selectedAction_2p} (paper)`);
     }
 }
 
@@ -103,25 +110,26 @@ function CPU_coward() {
     let exp_rock = -(player1.paper + player2.rock);
     let exp_paper = -(player1.scissors + player2.paper);
 
+    let choices = [exp_scissors, exp_rock, exp_paper];
+    if(previousAction_2p !== 0) {
+        choices[previousAction_2p - 1] -= 10; // 이전 선택의 가중치를 줄임
+    }
+
     print_log(`exp_scissors : ${exp_scissors}`);
     print_log(`exp_rock : ${exp_rock}`);
     print_log(`exp_paper : ${exp_paper}`);
 
-    let minExp = max(exp_scissors, exp_rock, exp_paper);
+    let minExp = max(...choices);
+    let possibleChoices = choices.map((exp, index) => exp === minExp ? index + 1 : null).filter(choice => choice !== null);
 
-    if (minExp == exp_scissors) {
-        selectedAction_2p = 1;
-    } else if (minExp == exp_rock) {
-        selectedAction_2p = 2;
-    } else if (minExp == exp_paper) {
-        selectedAction_2p = 3;
-    }
+    selectedAction_2p = random(possibleChoices);
+    previousAction_2p = selectedAction_2p;
 
     if (selectedAction_2p == 1) {
-        print_log(`selectedAction_1p : ${selectedAction_2p} (scissors)`);
+        print_log(`selectedAction_2p : ${selectedAction_2p} (scissors)`);
     } else if (selectedAction_2p == 2) {
-        print_log(`selectedAction_1p : ${selectedAction_2p} (rock)`);
+        print_log(`selectedAction_2p : ${selectedAction_2p} (rock)`);
     } else if (selectedAction_2p == 3) {
-        print_log(`selectedAction_1p : ${selectedAction_2p} (paper)`);
+        print_log(`selectedAction_2p : ${selectedAction_2p} (paper)`);
     }
 }

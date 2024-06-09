@@ -5,9 +5,11 @@ let isGameStart = false;
 let isGameOver = 0; // 1이면 진행중, 1이면 1P 승리, 2이면 2P 승리
 
 let player1, player2;
-let turnNum;
+let turnNum = 0;
 
 function InitGame() {
+
+    // PlayBGM(bgm, 0.1);
 
     let idx1 = GetIdxByDepartment("인문대학 언어학과");
     print_log(`idx1 : ${idx1}`);
@@ -18,12 +20,10 @@ function InitGame() {
     player1 = new Character("고수창", "2019-16798", "인문대학 언어학과");
     player2 = new Character("위스마", "2022-16531", "?????");
 
-    // TurnTaker();
+    TurnTaker();
 
     isGameStart = true;
 }
-
-
 
 function TurnTaker() {
 
@@ -40,6 +40,13 @@ function TurnTaker() {
 
     turnNum++;
     print_log(`turnNum : ${turnNum}`);
+
+    // 랜덤한 시간 뒤(2~5초)에 CPU 플레이어가 선택(player2)
+    let randomTime = random(1, 3);
+    setTimeout(() => {
+        processCPUAction();
+    }, randomTime * 1000);
+
 }
 
 function GameOver(winside) {

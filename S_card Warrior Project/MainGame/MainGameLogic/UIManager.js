@@ -86,6 +86,8 @@ function displayStatus(player1, player2) {
     let player1Stat = [player1.id.slice(0, 6), player1.id.charAt(6), player1.rock, player1.scissors, player1.paper];
     let player2Stat = [player2.id.slice(0, 6), player1.id.charAt(6), player2.rock, player2.scissors, player2.paper];
 
+    rectMode(CORNER);
+
     // 1P 
     fill(0, 0, 0, 150);
     noStroke();

@@ -42,10 +42,12 @@ function TurnTaker() {
     print_log(`turnNum : ${turnNum}`);
 
     // 랜덤한 시간 뒤(2~5초)에 CPU 플레이어가 선택(player2)
-    let randomTime = random(1, 3);
-    setTimeout(() => {
-        processCPUAction();
-    }, randomTime * 1000);
+    if (selected_mode == 1) { // 1P vs CPU
+        let randomTime = random(1, 3);
+        setTimeout(() => {
+            processCPUAction();
+        }, randomTime * 1000);
+    }
 
 }
 

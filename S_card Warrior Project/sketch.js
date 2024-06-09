@@ -1,15 +1,13 @@
 function setup() {
   createCanvas(1920, 1080);
-
-  setup_battle();
-
 }
 
 
 
 function draw() {
 
-  draw_battle();
+  if (currentSceneName == 'Title') { draw_title() };
+  if (currentSceneName == 'MainGame') { draw_battle() };
 
   if (isDebugMode) {
     for (let i = 0; i < messages.length; i++) {
@@ -34,13 +32,26 @@ function draw() {
 
 }
 
+let currentSceneName = 'Title';
+
+function ChangeScene(sceneName) {
+  currentSceneName = sceneName;
+
+  if (sceneName == 'Title') { setup_title(); }
+  else if (sceneName == 'MainGame') { setup_battle(); }
+}
+
 
 let debugSequence = ['+', '+', '+', '+', '+', '+', '+', '+'];
 let currentSequenceIndex = 0;
 
 function keyPressed() {
 
-  keyPressed_gamelogic();
+  if (currentSceneName == 'Title') { presskey_title() };
+  if (currentSceneName == 'MainGame') { keyPressed_gamelogic() };
+
+
+  // 디버그 모드 진입
   const keyName = key.toUpperCase();
   const expectedKey = debugSequence[currentSequenceIndex];
 
@@ -53,13 +64,6 @@ function keyPressed() {
     }
   } else {
     currentSequenceIndex = 0;
-  }
-
-  if (isDebugMode) {
-    if (key === '7') {
-      print_log(`currentAnim_1p : ${currentAnimation_1p}`);
-      print_log(`currentAnim_2p : ${currentAnimation_2p}`);
-    }
   }
 
 }

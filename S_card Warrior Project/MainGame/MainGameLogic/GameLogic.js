@@ -51,7 +51,12 @@ function draw_gameLogic() {
 function processActions() {
     if (selectedAction_1p == 4 && selectedAction_2p == 4) {
         // 둘 다 특수 스킬
-        // 특수 스킬 처리
+        print_log("둘 다 특수 스킬: 비김");
+
+        player1.skillPoint = min(100, player1.skillPoint + 10);
+        player2.skillPoint = min(100, player2.skillPoint + 10);
+
+        setTimeout(TurnTaker, 1000);
     } else {
         // 가위 바위 보 처리
 
@@ -66,6 +71,9 @@ function processActions() {
             case 3:
                 damage_1p = player1.paper;
                 break;
+            case 4:
+                damage_1p = 10; // 특수 스킬 데미지
+                break;
         }
 
         let damage_2p = 0;
@@ -79,9 +87,17 @@ function processActions() {
             case 3:
                 damage_2p = player2.paper;
                 break;
+            case 4:
+                damage_2p = 10; // 특수 스킬 데미지
+                break;
         }
 
         let damage = damage_1p + damage_2p;
+
+        if (selectedAction_1p == 4 || selectedAction_2p == 4) {
+            damage = 10;
+        }
+
         print_log(`damage : ${damage_1p} + ${damage_2p} = ${damage}`);
 
         let winSide = GetWinSide(selectedAction_1p, selectedAction_2p);
@@ -89,44 +105,55 @@ function processActions() {
         if (winSide == 0) {
             // 비김
             print_log("비김");
-            setTimeout(TurnTaker, 1000);
+
+            Attack(1, -selectedAction_1p);   // 1p 실패 애니메이션
+            Attack(-1, -selectedAction_2p); // 2p 실패 애니메이션
+
+            let damage_timing = 22 * animSpeed_1p / 60 * 1000;
+            setTimeout(() => {
+                Damage(0, 1);
+                Damage(0, -1);
+                player1.skillPoint = min(100, player1.skillPoint + 10);
+                player2.skillPoint = min(100, player2.skillPoint + 10);
+                setTimeout(TurnTaker, 12 * animSpeed_2p / 60 * 1000);
+            }, damage_timing);
         } else if (winSide == 1) {
             // 1p 승리
             print_log("1p 승리");
             Attack(1, selectedAction_1p);   // 성공 애니메이션
-            Attack(-1, -selectedAction_2p); // 실패 애니메이션
+            if (selectedAction_1p != 4) { Attack(-1, -selectedAction_2p); } // 실패 애니메이션
+
             let damage_timing = 22 * animSpeed_1p / 60 * 1000;
             setTimeout(() => {
-                Damage(damage, -1);
+                Damage(damage, -1, selectedAction_1p == 4);
                 setTimeout(TurnTaker, 12 * animSpeed_1p / 60 * 1000);
             }, damage_timing);
         } else if (winSide == -1) {
             // 2p 승리
             print_log("2p 승리");
             Attack(-1, selectedAction_2p);   // 성공 애니메이션
-            Attack(1, -selectedAction_1p);   // 실패 애니메이션
+            if (selectedAction_2p != 4) { Attack(1, -selectedAction_1p); } // 실패 애니메이션
+
             let damage_timing = 22 * animSpeed_2p / 60 * 1000;
             setTimeout(() => {
-                Damage(damage, 1);
+                Damage(damage, 1, selectedAction_2p == 4);
                 setTimeout(TurnTaker, 12 * animSpeed_2p / 60 * 1000);
             }, damage_timing);
         }
 
     }
-
-
-
-
-
 }
 
-function Damage(damage, playerNum) {
+
+function Damage(damage, playerNum, hasEffect = false) {
     if (playerNum == 1) {
         player1.hp = max(0, player1.hp - damage);
         player1.skillPoint = min(100, player1.skillPoint + damage * 3);
 
         let du = new FloatUI(630, height / 2, `-${damage}`, 255, 0, 0);
         FloatUIs.push(du);
+
+        if (hasEffect) { ChangeAnimation(1, '데미지', -1); }
 
         PlaySEOneShot(damageSE, 0.1);
 
@@ -138,12 +165,15 @@ function Damage(damage, playerNum) {
         let du = new FloatUI(width - 630, height / 2, `-${damage}`, 255, 0, 0);
         FloatUIs.push(du);
 
+        if (hasEffect) { ChangeAnimation(-1, '데미지', -1); }
+
         PlaySEOneShot(damageSE, 0.1);
 
         print_log(`player2.skillPoint : ${player2.skillPoint}`);
     }
 
 }
+
 function Attack(playerNum, hand) {
 
     switch (hand) {
@@ -155,6 +185,9 @@ function Attack(playerNum, hand) {
             break;
         case 3: // 보
             ChangeAnimation(playerNum, '보_성공', -1);
+            break;
+        case 4: // 특수 스킬
+            ChangeAnimation(playerNum, '특수스킬', -1);
             break;
         case -1: // 가위 실패
             ChangeAnimation(playerNum, '가위_실패', -1);
@@ -222,6 +255,15 @@ function keyPressed_gamelogic() {
 }
 
 function GetWinSide(action_1P, action_2P) {
+
+    if (action_1P == 4 && action_2P == 4) {
+        return 0; // 둘 다 특수 스킬일 때 비김
+    } else if (action_1P == 4) {
+        return 1; // 1P 특수 스킬일 때 1P 승리
+    } else if (action_2P == 4) {
+        return -1; // 2P 특수 스킬일 때 2P 승리
+    }
+
     if (action_1P == 1) {
         if (action_2P == 1) {
             return 0;

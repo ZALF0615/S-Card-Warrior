@@ -193,7 +193,18 @@ function displayAction(x, y, playerNum) {
 
     if (playerNum == 1 ? selectedAction_1p != 0 : selectedAction_2p != 0) {
         imageCenter(command_selected_cover, x, y - 45, command_selected_cover.width * 0.85, command_selected_cover.height * 0.85);
+    } else {
 
+        if (playerNum == 1 || (playerNum == -1 && !isCPUmode)) {
+            fill(255);
+            stroke(0);
+            strokeWeight(10);
+            textSize(30);
+            textAlign(CENTER, CENTER);
+            text("낼 손을 선택하세요", x, y - 300);
+
+            noStroke();
+        }
     }
 }
 
@@ -207,84 +218,141 @@ function displaySelectedAction(playerNum) {
         text("?", playerNum == 1 ? 630 + 5 : width - 630 + 5, 380);
     } else { // 액션 보이기
 
-        textSize(70);
-        textAlign(CENTER, CENTER);
-        let x = playerNum == 1 ? 630 : width - 630;
-        let y = 380;
-        let action = playerNum == 1 ? selectedAction_1p : selectedAction_2p;
+        if (selectedAction_1p == 4 || selectedAction_2p == 4) {// 누군가가 스킬을 사용한 경우
 
-        stroke(0);
-        strokeWeight(10);
+            textSize(70);
+            textAlign(CENTER, CENTER);
+            let x = playerNum == 1 ? 630 : width - 630;
+            let y = 380;
 
-        let winSide = GetWinSide(selectedAction_1p, selectedAction_2p);
-        let result_padding = 120;
-        switch (action) {
-            case 1: // 가위
-                imageCenter(command_scissors, x, y, 130, 130);
-                fill('green');
-                text(playerNum == 1 ? player1.scissors : player2.scissors, playerNum == 1 ? x + 200 : x - 200, y);
+            stroke(0);
+            strokeWeight(10);
 
-                if (winSide == playerNum) {
 
-                    fill('green');
-                    text("WIN", x, y - result_padding);
-                } else if (winSide == -1 * playerNum) {
-                    fill('gray');
-                    text("LOSE", x, y - result_padding);
-                } else {
-                    fill('gray');
-                    text("DRAW", x, y - result_padding);
-                }
-                break;
-            case 2: // 바위
-                imageCenter(command_rock, x, y, 130, 130);
-                fill('red');
-                text(playerNum == 1 ? player1.rock : player2.rock, playerNum == 1 ? x + 200 : x - 200, y);
-                if (winSide == playerNum) {
-                    fill('red');
-                    text("WIN", x, y - result_padding);
-                } else if (winSide == -1 * playerNum) {
-                    fill('gray');
-                    text("LOSE", x, y - result_padding);
-                } else {
-                    fill('gray');
-                    text("DRAW", x, y - result_padding);
-                }
-                break;
-            case 3: // 보
-                imageCenter(command_paper, x, y, 130, 130);
-                fill('blue');
-                text(playerNum == 1 ? player1.paper : player2.paper, playerNum == 1 ? x + 200 : x - 200, y);
-                if (winSide == playerNum) {
-                    fill('blue');
-                    text("WIN", x, y - result_padding);
-                }
-                else if (winSide == -1 * playerNum) {
-                    fill('gray');
-                    text("LOSE", x, y - result_padding);
-                } else {
-                    fill('gray');
-                    text("DRAW", x, y - result_padding);
-                }
-                break;
-            case 4: // 스킬
-                imageCenter(command_skill_BG, x, y, 130, 130);
+            if ((playerNum == 1 && selectedAction_1p) == 4 || (playerNum == -1 && selectedAction_2p) == 4) { // 내가 스킬을 사용한 경우
+                imageCenter(command_skill_BG, playerNum == 1 ? 630 : width - 630, 380, 130, 130);
+
+                let result_padding = 120;
+
+                fill('purple');
+                text('10', playerNum == 1 ? x + 200 : x - 200, y);
+
+                text("WIN", x, y - result_padding);
+
                 fill(0);
                 textAlign(CENTER, CENTER);
                 textSize(60);
-                text("S", x + 5, y);
-                break;
+                text("S", playerNum == 1 ? 630 + 5 : width - 630 + 5, 380);
+            } else { // 상대가 스킬을 사용한 경우
+                textSize(70);
+                textAlign(CENTER, CENTER);
+                let x = playerNum == 1 ? 630 : width - 630;
+                let y = 380;
+                let action = playerNum == 1 ? selectedAction_1p : selectedAction_2p;
+
+                stroke(0);
+                strokeWeight(10);
+
+                let result_padding = 120;
+
+                switch (action) {
+                    case 1: // 가위
+                        imageCenter(command_scissors, x, y, 130, 130);
+                    case 2: // 바위
+                        imageCenter(command_rock, x, y, 130, 130);
+                    case 3: // 보
+                        imageCenter(command_paper, x, y, 130, 130);
+                }
+
+                fill('gray');
+                text("LOSE", x, y - result_padding);
+
+            }
+
+
+            noStroke();
+
+        } else {
+            textSize(70);
+            textAlign(CENTER, CENTER);
+            let x = playerNum == 1 ? 630 : width - 630;
+            let y = 380;
+            let action = playerNum == 1 ? selectedAction_1p : selectedAction_2p;
+
+            stroke(0);
+            strokeWeight(10);
+
+            let winSide = GetWinSide(selectedAction_1p, selectedAction_2p);
+            let result_padding = 120;
+            switch (action) {
+                case 1: // 가위
+                    imageCenter(command_scissors, x, y, 130, 130);
+                    fill('green');
+                    text(playerNum == 1 ? player1.scissors : player2.scissors, playerNum == 1 ? x + 200 : x - 200, y);
+
+                    if (winSide == playerNum) {
+
+                        fill('green');
+                        text("WIN", x, y - result_padding);
+                    } else if (winSide == -1 * playerNum) {
+                        fill('gray');
+                        text("LOSE", x, y - result_padding);
+                    } else {
+                        fill('gray');
+                        text("DRAW", x, y - result_padding);
+                    }
+                    break;
+                case 2: // 바위
+                    imageCenter(command_rock, x, y, 130, 130);
+                    fill('red');
+                    text(playerNum == 1 ? player1.rock : player2.rock, playerNum == 1 ? x + 200 : x - 200, y);
+                    if (winSide == playerNum) {
+                        fill('red');
+                        text("WIN", x, y - result_padding);
+                    } else if (winSide == -1 * playerNum) {
+                        fill('gray');
+                        text("LOSE", x, y - result_padding);
+                    } else {
+                        fill('gray');
+                        text("DRAW", x, y - result_padding);
+                    }
+                    break;
+                case 3: // 보
+                    imageCenter(command_paper, x, y, 130, 130);
+                    fill('blue');
+                    text(playerNum == 1 ? player1.paper : player2.paper, playerNum == 1 ? x + 200 : x - 200, y);
+                    if (winSide == playerNum) {
+                        fill('blue');
+                        text("WIN", x, y - result_padding);
+                    }
+                    else if (winSide == -1 * playerNum) {
+                        fill('gray');
+                        text("LOSE", x, y - result_padding);
+                    } else {
+                        fill('gray');
+                        text("DRAW", x, y - result_padding);
+                    }
+                    break;
+                case 4: // 스킬
+                    imageCenter(command_skill_BG, x, y, 130, 130);
+                    fill(0);
+                    textAlign(CENTER, CENTER);
+                    textSize(60);
+                    text("S", x + 5, y);
+                    break;
+            }
+
+            // 화면 가운데에 + 표시
+            textSize(60);
+            textAlign(CENTER, CENTER);
+            fill(255);
+            stroke(0);
+            strokeWeight(10);
+            text("+", width / 2, 380);
+
+            noStroke();
         }
 
-        // 화면 가운데에 + 표시
-        textSize(60);
-        textAlign(CENTER, CENTER);
-        fill(255);
-        stroke(0);
-        strokeWeight(10);
-        text("+", width / 2, 380);
-
-        noStroke();
     }
 
 

@@ -1,5 +1,5 @@
 let tutorial_images = [];
-let tutorial_index = 0;
+let tutorial_index = -1;
 
 let img;
 
@@ -34,20 +34,26 @@ draw_tutorial = function () {
         textSize(20);
         noStroke();
         textAlign(CENTER, BOTTOM);
-        text(`${tutorial_index + 1}/${tutorial_images.length}`, width / 2, height - 20);
+        text(`◀ ${tutorial_index + 1}/${tutorial_images.length} ▶`, width / 2, height - 20);
 
 
     } else {
         ChangeScene("Title");
 
         // 변수 초기화
-        tutorial_index = 0;
+        tutorial_index = -1;
     }
 }
 
 keyPressed_tutorial = function () {
     if (key === ' ') {
         tutorial_index++;
+    }
+    // 좌우 또는 A, D 키로 페이지 넘기기
+    if (key === 'a' || key === 'ArrowLeft') {
+        tutorial_index = max(0, tutorial_index - 1);
+    } else if (key === 'd' || key === 'ArrowRight') {
+        tutorial_index = min(tutorial_images.length - 1, tutorial_index + 1);
     }
 }
 

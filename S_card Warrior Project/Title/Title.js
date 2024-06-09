@@ -78,7 +78,7 @@ function preload_title() {
 }
 
 function presskey_title() {
-    if ((key == 'Enter' || key == ' ') && selected_button != 0) {
+    if (key == ' ' && selected_button != 0) {
         PlaySEOneShot(selectSE, 0.2);
 
         if (selected_button == 1) { // 튜토리얼

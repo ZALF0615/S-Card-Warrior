@@ -9,7 +9,7 @@ let animSpeed_1p = 7; // 5프레임에 한번씩 움직임 (커질수록 느려�
 let animSpeed_2p = 7; // 5프레임에 한번씩 움직임 (커질수록 느려짐)
 
 const jobs = { 1:'현자', 5: '음유시인', 8:'정보대마왕' }; // 직업 리스트
-const animations = ['준비', '데미지', '승리', '패배', '공격', '바위_성공', '바위_실패', '가위_성공', '가위_실패', '보_성공', '보_실패'];
+const animations = ['준비', '데미지', '승리', '패배', '공격', '바위_성공', '바위_실패', '가위_성공', '가위_실패', '보_성공', '보_실패', '특수스킬'];
 
 function drawCharacters() {
     // 플레이어 1, 2의 캐릭터를 화면에 그림
@@ -71,7 +71,7 @@ let animationTimeout_1p;
 let animationTimeout_2p;
 
 function ChangeAnimation(player, anim, duration = 0) {
-// print_log(`ChangeAnimation(${player}, ${anim}, ${duration})`);
+print_log(`ChangeAnimation(${player}, ${anim}, ${duration})`);
 
     if (player === 1) {
         currentAnimation_1p = anim;
@@ -146,6 +146,8 @@ function GetAnimSpeed(anim){
         case '바위_실패':
             return 5;
         case '보_실패':
+            return 5;
+        case '특수스킬':
             return 5;
     }
 }

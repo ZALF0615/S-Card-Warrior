@@ -14,8 +14,12 @@ function InitGame() {
     // PlayBGM(bgm, 0.1);
 
     player1 = new Character("트루기므", "2019-16798", "인문대학 언어학과");
-    player2 = new Character("위스마", "2022-16531", "?????");
 
+    // 랜덤한 4자리 숫자 생성
+    let randomID = random(1000, 9999);
+
+    player2 = new Character("", `9999-9${randomID}`, "?????");
+    
     TurnTaker();
 
     isGameStart = true;

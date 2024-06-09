@@ -1,7 +1,8 @@
 
 
 function setup_title() {
-
+    bgm.stop();
+    bgm.play();
 }
 
 function draw_title() {
@@ -20,33 +21,47 @@ function draw_title() {
     strokeWeight(30);
     text('S-Card\nWarriors', width / 2, height / 2 - 100);
 
-    // 1인용 모드 버튼
+    // 튜토리얼 보기 버튼
     fill(255);
-    if (selected_mode == 1) { fill('red'); }
+    if (selected_button == 1) { fill('red'); }
     stroke(0);
     strokeWeight(5);
     rectMode(CENTER);
-    rect(width / 2 - 250, height - 200, 300, 100);
+    rect(width / 2 - 500, height - 200, 370, 100);
 
     fill(0);
     noStroke();
     textSize(50);
     textAlign(CENTER, CENTER);
-    text('1인용 모드', width / 2 - 250, height - 150 - 50);
+    text('튜토리얼 보기', width / 2 - 500, height - 150 - 50);
+
+    // 1인용 모드 버튼
+    fill(255);
+    if (selected_button == 2) { fill('red'); }
+    stroke(0);
+    strokeWeight(5);
+    rectMode(CENTER);
+    rect(width / 2, height - 200, 300, 100);
+
+    fill(0);
+    noStroke();
+    textSize(50);
+    textAlign(CENTER, CENTER);
+    text('1인용 모드', width / 2, height - 150 - 50);
 
     // 2인용 모드 버튼
     fill(255);
-    if (selected_mode == 2) { fill('red'); }
+    if (selected_button == 3) { fill('red'); }
     stroke(0);
     strokeWeight(5);
     rectMode(CENTER);
-    rect(width / 2 + 250, height - 200, 300, 100);
+    rect(width / 2 + 500, height - 200, 300, 100);
 
     fill(0);
     noStroke();
     textSize(50);
     textAlign(CENTER, CENTER);
-    text('2인용 모드', width / 2 + 250, height - 150 - 50);
+    text('2인용 모드', width / 2 + 500, height - 150 - 50);
 
     // 버튼 선택 안내
     fill(0);
@@ -54,33 +69,41 @@ function draw_title() {
     textAlign(CENTER, CENTER);
     text('← A, D → 로 이동   SPACE 로 결정', width / 2, height - 50);
 
+    // Shift로 배경음 끄기 텍스트 (좌측 상단)
+    fill(0);
+    textSize(20);
+    textAlign(LEFT, TOP);
+    text('Shift를 눌러 배경음 끄기', 10, 10);
 }
 
 let title_logo;
-let selected_mode = 0;
+let selected_button = 0;
 
 function preload_title() {
     title_logo = loadImage('Asset/UI/title_logo.png');
 }
 
 function presskey_title() {
-    if ((key == 'Enter' || key == ' ') && selected_mode == 1) {
+    if (key == ' ' && selected_button != 0) {
         PlaySEOneShot(selectSE, 0.2);
-        ChangeScene('Scanner');
-        playerNumber = 1;
-    }
-    else if ((key == 'Enter' || key == ' ') && selected_mode == 2) {
-        PlaySEOneShot(selectSE, 0.2);
-        ChangeScene('Scanner1');
-        playerNumber = 2;
+
+        if (selected_button == 1) { // 튜토리얼
+            ChangeScene('Tutorial');
+        } else if (selected_button == 2) { // 1인용 모드
+            isCPUmode = true;
+            ChangeScene('Scanner');
+        } else if (selected_button == 3) { // 2인용 모드
+            isCPUmode = false;
+            ChangeScene('Scanner1');
+        }
     }
 
     // 좌우 또는 A, D 키로 버튼 선택
     if (keyCode == LEFT_ARROW || key == 'a') {
-        selected_mode = 1;
+        selected_button = max(1, selected_button - 1);
         PlaySEOneShot(piSE, 0.2);
     } else if (keyCode == RIGHT_ARROW || key == 'd') {
-        selected_mode = 2;
+        selected_button = min(3, selected_button + 1);
         PlaySEOneShot(piSE, 0.2);
     }
 }

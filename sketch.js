@@ -1,3 +1,5 @@
+let currentSceneName = 'Title';
+
 let globalPlayer = null;
 let globalPlayer1 = null;
 let globalPlayer2 = null;
@@ -17,14 +19,19 @@ function setup() {
 function draw() {
 
   if (currentSceneName == 'Title') { draw_title(); }
-  else if (currentSceneName == 'Scanner') { draw_scanner(); }
+  else if (currentSceneName == 'Tutorial') { draw_tutorial(); }
   else if (currentSceneName == 'MainGame') { draw_battle(); }
+
+  else if (currentSceneName == 'Scanner') { draw_scanner(); }
   else if (currentSceneName == 'ScannerUI') { draw_scannerUI(); }
   else if (currentSceneName == 'Scanner1') { draw_scanner1(); }
   else if (currentSceneName == 'ScannerUI1') { draw_scannerUI1(); }
   else if (currentSceneName == 'Scanner2') { draw_scanner2(); }
   else if (currentSceneName == 'ScannerUI2') { draw_scannerUI2(); }
  
+  if (isGamePaused) {
+    displayMenu();
+  }
 
   if (isDebugMode) {
     for (let i = 0; i < messages.length; i++) {
@@ -50,12 +57,11 @@ function draw() {
 
 }
 
-let currentSceneName = 'Title';
-
 function ChangeScene(sceneName) {
   currentSceneName = sceneName;
 
   if (sceneName == 'Title') { setup_title(); }
+  if (sceneName == 'Tutorial') { setup_tutorial(); }
   else if (sceneName == 'Scanner') { setup_scanner(); }
   else if (sceneName == 'MainGame') { setup_battle(); }
   else if (sceneName == 'ScannerUI') { setup_scannerUI(); }
@@ -72,6 +78,7 @@ let currentSequenceIndex = 0;
 function keyPressed() {
 
   if (currentSceneName == 'Title') { presskey_title(); }
+  if (currentSceneName == 'Tutorial') { keyPressed_tutorial(); }
   else if (currentSceneName == 'Scanner') { keyPressed_scanner(); }
   else if (currentSceneName == 'MainGame') { keyPressed_gamelogic(); }
   else if (currentSceneName == 'ScannerUI') { keyPressed_scannerUI(); }
@@ -80,7 +87,11 @@ function keyPressed() {
   else if (currentSceneName == 'Scanner2') { keyPressed_scanner2(); }
   else if (currentSceneName == 'ScannerUI2') { keyPressed_scannerUI2(); }
   
-
+  // 쉬프트 키를 누르면 배경음악 꺼져 있으면 켜고 있으면 꺼짐
+  if (keyCode === SHIFT) {
+    if (bgm.isPlaying()) { bgm.pause(); }
+    else { bgm.play(); }
+  }
 
   // 디버그 모드 진입
   const keyName = key.toUpperCase();

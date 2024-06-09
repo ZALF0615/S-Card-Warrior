@@ -144,25 +144,28 @@ function displayAction(x, y, playerNum) {
     if (isGameOver) { return; }
     if (!showActions) { return; }
 
-    tint(255, 100);
-    imageCenter(command_skill_BG, x, y, 170, 170); // 스킬
-
-    let ratio = 1 - (playerNum == 1 ? player1.skillPoint / 100.0 : player2.skillPoint / 100.0);
-
-    if (playerNum == 1) {
-        //red
-        tint(255, 0, 0, 100);
-
+    if ((playerNum == 1 && isSkillAvailable_1p) || (playerNum == -1 && isSkillAvailable_2p)) { // 스킬 사용 가능한 경우
+        imageCenter(skillcommnadList[playerNum == 1 ? player1.jobIdx : player2.jobIdx], x, y, 170, 170); // 스킬
     } else {
-        //blue
-        tint(0, 0, 255, 100);
-    }
-    imageCenter(command_skill_fill, x, y + 170 * ratio, 170, 170, 0, command_skill_fill.height * ratio);
-    tint(255, 100);
-    imageCenter(playerNum == 1 ? skill_icon_SAGE : skill_icon_WIZARD, x, y, 100, 100);
+        tint(255, 100);
+        imageCenter(command_skill_BG, x, y, 170, 170); // 스킬
 
+        let ratio = 1 - (playerNum == 1 ? player1.skillPoint / 100.0 : player2.skillPoint / 100.0);
+
+        if (playerNum == 1) {
+            let col = getJobSkillColor(player1.jobIdx, true);
+            tint(col);
+
+        } else {
+            let col = getJobSkillColor(player2.jobIdx, true);
+            tint(col);
+        }
+        imageCenter(command_skill_fill, x, y + 170 * ratio, 170, 170, 0, command_skill_fill.height * ratio);
+        tint(255, 100);
+        imageCenter(playerNum == 1 ? skillIconList[player1.jobIdx] : skillIconList[player2.jobIdx], x, y, 100, 100);
+    }
     tint(255);
-    if (playerNum == 1 || (playerNum == 2 && selected_mode == 2)) { imageCenter(playerNum == 1 ? input_button_S : input_button_DOWN, x, y + 75); }
+    if (playerNum == 1 || (playerNum == 2 && !isCPUmode)) { imageCenter(playerNum == 1 ? input_button_S : input_button_DOWN, x, y + 75); }
     textAlign(CENTER, CENTER);
     textSize(40);
 
@@ -170,18 +173,18 @@ function displayAction(x, y, playerNum) {
     strokeWeight(15);
 
     imageCenter(command_scissors, x - 135, y + 100); // 가위
-    if (playerNum == 1 || (playerNum == 2 && selected_mode == 2)) { imageCenter(playerNum == 1 ? input_button_A : input_button_LEFT, x - 135, y + 100 - 75); }
+    if (playerNum == 1 || (playerNum == 2 && !isCPUmode)) { imageCenter(playerNum == 1 ? input_button_A : input_button_LEFT, x - 135, y + 100 - 75); }
 
     fill('green');
     text(playerNum == 1 ? player1.scissors : player2.scissors, x - 135 + 50, y + 100 + 30);
 
     imageCenter(command_rock, x, y - 160); // 바위
-    if (playerNum == 1 || (playerNum == 2 && selected_mode == 2)) { imageCenter(playerNum == 1 ? input_button_W : input_button_UP, x, y - 160 - 75); }
+    if (playerNum == 1 || (playerNum == 2 && !isCPUmode)) { imageCenter(playerNum == 1 ? input_button_W : input_button_UP, x, y - 160 - 75); }
     fill('red');
     text(playerNum == 1 ? player1.rock : player2.rock, x + 50, y - 160 + 30);
 
     imageCenter(command_paper, x + 135, y + 100); // 보
-    if (playerNum == 1 || (playerNum == 2 && selected_mode == 2)) { imageCenter(playerNum == 1 ? input_button_D : input_button_RIGHT, x + 135, y + 100 - 75); }
+    if (playerNum == 1 || (playerNum == 2 && !isCPUmode)) { imageCenter(playerNum == 1 ? input_button_D : input_button_RIGHT, x + 135, y + 100 - 75); }
     fill('blue');
     text(playerNum == 1 ? player1.paper : player2.paper, x + 135 + 50, y + 100 + 30);
 
@@ -193,97 +196,169 @@ function displayAction(x, y, playerNum) {
 
     if (playerNum == 1 ? selectedAction_1p != 0 : selectedAction_2p != 0) {
         imageCenter(command_selected_cover, x, y - 45, command_selected_cover.width * 0.85, command_selected_cover.height * 0.85);
+    } else {
 
+        if (playerNum == 1 || (playerNum == -1 && !isCPUmode)) {
+            fill(255);
+            stroke(0);
+            strokeWeight(10);
+            textSize(30);
+            textAlign(CENTER, CENTER);
+            text("낼 손을 선택하세요", x, y - 300);
+
+            noStroke();
+        }
     }
 }
 
 function displaySelectedAction(playerNum) {
 
     if (showActions) { // 액션 숨기기
-        imageCenter(command_skill_BG, playerNum == 1 ? 630 : width - 630, 400, 130, 130);
+        imageCenter(command_skill_BG, playerNum == 1 ? 630 : width - 630, 380, 130, 130);
         fill(0);
         textAlign(CENTER, CENTER);
         textSize(60);
-        text("?", playerNum == 1 ? 630 + 5 : width - 630 + 5, 400);
+        text("?", playerNum == 1 ? 630 + 5 : width - 630 + 5, 380);
     } else { // 액션 보이기
-        textSize(70);
-        textAlign(CENTER, CENTER);
-        let x = playerNum == 1 ? 630 : width - 630;
-        let y = 400;
-        let action = playerNum == 1 ? selectedAction_1p : selectedAction_2p;
 
-        stroke(0);
-        strokeWeight(10);
+        if (selectedAction_1p == 4 || selectedAction_2p == 4) {// 누군가가 스킬을 사용한 경우
 
-        let winSide = GetWinSide(selectedAction_1p, selectedAction_2p);
-        let result_padding = 120;
-        switch (action) {
-            case 1: // 가위
-                imageCenter(command_scissors, x, y, 130, 130);
-                fill('green');
-                text(playerNum == 1 ? player1.scissors : player2.scissors, playerNum == 1 ? x + 200 : x - 200, y);
+            textSize(70);
+            textAlign(CENTER, CENTER);
+            let x = playerNum == 1 ? 630 : width - 630;
+            let y = 380;
 
-                if (winSide == playerNum) {
+            stroke(0);
+            strokeWeight(10);
 
-                    fill('green');
-                    text("WIN", x, y - result_padding);
-                } else if (winSide == -1 * playerNum) {
-                    fill('gray');
-                    text("LOSE", x, y - result_padding);
-                } else {
-                    fill('gray');
-                    text("DRAW", x, y - result_padding);
-                }
-                break;
-            case 2: // 바위
-                imageCenter(command_rock, x, y, 130, 130);
-                fill('red');
-                text(playerNum == 1 ? player1.rock : player2.rock, playerNum == 1 ? x + 200 : x - 200, y);
-                if (winSide == playerNum) {
-                    fill('red');
-                    text("WIN", x, y - result_padding);
-                } else if (winSide == -1 * playerNum) {
-                    fill('gray');
-                    text("LOSE", x, y - result_padding);
-                } else {
-                    fill('gray');
-                    text("DRAW", x, y - result_padding);
-                }
-                break;
-            case 3: // 보
-                imageCenter(command_paper, x, y, 130, 130);
-                fill('blue');
-                text(playerNum == 1 ? player1.paper : player2.paper, playerNum == 1 ? x + 200 : x - 200, y);
-                if (winSide == playerNum) {
-                    fill('blue');
-                    text("WIN", x, y - result_padding);
-                }
-                else if (winSide == -1 * playerNum) {
-                    fill('gray');
-                    text("LOSE", x, y - result_padding);
-                } else {
-                    fill('gray');
-                    text("DRAW", x, y - result_padding);
-                }
-                break;
-            case 4: // 스킬
-                imageCenter(command_skill_BG, x, y, 130, 130);
-                fill(0);
+            if (selectedAction_1p == 4 && selectedAction_2p == 4) { // 둘 다 스킬을 사용한 경우
+                // 비김
+                imageCenter(skillcommnadList[playerNum == 1 ? player1.jobIdx : player2.jobIdx], playerNum == 1 ? 630 : width - 630, 380, 130, 130);
+
+                let result_padding = 120;
+
+                fill('gray');
+                text("DRAW", x, y - result_padding);
+
+            } else if ((playerNum == 1 && selectedAction_1p) == 4 || (playerNum == -1 && selectedAction_2p) == 4) { // 내가 스킬을 사용한 경우
+                imageCenter(skillcommnadList[playerNum == 1 ? player1.jobIdx : player2.jobIdx], playerNum == 1 ? 630 : width - 630, 380, 130, 130);
+
+                let result_padding = 120;
+
+                fill(getJobSkillColor(playerNum == 1 ? player1.jobIdx : player2.jobIdx));
+                text('10', playerNum == 1 ? x + 200 : x - 200, y);
+
+                text("WIN", x, y - result_padding);
+            } else { // 상대가 스킬을 사용한 경우
+                textSize(70);
                 textAlign(CENTER, CENTER);
-                textSize(60);
-                text("S", x + 5, y);
-                break;
+                let x = playerNum == 1 ? 630 : width - 630;
+                let y = 380;
+                let action = playerNum == 1 ? selectedAction_1p : selectedAction_2p;
+
+                stroke(0);
+                strokeWeight(10);
+
+                let result_padding = 120;
+
+                switch (action) {
+                    case 1: // 가위
+                        imageCenter(command_scissors, x, y, 130, 130);
+                    case 2: // 바위
+                        imageCenter(command_rock, x, y, 130, 130);
+                    case 3: // 보
+                        imageCenter(command_paper, x, y, 130, 130);
+                }
+
+                fill('gray');
+                text("LOSE", x, y - result_padding);
+
+            }
+
+
+            noStroke();
+
+        } else {
+            textSize(70);
+            textAlign(CENTER, CENTER);
+            let x = playerNum == 1 ? 630 : width - 630;
+            let y = 380;
+            let action = playerNum == 1 ? selectedAction_1p : selectedAction_2p;
+
+            stroke(0);
+            strokeWeight(10);
+
+            let winSide = GetWinSide(selectedAction_1p, selectedAction_2p);
+            let result_padding = 120;
+            switch (action) {
+                case 1: // 가위
+                    imageCenter(command_scissors, x, y, 130, 130);
+                    fill('green');
+                    text(playerNum == 1 ? player1.scissors : player2.scissors, playerNum == 1 ? x + 200 : x - 200, y);
+
+                    if (winSide == playerNum) {
+
+                        fill('green');
+                        text("WIN", x, y - result_padding);
+                    } else if (winSide == -1 * playerNum) {
+                        fill('gray');
+                        text("LOSE", x, y - result_padding);
+                    } else {
+                        fill('gray');
+                        text("DRAW", x, y - result_padding);
+                    }
+                    break;
+                case 2: // 바위
+                    imageCenter(command_rock, x, y, 130, 130);
+                    fill('red');
+                    text(playerNum == 1 ? player1.rock : player2.rock, playerNum == 1 ? x + 200 : x - 200, y);
+                    if (winSide == playerNum) {
+                        fill('red');
+                        text("WIN", x, y - result_padding);
+                    } else if (winSide == -1 * playerNum) {
+                        fill('gray');
+                        text("LOSE", x, y - result_padding);
+                    } else {
+                        fill('gray');
+                        text("DRAW", x, y - result_padding);
+                    }
+                    break;
+                case 3: // 보
+                    imageCenter(command_paper, x, y, 130, 130);
+                    fill('blue');
+                    text(playerNum == 1 ? player1.paper : player2.paper, playerNum == 1 ? x + 200 : x - 200, y);
+                    if (winSide == playerNum) {
+                        fill('blue');
+                        text("WIN", x, y - result_padding);
+                    }
+                    else if (winSide == -1 * playerNum) {
+                        fill('gray');
+                        text("LOSE", x, y - result_padding);
+                    } else {
+                        fill('gray');
+                        text("DRAW", x, y - result_padding);
+                    }
+                    break;
+                case 4: // 스킬
+                    imageCenter(command_skill_BG, x, y, 130, 130);
+                    fill(0);
+                    textAlign(CENTER, CENTER);
+                    textSize(60);
+                    text("S", x + 5, y);
+                    break;
+            }
+
+            // 화면 가운데에 + 표시
+            textSize(60);
+            textAlign(CENTER, CENTER);
+            fill(255);
+            stroke(0);
+            strokeWeight(10);
+            text("+", width / 2, 380);
+
+            noStroke();
         }
 
-        // 화면 가운데에 + 표시
-        textSize(60);
-        textAlign(CENTER, CENTER);
-        fill(255);
-        stroke(0);
-        strokeWeight(10);
-        text("+", width / 2, 400);
-
-        noStroke();
     }
 
 
@@ -300,6 +375,36 @@ function displayBG() {
     tint(255);
 
 }
+
+function getJobSkillColor(jobIdx, trans = false) {
+    // 1: SAGE : green
+    // 2: WIZARD : skyblue
+    // 3: MECHA_PILOT : gray
+    // 4: HEALER : gray
+    // 5: BARD : pink
+    // 6: EXPLORER : blue
+    // 7: DRUID : gray
+    // 8: LUCIFER : purple
+    // all color alpha 100
+
+    switch (jobIdx) {
+        case 1:
+            return color(0, 255, 0, trans ? 100 : 255); // green
+        case 2:
+            return color(0, 255, 255, trans ? 100 : 255); // skyblue
+        case 5:
+            return color(255, 0, 255, trans ? 100 : 255); // pink
+        case 6:
+            return color(0, 0, 255, trans ? 100 : 255); // blue
+        case 8:
+            return color(255, 0, 255, trans ? 100 : 255);  // purple
+        default:
+            return color(255, 255, 255, trans ? 100 : 255);     // white
+    }
+}
+
+let skillIconList = [];
+let skillcommnadList = [];
 
 let bgList = [];
 
@@ -341,16 +446,45 @@ function preload_UI() {
     command_selected_cover = loadImage('Asset/UI/battle_command_selected_cover.png');
 
     skill_icon_SAGE = loadImage('Asset/UI/skill_icon_SAGE.png');
-    skill_icon_HEALER = loadImage('Asset/UI/skill_icon_HEALER.png');
-    skill_icon_EXPLORER = loadImage('Asset/UI/skill_icon_EXPLORER.png');
-    skill_icon_BARD = loadImage('Asset/UI/skill_icon_BARD.png');
-    skill_icon_DRUID = loadImage('Asset/UI/skill_icon_DRUID.png');
     skill_icon_WIZARD = loadImage('Asset/UI/skill_icon_WIZARD.png');
     skill_icon_MECHA_PILOT = loadImage('Asset/UI/skill_icon_MECHA_PILOT.png');
+    skill_icon_HEALER = loadImage('Asset/UI/skill_icon_HEALER.png');
+    skill_icon_BARD = loadImage('Asset/UI/skill_icon_BARD.png');
+    skill_icon_EXPLORER = loadImage('Asset/UI/skill_icon_EXPLORER.png');
+    skill_icon_DRUID = loadImage('Asset/UI/skill_icon_DRUID.png');
     skill_icon_LUCIFER = loadImage('Asset/UI/skill_icon_LUCIFER.png');
+
+    skillIconList.push(null);
+    skillIconList.push(skill_icon_SAGE);
+    skillIconList.push(skill_icon_WIZARD);
+    skillIconList.push(skill_icon_MECHA_PILOT);
+    skillIconList.push(skill_icon_HEALER);
+    skillIconList.push(skill_icon_BARD);
+    skillIconList.push(skill_icon_EXPLORER);
+    skillIconList.push(skill_icon_DRUID);
+    skillIconList.push(skill_icon_LUCIFER);
 
     command_skill_BG = loadImage('Asset/UI/command_skill_BG.png');
     command_skill_fill = loadImage('Asset/UI/command_skill_fill.png');
+
+    command_skill_SAGE = loadImage('Asset/UI/command_skill_SAGE.png');
+    command_skill_WIZARD = loadImage('Asset/UI/command_skill_WIZARD.png');
+    command_skill_MECHA_PILOT = loadImage('Asset/UI/command_skill_MECHA_PILOT.png');
+    command_skill_HEALER = loadImage('Asset/UI/command_skill_HEALER.png');
+    command_skill_BARD = loadImage('Asset/UI/command_skill_BARD.png');
+    command_skill_EXPLORER = loadImage('Asset/UI/command_skill_EXPLORER.png');
+    command_skill_DRUID = loadImage('Asset/UI/command_skill_DRUID.png');
+    command_skill_LUCIFER = loadImage('Asset/UI/command_skill_LUCIFER.png');
+
+    skillcommnadList.push(null);
+    skillcommnadList.push(command_skill_SAGE);
+    skillcommnadList.push(command_skill_WIZARD);
+    skillcommnadList.push(command_skill_MECHA_PILOT);
+    skillcommnadList.push(command_skill_HEALER);
+    skillcommnadList.push(command_skill_BARD);
+    skillcommnadList.push(command_skill_EXPLORER);
+    skillcommnadList.push(command_skill_DRUID);
+    skillcommnadList.push(command_skill_LUCIFER);
 
     font_galmuri7 = loadFont('Asset/Font/Galmuri7.ttf');
 

@@ -4,4 +4,5 @@ function preload() {
     preload_Sound();
     preload_charaAnim();
     preload_title();
+    // preload_tutorial();
 }

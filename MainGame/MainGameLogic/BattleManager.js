@@ -7,27 +7,23 @@ let isGameOver = 0; // 1이면 진행중, 1이면 1P 승리, 2이면 2P 승리
 let player1, player2;
 let turnNum = 0;
 
+let isCPUmode = false;
+
 function InitGame() {
 
-    // PlayBGM(bgm, 0.1);
 
-    let idx1 = GetIdxByDepartment("인문대학 언어학과");
-   // print_log(`idx1 : ${idx1}`);
+    if (playerNumber == 1) { // 1인용 모드일 경우
+        player1 = globalPlayer;
+        player2 = new Character("", "20" + random(17, 25) + "-" + random(1, 3) + random(0, 9) + random(0, 9) + random(0, 9) + random(0, 9), "연합전공 정보문화학");
 
-    let idx2 = GetIdxByDepartment("음악대학 음악학과");
-   // print_log(`idx2 : ${idx2}`);
+    }
+    else if (playerNumber == 2) { // 2인용 모드일 경우
+        player1 = globalPlayer1;
+        player2 = globalPlayer2;
+    }
 
-   if(playerNumber == 1) {
-    player1 = globalPlayer;
-    player2 = new Character("", "20"+random(17, 25)+"-"+random(1,3)+random(0, 9)+random(0, 9)+random(0, 9)+random(0, 9), "연합전공 정보문화학");
-
-   }
-   else if (playerNumber == 2) {
-    player1 = globalPlayer1;
-    player2 = globalPlayer2;
-   }
-    //player1 = new Character("고수창", "2019-16798", "인문대학 언어학과");
-   // player2 = new Character("위스마", "2022-16531", "?????");
+    isSkillAvailable_1p = false;
+    isSkillAvailable_2p = false;
 
     TurnTaker();
 
@@ -35,7 +31,7 @@ function InitGame() {
     isGameOver = 0;
 
     ChangeAnimation(1, '준비');
-    ChangeAnimation(2, '준비');
+    ChangeAnimation(-1, '준비');
 }
 
 function TurnTaker() {
@@ -51,11 +47,32 @@ function TurnTaker() {
     actionsInProgress = false;
     showActions = true;
 
+    if (selectedAction_1p == 4) {
+        player1.skillPoint = 0;
+        isSkillAvailable_1p = false;
+    }
+
+    if (selectedAction_2p == 4) {
+        player2.skillPoint = 0;
+        isSkillAvailable_2p = false;
+    }
+
+    selectedAction_1p = 0;
+    selectedAction_2p = 0;
+
     turnNum++;
-   // print_log(`turnNum : ${turnNum}`);
+    print_log(`turnNum : ${turnNum}`);
+
+    if (player1.skillPoint == 100) {
+        isSkillAvailable_1p = true;
+    }
+
+    if (player2.skillPoint == 100) {
+        isSkillAvailable_2p = true;
+    }
 
     // 랜덤한 시간 뒤(2~5초)에 CPU 플레이어가 선택(player2)
-    if (selected_mode == 1) { // 1P vs CPU
+    if (isCPUmode) { // 1P vs CPU
         let randomTime = random(1, 3);
         setTimeout(() => {
             processCPUAction();
@@ -69,15 +86,15 @@ function GameOver(winside) {
     isGameOver = winside;
 
     if (winside == 1) {
-     //   print_log("1P WIN");
+        print_log("1P WIN");
 
         ChangeAnimation(1, '승리');
-        ChangeAnimation(2, '패배');
+        ChangeAnimation(-1, '패배');
     } else if (winside == -1) {
-        //print_log("2P WIN");
+        print_log("2P WIN");
 
         ChangeAnimation(1, '패배');
-        ChangeAnimation(2, '승리');
+        ChangeAnimation(-1, '승리');
     }
 
     setTimeout(() => {

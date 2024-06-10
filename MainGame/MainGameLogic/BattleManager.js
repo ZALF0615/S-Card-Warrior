@@ -13,11 +13,13 @@ function InitGame() {
 
 
     if (playerNumber == 1) { // 1인용 모드일 경우
+        print_log("1인용 모드");
         player1 = globalPlayer;
         player2 = new Character("", "20" + random(17, 25) + "-" + random(1, 3) + random(0, 9) + random(0, 9) + random(0, 9) + random(0, 9), "연합전공 정보문화학");
 
     }
     else if (playerNumber == 2) { // 2인용 모드일 경우
+        print_log("2인용 모드");
         player1 = globalPlayer1;
         player2 = globalPlayer2;
     }

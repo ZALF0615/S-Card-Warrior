@@ -5,7 +5,7 @@ let globalPlayer1 = null;
 let globalPlayer2 = null;
 let playerNumber = 0;
 
-
+let isGamePaused;
 
 function setup() {
   createCanvas(1920, 1080);
@@ -13,8 +13,9 @@ function setup() {
   globalPlayer1 = null;
   globalPlayer2 = null;
   playerNumber = 0;
-}
 
+  // bgm.play();
+}
 
 function draw() {
 

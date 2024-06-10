@@ -29,7 +29,6 @@ class Character {
         if(this.majorIdx === null) {
             console.log("GetIdxByDepartment failed");
 
-
             // fill(0);
             // textSize(20);
             // textAlign(CENTER, CENTER);

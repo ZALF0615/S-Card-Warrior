@@ -65,11 +65,11 @@ function CPU_random() {
     print_log("CPU_random");
 
     if (isSkillAvailable_2p) { // 스킬 사용 가능
-        selectedAction_2p = random(1, 4);
+        selectedAction_2p = random([1, 2, 3, 4]);
         previousAction_2p = selectedAction_2p;
 
     } else {
-        selectedAction_2p = random(1, 3);
+        selectedAction_2p = random([1, 2, 3]);
         previousAction_2p = selectedAction_2p;
     }
 

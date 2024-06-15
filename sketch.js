@@ -29,7 +29,7 @@ function draw() {
   else if (currentSceneName == 'ScannerUI1') { draw_scannerUI1(); }
   else if (currentSceneName == 'Scanner2') { draw_scanner2(); }
   else if (currentSceneName == 'ScannerUI2') { draw_scannerUI2(); }
- 
+
   if (isGamePaused) {
     displayMenu();
   }
@@ -59,18 +59,44 @@ function draw() {
 }
 
 function ChangeScene(sceneName) {
-  currentSceneName = sceneName;
 
-  if (sceneName == 'Title') { setup_title(); }
-  if (sceneName == 'Tutorial') { setup_tutorial(); }
-  else if (sceneName == 'Scanner') { setup_scanner(); }
-  else if (sceneName == 'MainGame') { setup_battle(); }
-  else if (sceneName == 'ScannerUI') { setup_scannerUI(); }
-  else if (sceneName == 'Scanner1') { setup_scanner1(); }
-  else if (sceneName == 'ScannerUI1') { setup_scannerUI1(); }
-  else if (sceneName == 'Scanner2') { setup_scanner2(); }
-  else if (sceneName == 'ScannerUI2') { setup_scannerUI2(); }
+  if (sceneName !== 'MainGame') {
+    currentSceneName = sceneName;
+  }
+
+  if (sceneName === 'Title') { setup_title(); }
+  else if (sceneName === 'Tutorial') { setup_tutorial(); }
+  else if (sceneName === 'Scanner') { setup_scanner(); }
+  else if (sceneName === 'MainGame') {
+    if (playerNumber === 1) { // 1인용 모드일 경우
+      print_log("1인용 모드");
+      player1 = globalPlayer;
+      player2 = new Character("", "20" + random(17, 25) + "-" + random(1, 3) + random(0, 9) + random(0, 9) + random(0, 9) + random(0, 9), "연합전공 정보문화학");
+    } else if (playerNumber === 2) { // 2인용 모드일 경우
+      print_log("2인용 모드");
+      player1 = globalPlayer1;
+      player2 = globalPlayer2;
+    }
+
+    imagesToLoad = 0;
+    imagesLoaded = 0;
+    onLoadCompleteCallback = () => {
+      setup_battle();
+      currentSceneName = sceneName;
+    };
+
+    preload_charaAnim(player1.jobIdx);
+    preload_charaAnim(player2.jobIdx);
+
+  } else if (sceneName === 'ScannerUI') { setup_scannerUI(); }
+  else if (sceneName === 'Scanner1') { setup_scanner1(); }
+  else if (sceneName === 'ScannerUI1') { setup_scannerUI1(); }
+  else if (sceneName === 'Scanner2') { setup_scanner2(); }
+  else if (sceneName === 'ScannerUI2') { setup_scannerUI2(); }
+
+
 }
+
 
 
 let debugSequence = ['+', '+', '+', '+', '+', '+', '+', '+'];
@@ -87,7 +113,7 @@ function keyPressed() {
   else if (currentSceneName == 'ScannerUI1') { keyPressed_scannerUI1(); }
   else if (currentSceneName == 'Scanner2') { keyPressed_scanner2(); }
   else if (currentSceneName == 'ScannerUI2') { keyPressed_scannerUI2(); }
-  
+
   // 쉬프트 키를 누르면 배경음악 꺼져 있으면 켜고 있으면 꺼짐
   if (keyCode === SHIFT) {
     if (bgm.isPlaying()) { bgm.pause(); }

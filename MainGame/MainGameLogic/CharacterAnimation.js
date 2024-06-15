@@ -43,29 +43,41 @@ function drawCharacters() {
 
 }
 
-function preload_charaAnim() {
-    Object.entries(jobs).forEach(([jobIdx, jobName]) => {
-        charaAnimations[jobName] = {};
-        animations.forEach(anim => {
-            charaAnimations[jobName][anim] = [];
-            loadFrames(jobName, anim, 0);
-        });
+let imagesToLoad = 0;
+let imagesLoaded = 0;
+let onLoadCompleteCallback = null;
+
+function preload_charaAnim(jobIdx) {
+    const jobName = jobs[jobIdx];
+    charaAnimations[jobName] = {};
+    animations.forEach(anim => {
+        charaAnimations[jobName][anim] = [];
+        loadFrames(jobName, anim, 0);
     });
 }
 
+
 function loadFrames(job, anim, i) {
     let filePath = `Asset/Character/${job}/${job}_${anim}/F${i.toString()}.png`;
+    imagesToLoad++; // 로드할 이미지의 수 증가
     loadImage(filePath, img => {
         // 이미지 로드 성공
-        // print_log(`Loaded: ${filePath}`);
         charaAnimations[job][anim].push(img);
+        imagesLoaded++; // 로드된 이미지의 수 증가
+        if (imagesLoaded === imagesToLoad && onLoadCompleteCallback) {
+            onLoadCompleteCallback();
+        }
         // 다음 프레임 로드
         loadFrames(job, anim, i + 1);
     }, err => {
         // 이미지 로드 실패
-        // print_log(`Failed to load: ${filePath}`);
+        imagesToLoad--; // 실패 시 로드할 이미지 수 감소
+        if (imagesLoaded === imagesToLoad && onLoadCompleteCallback) {
+            onLoadCompleteCallback();
+        }
     });
 }
+
 
 let animationTimeout_1p;
 let animationTimeout_2p;

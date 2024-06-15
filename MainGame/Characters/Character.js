@@ -29,11 +29,10 @@ class Character {
         if(this.majorIdx === null) {
             console.log("GetIdxByDepartment failed");
 
-
-            fill(0);
-            textSize(20);
-            textAlign(CENTER, CENTER);
-            text("캐릭터 생성 실패! 다시 시도해주세요!", width/2, height/2 - 200);
+            // fill(0);
+            // textSize(20);
+            // textAlign(CENTER, CENTER);
+            // text("캐릭터 생성 실패! 다시 시도해주세요!", width/2, height/2 - 200);
 
             this.majorIdx = 86;
         }

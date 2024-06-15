@@ -39,8 +39,9 @@ function draw_scanner1() {
         noStroke();
         fill(0);
         textSize(50);
-        text('스페이스바를 눌러 캐릭터를 생성해주세요!', width / 2, height - 200);
+        text('스페이스바를 눌러 첫 번째 캐릭터를 생성해주세요!', width / 2, height - 200);
         textSize(30);
+        fill(255, 102, 102);
         text('모바일 혹은 카드 학생증의 학생 정보 부분이 네모 칸에 맞게 조절해주세요.', width / 2, height - 150)
         stroke(120,150,200);
         strokeWeight(5);
@@ -52,9 +53,9 @@ function draw_scanner1() {
    
 
     if (player1Name !== "이름 없음") {
-        createCharacter();
+        createCharacter1();
         if (p1 && p1.majorIdx !== null) {
-        ChangeScene('ScannerUI');  
+        ChangeScene('ScannerUI1');  
         }
     } 
     
@@ -69,43 +70,43 @@ function processOCR1() {
         }
     ).then(({ data: { text } }) => {
         console.log(text);
-        const extractedIDs = extractIDs(text);
-        const extractedColleges = extractColleges(text);
-        const extractedMajors = extractMajors(text);
+        const extractedIDs1 = extractIDs1(text);
+        const extractedColleges1 = extractColleges1(text);
+        const extractedMajors1 = extractMajors1(text);
 
-        extractedIDs.forEach(id => console.log(`학번: ${id}`));
-        extractedColleges.forEach(college => console.log(`대학: ${college}`));
-        extractedMajors.forEach(major => console.log(`학과: ${major}`));
+        extractedIDs1.forEach(id => console.log(`학번: ${id}`));
+        extractedColleges1.forEach(college => console.log(`대학: ${college}`));
+        extractedMajors1.forEach(major => console.log(`학과: ${major}`));
 
-        const extractedName = extractName(text);
-        console.log(`이름: ${extractedName}`);
-        player1Name = extractedName;
-        player1Id = extractedIDs.length > 0 ? extractedIDs[0] : ""; // Choose the first ID if available
+        const extractedName1 = extractName1(text);
+        console.log(`이름: ${extractedName1}`);
+        player1Name = extractedName1;
+        player1Id = extractedIDs1.length > 0 ? extractedIDs1[0] : ""; // Choose the first ID if available
 
-        let detectedColleges = [];
-        extractedColleges.forEach(college => {
+        let detectedColleges1 = [];
+        extractedColleges1.forEach(college => {
             GetCollegeList().forEach(knownCollege => {
                 if (college.includes(knownCollege)) {
                     console.log(`감지된 대학: ${knownCollege}`);
-                    detectedColleges.push(knownCollege);
+                    detectedColleges1.push(knownCollege);
                     player1College = knownCollege;
                 }
             });
         });
 
-        let detectedMajors = [];
-        extractedMajors.forEach(major => {
+        let detectedMajors1 = [];
+        extractedMajors1.forEach(major => {
             GetMajorList().forEach(knownMajor => {
                 if (major.includes(knownMajor)) {
                     console.log(`감지된 학과: ${knownMajor}`);
-                    detectedMajors.push(knownMajor);
+                    detectedMajors1.push(knownMajor);
                     player1Major = knownMajor;
                 }
             });
         });
 
-        detectedColleges.forEach(college => {
-            detectedMajors.forEach(major => {
+        detectedColleges1.forEach(college => {
+            detectedMajors1.forEach(major => {
                 GetDepartmentList().forEach(department => {
                     if (department.includes(college) && department.includes(major)) {
                         console.log(`감지된 전공: ${department}`);
@@ -120,7 +121,7 @@ function processOCR1() {
         console.error(err);
         isProcessing1 = false;
     });
-}
+}   
 
 function extractIDs1(text) {
     const regex = /\b\d{4}-\d{5}\b/g;
@@ -157,7 +158,7 @@ function keyPressed_scanner1() {
         if (!isProcessing1) {
             isProcessing1 = true;
             img1 = capture1.get();
-            processOCR();
+            processOCR1();
         }
     }
 }
@@ -168,6 +169,8 @@ function createCharacter1() {
         console.log(p1.name);
         console.log(p1.major);
         console.log(p1.id);
+        //글로벌 변수인 캐릭터에 생성된 캐릭터를 assign
+        globalPlayer1 = p1;
     } else {
         console.log("Try again");
     }

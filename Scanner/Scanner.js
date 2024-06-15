@@ -15,16 +15,16 @@ let playerCollege = "";
 
 function setup_scanner() {
 
-isProcessing = false;
-playerName = "이름 없음";
-playerId = "";
-playerMajor = "";
-playerDept = "";
-playerCollege = "";
+    isProcessing = false;
+    playerName = "이름 없음";
+    playerId = "";
+    playerMajor = "";
+    playerDept = "";
+    playerCollege = "";
 
-capture = createCapture(VIDEO);
-capture.size(640, 480);
-capture.hide();
+    capture = createCapture(VIDEO);
+    capture.size(640, 480);
+    capture.hide();
 }
 
 function draw_scanner() {
@@ -40,25 +40,35 @@ function draw_scanner() {
         noStroke();
         fill(0);
         textSize(50);
+        textAlign(CENTER, CENTER);
+
         text('스페이스바를 눌러 캐릭터를 생성해주세요!', width / 2, height - 200);
         textSize(30);
+        fill(255, 102, 102);
         text('모바일 혹은 카드 학생증의 학생 정보 부분이 네모 칸에 맞게 조절해주세요.', width / 2, height - 150)
-        stroke(120,150,200);
+        stroke(255, 102, 102);
         strokeWeight(5);
         rectMode(CENTER);
         noFill();
         rect(width / 2, height / 2 - 20, 250, 360);
-        
+
     }
-   
+
 
     if (playerName !== "이름 없음") {
         createCharacter();
         if (singleP && singleP.majorIdx !== null) {
-        ChangeScene('ScannerUI');  
+            ChangeScene('ScannerUI');
         }
-    } 
-    
+    }
+
+    // S-Card가 잘 인식되지 않을 경우, 왼쪽 컨트롤 키를 눌러 랜덤한 카드를 뽑을 수 있습니다. 라고 텍스트 안내 (좌측 상단)
+    fill(0);
+    textSize(20);
+    noStroke();
+
+    text("S-Card가 잘 인식되지 않을 경우, 왼쪽 컨트롤 키를 눌러 랜덤한 카드를 뽑을 수 있습니다.", width / 2, 10);
+
 }
 
 function processOCR() {
@@ -161,8 +171,28 @@ function keyPressed_scanner() {
             processOCR();
         }
     }
-}
 
+    // 랜덤한 카드 뽑기(왼쪽 컨트롤)
+    if (keyCode === CONTROL) {
+
+        // 랜덤한 네 자리 수
+        let r = random(1000, 10000);
+
+        let randomCharacter_1 = new Character("노르", `2019-1${r}`, "인문대학 언어학과");
+        let randomCharacter_2 = new Character("테이", `2020-1${r}`, "사회과학대학 사회학과");
+        let randomCharacter_3 = new Character("피아", `2021-1${r}`, "인문대학 미학과");
+        let randomCharacter_4 = new Character("마르", `2022-1${r}`, "자연과학대학 화학부");
+        let randomCharacter_5 = new Character("이브", `2023-1${r}`, "연합전공 정보문화학");
+
+        let c = random([randomCharacter_1, randomCharacter_2, randomCharacter_3, randomCharacter_4, randomCharacter_5]);
+
+        playerName = c.name;
+        playerId = c.id;
+        playerDept = c.major;
+
+        createCharacter();
+    }
+}
 function createCharacter() {
     if (playerName !== "이름 없음") {
         singleP = new Character(playerName, playerId, playerDept);
@@ -170,7 +200,7 @@ function createCharacter() {
         console.log(singleP.major);
         console.log(singleP.id);
         //글로벌 변수인 캐릭터에 생성된 캐릭터를 assign
-        globalPlayer1 = singleP;
+        globalPlayer = singleP;
     } else {
         console.log("Try again");
     }

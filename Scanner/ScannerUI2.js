@@ -19,7 +19,6 @@ function setup_scannerUI2() {
     cardWizard2 = loadImage('Asset/Character/마법사/마법사_기본/F0.png');
     cardBard2 = loadImage('Asset/Character/음유시인/음유시인_기본/F0.png');
     cardLucifer2 = loadImage('Asset/Character/정보대마왕/정보대마왕_기본/F0.png');
-
 }
 
 function draw_scannerUI2() {

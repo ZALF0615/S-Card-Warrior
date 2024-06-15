@@ -9,11 +9,10 @@ let isGamePaused;
 
 let elapsedFrame = 0; // 경과 프레임
 let elapsedTime = 0; // 경과 시간 (실제 시간)
+let speedRate = 1; // 속도 배율
 
 function setup() {
   createCanvas(1920, 1080);
-
-  frameRate(20);
 
   globalPlayer = null;
   globalPlayer1 = null;
@@ -28,7 +27,7 @@ function draw() {
   // deltaTime을 고려하여 경과 시간 업데이트
   elapsedTime += deltaTime / 1000;
   // FPS가 60이었을 때와 같은 방식으로 경과 프레임 수 계산
-  elapsedFrame = elapsedFrame + deltaTime / (1000 / 60);
+  elapsedFrame += deltaTime / (1000 / 60);
 
   if (currentSceneName == 'Title') { draw_title(); }
   else if (currentSceneName == 'Tutorial') { draw_tutorial(); }
@@ -65,7 +64,11 @@ function draw() {
       textAlign(LEFT, CENTER);
       text(m, 7, height - 30 * (i + 1) + 15);
 
-      // 화면 왼쪽 위에 현재 프레임레이트 출력 (배경 검은색, 글자 흰색)
+  
+
+    }
+
+    // 화면 왼쪽 위에 현재 프레임레이트 출력 (배경 검은색, 글자 흰색)
       fill(0, 100);
       noStroke();
       rectMode(CORNER);
@@ -81,7 +84,8 @@ function draw() {
       fill(255);
       textSize(20);
       textAlign(LEFT, CENTER);
-      text("DeltaTime: " + deltaTime.toFixed(3), 107, 15);
+      // text("DeltaTime: " + deltaTime.toFixed(3), 107, 15);
+      text("SpeedRate: " + (frameRate() / 60).toFixed(2), 107, 15);
 
       // 화면 왼쪽 위에 현재 프레임카운트 출력 (배경 검은색, 글자 흰색)
       fill(0, 100);
@@ -106,8 +110,6 @@ function draw() {
       textAlign(LEFT, CENTER);
       text("Elapsed Time: " + elapsedTime.toFixed(2) + "s", 7, 75);
       text("Elapsed Frame: " + elapsedFrame, 250, 75);
-
-    }
   }
 
 }

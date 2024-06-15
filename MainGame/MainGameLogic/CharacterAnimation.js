@@ -33,11 +33,11 @@ function drawCharacters() {
     imageButtom(charaAnimations[jobs[player2.jobIdx]][currentAnimation_2p][currentFrame_2p], 0, 0, LEFT);
     pop();
 
-    if (Math.floor(elapsedFrame) % animSpeed_1p === 0) {
+    if (frameCount % animSpeed_1p === 0) {
         currentFrame_1p = (currentFrame_1p + 1) % charaAnimations[jobs[player1.jobIdx]][currentAnimation_1p].length;
     }
 
-    if (Math.floor(elapsedFrame) % animSpeed_2p === 0) {
+    if (frameCount % animSpeed_2p === 0) {
         currentFrame_2p = (currentFrame_2p + 1) % charaAnimations[jobs[player2.jobIdx]][currentAnimation_2p].length;
     }
 

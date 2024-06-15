@@ -11,8 +11,6 @@ let isCPUmode = false;
 
 function InitGame() {
 
-    frameRate(60);
-
     isSkillAvailable_1p = false;
     isSkillAvailable_2p = false;
 

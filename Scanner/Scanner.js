@@ -2,7 +2,26 @@ let capture;
 let img;
 let isProcessing = false;
 
+let singleP;
+
+let playerName = "이름 없음";
+let playerId = "";
+let playerMajor = "";
+let playerDept = "";
+let playerCollege = "";
+
+
+//1인 플레이어가 진행할 때 오는 스캐너입니다.
+
 function setup_scanner() {
+
+    isProcessing = false;
+    playerName = "이름 없음";
+    playerId = "";
+    playerMajor = "";
+    playerDept = "";
+    playerCollege = "";
+
     capture = createCapture(VIDEO);
     capture.size(640, 480);
     capture.hide();
@@ -12,11 +31,44 @@ function draw_scanner() {
     background(220);
 
     if (isProcessing) {
-        text('OCR 처리중...', width / 2, height - 20);
+        fill(0);
+        textSize(50);
+        noStroke();
+        text('OCR 처리중...', width / 2, height - 50);
     } else {
-        image(capture, 0, 0);
-        text('스페이스바를 눌러 OCR 처리', width / 2, height - 20);
+        image(capture, width / 2 - 320, height / 2 - 250);
+        noStroke();
+        fill(0);
+        textSize(50);
+        textAlign(CENTER, CENTER);
+
+        text('스페이스바를 눌러 캐릭터를 생성해주세요!', width / 2, height - 200);
+        textSize(30);
+        fill(255, 102, 102);
+        text('모바일 혹은 카드 학생증의 학생 정보 부분이 네모 칸에 맞게 조절해주세요.', width / 2, height - 150)
+        stroke(255, 102, 102);
+        strokeWeight(5);
+        rectMode(CENTER);
+        noFill();
+        rect(width / 2, height / 2 - 20, 250, 360);
+
     }
+
+
+    if (playerName !== "이름 없음") {
+        createCharacter();
+        if (singleP && singleP.majorIdx !== null) {
+            ChangeScene('ScannerUI');
+        }
+    }
+
+    // S-Card가 잘 인식되지 않을 경우, 왼쪽 컨트롤 키를 눌러 랜덤한 카드를 뽑을 수 있습니다. 라고 텍스트 안내 (좌측 상단)
+    fill(0);
+    textSize(20);
+    noStroke();
+
+    text("S-Card가 잘 인식되지 않을 경우, 왼쪽 컨트롤 키를 눌러 랜덤한 카드를 뽑을 수 있습니다.", width / 2, 10);
+
 }
 
 function processOCR() {
@@ -27,65 +79,52 @@ function processOCR() {
             logger: m => console.log(m) // Progress logger
         }
     ).then(({ data: { text } }) => {
-        print(text);
+        console.log(text);
         const extractedIDs = extractIDs(text);
         const extractedColleges = extractColleges(text);
         const extractedMajors = extractMajors(text);
 
-        extractedIDs.forEach(id => print(`학번: ${id}`));
-        extractedColleges.forEach(college => print(`대학: ${college}`));
-        extractedMajors.forEach(major => print(`학과: ${major}`));
+        extractedIDs.forEach(id => console.log(`학번: ${id}`));
+        extractedColleges.forEach(college => console.log(`대학: ${college}`));
+        extractedMajors.forEach(major => console.log(`학과: ${major}`));
 
-        // 텍스트에서 첫 번째 한글 세 글자 단어 추출 (중간에 공백이 있을 가능성 고려)
         const extractedName = extractName(text);
-        print(`이름: ${extractedName}`);
+        console.log(`이름: ${extractedName}`);
+        playerName = extractedName;
+        playerId = extractedIDs.length > 0 ? extractedIDs[0] : ""; // Choose the first ID if available
 
-        // extractedCollege 문자열 안에 GetCollegeList()안에 있는 요소가 포함되어 있다면 따로 출력
         let detectedColleges = [];
         extractedColleges.forEach(college => {
             GetCollegeList().forEach(knownCollege => {
                 if (college.includes(knownCollege)) {
-                    print(`감지된 대학: ${knownCollege}`);
+                    console.log(`감지된 대학: ${knownCollege}`);
                     detectedColleges.push(knownCollege);
+                    playerCollege = knownCollege;
                 }
             });
         });
 
         let detectedMajors = [];
-        // extractedMajor 문자열 안에 GetMajorList()안에 있는 요소가 포함되어 있다면 따로 출력
         extractedMajors.forEach(major => {
             GetMajorList().forEach(knownMajor => {
                 if (major.includes(knownMajor)) {
-                    print(`감지된 학과: ${knownMajor}`);
+                    console.log(`감지된 학과: ${knownMajor}`);
                     detectedMajors.push(knownMajor);
+                    playerMajor = knownMajor;
                 }
             });
         });
 
-        // 감지된 대학과 학과가 모두 일치하는 전공이 있다면 출력
-        // GetDepartmentList()안에 있는 요소와 일치하는지 확인 ex) 대학: '컴퓨터공학', 학과: '컴퓨터공학과' 일 경우, '컴퓨터공학 컴퓨터공학과'가 모두 일치하는지 확인
         detectedColleges.forEach(college => {
             detectedMajors.forEach(major => {
                 GetDepartmentList().forEach(department => {
                     if (department.includes(college) && department.includes(major)) {
-                        print(`감지된 전공: ${department}`);
-
-                        isDebugMode = true;
-                        // 캐릭터 생성 (임시)
-                        let char = new Character(extractedName, extractedIDs[0], department);
-                        player1 = char;
-
-                        print_log(`player1: ${player1.name}, ${player1.id}, ${player1.major}`);
-                        print_log('3초 뒤에 메인 화면으로 이동합니다.');
-
-                        setTimeout(() => {
-                            ChangeScene('MainGame');
-                        }, 3000);
+                        console.log(`감지된 전공: ${department}`);
+                        playerDept = department;
                     }
                 });
             });
         });
-
 
         isProcessing = false;
     }).catch(err => {
@@ -124,7 +163,6 @@ function extractName(text) {
     return name || "이름 없음";
 }
 
-
 function keyPressed_scanner() {
     if (key === ' ') {
         if (!isProcessing) {
@@ -132,5 +170,38 @@ function keyPressed_scanner() {
             img = capture.get();
             processOCR();
         }
+    }
+
+    // 랜덤한 카드 뽑기(왼쪽 컨트롤)
+    if (keyCode === CONTROL) {
+
+        // 랜덤한 네 자리 수
+        let r = random(1000, 10000);
+
+        let randomCharacter_1 = new Character("노르", `2019-1${r}`, "인문대학 언어학과");
+        let randomCharacter_2 = new Character("테이", `2020-1${r}`, "사회과학대학 사회학과");
+        let randomCharacter_3 = new Character("피아", `2021-1${r}`, "인문대학 미학과");
+        let randomCharacter_4 = new Character("마르", `2022-1${r}`, "자연과학대학 화학부");
+        let randomCharacter_5 = new Character("이브", `2023-1${r}`, "연합전공 정보문화학");
+
+        let c = random([randomCharacter_1, randomCharacter_2, randomCharacter_3, randomCharacter_4, randomCharacter_5]);
+
+        playerName = c.name;
+        playerId = c.id;
+        playerDept = c.major;
+
+        createCharacter();
+    }
+}
+function createCharacter() {
+    if (playerName !== "이름 없음") {
+        singleP = new Character(playerName, playerId, playerDept);
+        console.log(singleP.name);
+        console.log(singleP.major);
+        console.log(singleP.id);
+        //글로벌 변수인 캐릭터에 생성된 캐릭터를 assign
+        globalPlayer = singleP;
+    } else {
+        console.log("Try again");
     }
 }

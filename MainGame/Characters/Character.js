@@ -27,16 +27,24 @@ class Character {
         this.majorIdx = GetIdxByDepartment(this.major);
         
         if(this.majorIdx === null) {
-            print_log(`GetIdxByDepartment failed`);
+            console.log("GetIdxByDepartment failed");
+
+            // fill(0);
+            // textSize(20);
+            // textAlign(CENTER, CENTER);
+            // text("캐릭터 생성 실패! 다시 시도해주세요!", width/2, height/2 - 200);
+
             this.majorIdx = 86;
         }
+     
         
         this.jobIdx = characterData[this.majorIdx].job_idx;
         this.subtitle = characterData[this.majorIdx].title;
 
 
-        print_log(`jobIdx : ${this.jobIdx}`);
-        print_log(`subtitle : ${this.subtitle}`);
+        //print_log(`jobIdx : ${this.jobIdx}`);
+        //print_log(`subtitle : ${this.subtitle}`);
+        
 
         // 이름의 앞 두글자와 뒤 두글자를 붙여서 직업을 정함
         this.name = this.name.slice(0, 2) + characterData[this.majorIdx].name;

@@ -12,12 +12,17 @@ let isCPUmode = false;
 function InitGame() {
 
 
-    player1 = new Character("멘디", "2019-16798", "인문대학 미학과");
+    if (playerNumber == 1) { // 1인용 모드일 경우
+        print_log("1인용 모드");
+        player1 = globalPlayer;
+        player2 = new Character("", "20" + random(17, 25) + "-" + random(1, 3) + random(0, 9) + random(0, 9) + random(0, 9) + random(0, 9), "연합전공 정보문화학");
 
-    // 랜덤한 4자리 숫자 생성
-    let randomID = random(1000, 9999);
-
-    player2 = new Character("", `9999-9${randomID}`, "?????");
+    }
+    else if (playerNumber == 2) { // 2인용 모드일 경우
+        print_log("2인용 모드");
+        player1 = globalPlayer1;
+        player2 = globalPlayer2;
+    }
 
     isSkillAvailable_1p = false;
     isSkillAvailable_2p = false;
@@ -44,27 +49,27 @@ function TurnTaker() {
     actionsInProgress = false;
     showActions = true;
 
-    if(selectedAction_1p == 4){
+    if (selectedAction_1p == 4) {
         player1.skillPoint = 0;
         isSkillAvailable_1p = false;
     }
 
-    if(selectedAction_2p == 4){
+    if (selectedAction_2p == 4) {
         player2.skillPoint = 0;
         isSkillAvailable_2p = false;
     }
 
     selectedAction_1p = 0;
     selectedAction_2p = 0;
-    
+
     turnNum++;
     print_log(`turnNum : ${turnNum}`);
 
-    if(player1.skillPoint ==  100) {
+    if (player1.skillPoint == 100) {
         isSkillAvailable_1p = true;
     }
 
-    if(player2.skillPoint ==  100) {
+    if (player2.skillPoint == 100) {
         isSkillAvailable_2p = true;
     }
 

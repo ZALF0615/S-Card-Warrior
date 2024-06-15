@@ -1,20 +1,35 @@
 let currentSceneName = 'Title';
 
+let globalPlayer = null;
+let globalPlayer1 = null;
+let globalPlayer2 = null;
+let playerNumber = 0;
+
+let isGamePaused;
+
 function setup() {
   createCanvas(1920, 1080);
-  setup_menu();
+  globalPlayer = null;
+  globalPlayer1 = null;
+  globalPlayer2 = null;
+  playerNumber = 0;
 
-  PlayBGM(bgm, 0.1);
+  // bgm.play();
 }
-
 
 function draw() {
 
   if (currentSceneName == 'Title') { draw_title(); }
   else if (currentSceneName == 'Tutorial') { draw_tutorial(); }
-  else if (currentSceneName == 'Scanner') { draw_scanner(); }
   else if (currentSceneName == 'MainGame') { draw_battle(); }
 
+  else if (currentSceneName == 'Scanner') { draw_scanner(); }
+  else if (currentSceneName == 'ScannerUI') { draw_scannerUI(); }
+  else if (currentSceneName == 'Scanner1') { draw_scanner1(); }
+  else if (currentSceneName == 'ScannerUI1') { draw_scannerUI1(); }
+  else if (currentSceneName == 'Scanner2') { draw_scanner2(); }
+  else if (currentSceneName == 'ScannerUI2') { draw_scannerUI2(); }
+ 
   if (isGamePaused) {
     displayMenu();
   }
@@ -43,52 +58,36 @@ function draw() {
 
 }
 
-
-
 function ChangeScene(sceneName) {
   currentSceneName = sceneName;
-  print_log("씬 전환: " + sceneName);
+
   if (sceneName == 'Title') { setup_title(); }
   if (sceneName == 'Tutorial') { setup_tutorial(); }
   else if (sceneName == 'Scanner') { setup_scanner(); }
   else if (sceneName == 'MainGame') { setup_battle(); }
+  else if (sceneName == 'ScannerUI') { setup_scannerUI(); }
+  else if (sceneName == 'Scanner1') { setup_scanner1(); }
+  else if (sceneName == 'ScannerUI1') { setup_scannerUI1(); }
+  else if (sceneName == 'Scanner2') { setup_scanner2(); }
+  else if (sceneName == 'ScannerUI2') { setup_scannerUI2(); }
 }
 
-let isGamePaused = false;
-
-function pauseGame() {
-  isGamePaused = true;
-  disp
-
-}
 
 let debugSequence = ['+', '+', '+', '+', '+', '+', '+', '+'];
 let currentSequenceIndex = 0;
 
 function keyPressed() {
 
-  // esc 키를 누르면 게임 일시정지
-  if (keyCode === ESCAPE) {
-
-    if (currentSceneName == 'Title') { return; } // 타이틀 화면에서는 일시정지 불가
-
-    if (isGamePaused) {
-      isGamePaused = false;
-    } else {
-      pauseGame();
-    }
-  }
-
-  if (isGamePaused) {
-    keyPressed_menu()
-    return;
-  }
-
-  if (currentSceneName == 'Title') { presskey_title() };
+  if (currentSceneName == 'Title') { presskey_title(); }
   if (currentSceneName == 'Tutorial') { keyPressed_tutorial(); }
-  if (currentSceneName == 'Scanner') { keyPressed_scanner(); }
-  if (currentSceneName == 'MainGame') { keyPressed_gamelogic() };
-
+  else if (currentSceneName == 'Scanner') { keyPressed_scanner(); }
+  else if (currentSceneName == 'MainGame') { keyPressed_gamelogic(); }
+  else if (currentSceneName == 'ScannerUI') { keyPressed_scannerUI(); }
+  else if (currentSceneName == 'Scanner1') { keyPressed_scanner1(); }
+  else if (currentSceneName == 'ScannerUI1') { keyPressed_scannerUI1(); }
+  else if (currentSceneName == 'Scanner2') { keyPressed_scanner2(); }
+  else if (currentSceneName == 'ScannerUI2') { keyPressed_scannerUI2(); }
+  
   // 쉬프트 키를 누르면 배경음악 꺼져 있으면 켜고 있으면 꺼짐
   if (keyCode === SHIFT) {
     if (bgm.isPlaying()) { bgm.pause(); }
@@ -98,7 +97,6 @@ function keyPressed() {
   // 디버그 모드 진입
   const keyName = key.toUpperCase();
   const expectedKey = debugSequence[currentSequenceIndex];
-
 
   if (keyName === expectedKey) {
     currentSequenceIndex++;

@@ -28,7 +28,7 @@ function draw() {
   // deltaTime을 고려하여 경과 시간 업데이트
   elapsedTime += deltaTime / 1000;
   // FPS가 60이었을 때와 같은 방식으로 경과 프레임 수 계산
-  elapsedFrame += deltaTime / (1000 / 60);
+  elapsedFrame = int(elapsedFrame + deltaTime / (1000 / 60));
 
   if (currentSceneName == 'Title') { draw_title(); }
   else if (currentSceneName == 'Tutorial') { draw_tutorial(); }
@@ -105,7 +105,7 @@ function draw() {
       textSize(20);
       textAlign(LEFT, CENTER);
       text("Elapsed Time: " + elapsedTime.toFixed(2) + "s", 7, 75);
-      text("Elapsed Frame: " + elapsedFrame.toFixed(2), 250, 75);
+      text("Elapsed Frame: " + elapsedFrame, 250, 75);
 
     }
   }

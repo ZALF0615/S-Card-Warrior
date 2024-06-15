@@ -106,7 +106,6 @@ function displayStatus(player1, player2) {
 
     // 각 항목의 값 출력
     for (let i = 0; i < player1Stat.length; i++) {
-        player1Stat[i] = player1Stat[i] == 10 ? "0 (10)" : player1Stat[i];
         text(player1Stat[i], x + 180, y + 30 + 50 * i);
     }
 
@@ -132,7 +131,6 @@ function displayStatus(player1, player2) {
 
     // 각 항목의 값 출력
     for (let i = 0; i < player2Stat.length; i++) {
-        player2Stat[i] = player2Stat[i] == 10 ? "0 (10)" : player2Stat[i];
         text(player2Stat[i], x + 180, y + 30 + 50 * i);
     }
 }

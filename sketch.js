@@ -12,6 +12,9 @@ let elapsedTime = 0; // 경과 시간 (실제 시간)
 
 function setup() {
   createCanvas(1920, 1080);
+
+  frameRate(60);
+
   globalPlayer = null;
   globalPlayer1 = null;
   globalPlayer2 = null;
@@ -23,8 +26,9 @@ function setup() {
 function draw() {
 
   // deltaTime을 고려하여 경과 시간 업데이트
-  elapsedFrame += deltaTime;
-  elapsedTime = elapsedFrame / 1000;
+  elapsedTime += deltaTime / 1000;
+  // FPS가 60이었을 때와 같은 방식으로 경과 프레임 수 계산
+  elapsedFrame += deltaTime / (1000 / 60);
 
   if (currentSceneName == 'Title') { draw_title(); }
   else if (currentSceneName == 'Tutorial') { draw_tutorial(); }
@@ -95,12 +99,13 @@ function draw() {
       fill(0, 100);
       noStroke();
       rectMode(CORNER);
-      rect(0, 60, 250, 30);
+      rect(0, 60, 500, 30);
 
       fill(255);
       textSize(20);
       textAlign(LEFT, CENTER);
       text("Elapsed Time: " + elapsedTime.toFixed(2) + "s", 7, 75);
+      text("Elapsed Frame: " + elapsedFrame.toFixed(2), 250, 75);
 
     }
   }

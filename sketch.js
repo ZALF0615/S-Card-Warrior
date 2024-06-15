@@ -53,6 +53,19 @@ function draw() {
       textSize(20);
       textAlign(LEFT, CENTER);
       text(m, 7, height - 30 * (i + 1) + 15);
+
+      // 화면 왼쪽 위에 현재 프레임레이트 출력 (배경 검은색, 글자 흰색)
+
+      fill(0, 100);
+      noStroke();
+      rectMode(CORNER);
+
+      rect(0, 0, 100, 30);
+      fill(255);
+      textSize(20);
+      textAlign(LEFT, CENTER);
+      text("FPS: " + frameRate().toFixed(0), 7, 15);  
+  
     }
   }
 

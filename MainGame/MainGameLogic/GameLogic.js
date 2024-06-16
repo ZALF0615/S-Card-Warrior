@@ -412,7 +412,14 @@ function keyPressed_gamelogic() {
                 InitGame(); // 게임 초기화
 
             }, 700);
-           
+
+        }
+    }
+
+    if (isGameOver && clearFlag) {
+        if (key === ' ') {
+            PlaySEOneShot(piSE); // 삑 소리 재생
+            ChangeScene('Title');
         }
     }
 

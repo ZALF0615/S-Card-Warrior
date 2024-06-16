@@ -374,6 +374,8 @@ function displayBG() {
 let continueFlag = false;
 let currentContinueCount = 0;
 
+let clearFlag = false;
+
 function GameOverUI() {
     // 어두운 배경
     // fill(0, 150);
@@ -394,7 +396,7 @@ function GameOverUI() {
         else if (isGameOver == -1) {
             imageCenter(you_lose_img, width / 2, height / 2 - 200, you_lose_img.width * ratio, you_lose_img.height * ratio);
         }
-    }else{
+    } else {
         if (isGameOver == 1) {
             imageCenter(player1_win_img, width / 2, height / 2 - 200, player1_win_img.width * ratio, player1_win_img.height * ratio);
         }
@@ -411,7 +413,7 @@ function GameOverUI() {
         noStroke();
         rect(0, 0, width, height);
 
-        if(currentContinueCount > 0){
+        if (currentContinueCount > 0) {
             fill(255);
             textSize(70);
             textAlign(CENTER, CENTER);
@@ -421,14 +423,23 @@ function GameOverUI() {
             textSize(380);
             text(currentContinueCount, width / 2, height / 2);
 
-            
-        }else{
+
+        } else {
             // 게임 오버 텍스트 띄움
             fill(255);
             textSize(70);
             textAlign(CENTER, CENTER);
             text("GAME OVER", width / 2, height / 2);
         }
+    }
+
+    if (clearFlag) {
+        // 스페이스를 눌러 다음으로 텍스트 화면 하단에 띄우기
+        fill(0);
+        textSize(70);
+        textAlign(CENTER, CENTER);
+
+        text("SPACE를 눌러 다음으로", width / 2, height - 100);
     }
 
 }

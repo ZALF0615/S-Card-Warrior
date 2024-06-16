@@ -17,6 +17,7 @@ function InitGame() {
     isGameStart = true;
     isGameOver = 0;
 
+    turnNum = 0;
     
     ChangeAnimation(1, '준비');
     ChangeAnimation(-1, '준비');
@@ -31,6 +32,8 @@ function InitGame() {
     selectedAction_2p = 0;
 
     continueFlag = false;
+    clearFlag = false;
+    
     currentBGImg = random(bgList);
 
     TurnTaker();
@@ -83,6 +86,12 @@ function GameOver(winside) {
 
             ChangeAnimation(1, '승리');
             ChangeAnimation(-1, '패배');
+
+            // 5초 뒤에 클리어 프래그 온
+            setTimeout(() => {
+                clearFlag = true;
+            }, 5000);
+
         } else if (winside == -1) {
             print_log("YOU LOSE");
 

@@ -8,8 +8,12 @@ let cardExplorer;
 let cardBard;
 let cardLucifer;
 
-let cardFlip = false;
+let cardFlip;
 let gameReady = false;
+let flipIcon;
+let values = [3,4,3,3,3]; // 시계방향으로 radar chart의 값이 들어감
+let centerX;
+let centerY;
 
 function setup_scannerUI() {
     cardFront = loadImage('Asset/UI/CharacterCard/warrior_card_front_bg.png');
@@ -19,7 +23,14 @@ function setup_scannerUI() {
     cardWizard = loadImage('Asset/Character/마법사/마법사_기본/F0.png');
     cardBard = loadImage('Asset/Character/음유시인/음유시인_기본/F0.png');
     cardLucifer = loadImage('Asset/Character/정보대마왕/정보대마왕_기본/F0.png');
+    cardDruid = loadImage('Asset/Character/드루이드/드루이드_기본/F0.png');
+    flipIcon = loadImage('Asset/UI/ScannerCards/warrior_generation_flip_card_icon (2).png');
 
+    cardFlip = false;
+
+    centerX = width / 2 - 2;
+    centerY = height / 2 - cardFront.height / 4 - 148;
+    
 }
 
 function draw_scannerUI() {
@@ -40,6 +51,8 @@ function draw_scannerUI() {
     textSize(25);
     text("뒤집으려면 F를 누르세요!", width/2 - cardFront.width, height - cardFront.height/2);
     image(cardFront, width/2 - cardFront.width/2, height/2 - cardFront.height/2);
+    image(flipIcon, width/2 - cardFront.width + flipIcon.width + 40, height - cardFront.height/2 - flipIcon.height/2);
+        
     
     textSize(40);
     stroke(255, 26, 117);
@@ -292,25 +305,26 @@ function draw_scannerUI() {
             image(cardExplorer, width/2 - cardFront.width/2 + 60, height/2 - cardFront.height/2 + 120);
             break;
         case 79:
-            image(cardLucifer,  width/2 - cardFront.width/2 + 140, height/2 - cardFront.height/2 + 140, cardFront.width - 280, cardFront.height - 350);
+            //image(cardDruid,  width/2 - cardFront.width/2 + 140, height/2 - cardFront.height/2 + 140, cardFront.width - 280, cardFront.height - 350);
+            imageCenter(cardDruid, width/2 - cardFront.width/2 + 60, height/2 - cardFront.height/2 + 120, cardDruid.width, cardDruid.height, 0, 0, cardDruid.width, cardDruid.height) 
             break;
         case 80:
-            image(cardLucifer,  width/2 - cardFront.width/2 + 140, height/2 - cardFront.height/2 + 140, cardFront.width - 280, cardFront.height - 350);
+            imageCenter(cardDruid, width/2 - cardFront.width/2 + 60, height/2 - cardFront.height/2 + 120, cardDruid.width, cardDruid.height, 0, 0, cardDruid.width, cardDruid.height) 
             break;
         case 81:
-            image(cardLucifer,  width/2 - cardFront.width/2 + 140, height/2 - cardFront.height/2 + 140, cardFront.width - 280, cardFront.height - 350);
+            imageCenter(cardDruid, width/2 - cardFront.width/2 + 60, height/2 - cardFront.height/2 + 120, cardDruid.width, cardDruid.height, 0, 0, cardDruid.width, cardDruid.height) 
             break;
         case 82:
-            image(cardLucifer,  width/2 - cardFront.width/2 + 140, height/2 - cardFront.height/2 + 140, cardFront.width - 280, cardFront.height - 350);
+            imageCenter(cardDruid, width/2 - cardFront.width/2 + 60, height/2 - cardFront.height/2 + 120, cardDruid.width, cardDruid.height, 0, 0, cardDruid.width, cardDruid.height) 
             break;
         case 83:
-            image(cardLucifer,  width/2 - cardFront.width/2 + 140, height/2 - cardFront.height/2 + 140, cardFront.width - 280, cardFront.height - 350);
+            imageCenter(cardDruid, width/2 - cardFront.width/2 + 60, height/2 - cardFront.height/2 + 120, cardDruid.width, cardDruid.height, 0, 0, cardDruid.width, cardDruid.height) 
             break;
         case 84:
-            image(cardLucifer,  width/2 - cardFront.width/2 + 140, height/2 - cardFront.height/2 + 140, cardFront.width - 280, cardFront.height - 350);
+            imageCenter(cardDruid, width/2 - cardFront.width/2 + 60, height/2 - cardFront.height/2 + 120, cardDruid.width, cardDruid.height, 0, 0, cardDruid.width, cardDruid.height) 
             break;
         case 85:
-            image(cardLucifer,  width/2 - cardFront.width/2 + 140, height/2 - cardFront.height/2 + 140, cardFront.width - 280, cardFront.height - 350);
+            imageCenter(cardDruid, width/2 - cardFront.width/2 + 60, height/2 - cardFront.height/2 + 120, cardDruid.width, cardDruid.height, 0, 0, cardDruid.width, cardDruid.height) 
             break;
         case 86:
             image(cardLucifer,  width/2 - cardFront.width/2 + 140, height/2 - cardFront.height/2 + 140, cardFront.width - 280, cardFront.height - 350);
@@ -324,12 +338,20 @@ function draw_scannerUI() {
         image(cardBack, width/2 - cardFront.width/2, height/2 - cardFront.height/2);
         textSize(25);
         text("뒤집으려면 F를 누르세요!", width/2 - cardFront.width, height - cardFront.height/2);
+        image(flipIcon, width/2 - cardFront.width + flipIcon.width + 40, height - cardFront.height/2 - flipIcon.height/2);
         
-        fill('red');
-        ellipse(width/2-2, height/2 - cardFront.height/4 + 12, 5, 5);
-        stroke('red');
-        strokeWeight(3);
-        line(width/2-2, height/2 - cardFront.height/4 + 12, width/2 - 2, height/2 - cardFront.height/4 - 68);
+        
+        //line(width/2-2, height/2 - cardFront.height/4 + 12, width/2 - 2, height/2 - cardFront.height/4 - 68);
+        //radar chart 오각 차트
+        fill( 84, 133, 214, 100);
+        stroke( 84, 133, 214);
+        strokeWeight(1);
+        values = [globalPlayer.grade, globalPlayer.hpMax, globalPlayer.rock, globalPlayer.scissors, globalPlayer.paper];
+        drawRadarChart(centerX, centerY, 80, values);
+        textSize(12);
+        fill( 84, 133, 214);
+        noStroke();
+        text(globalPlayer.id, centerX + 70, centerY + cardFront.height/5 - 10);
 
         noStroke();
 
@@ -1011,64 +1033,64 @@ function draw_scannerUI() {
                 fill(0);
                 textSize(30);
                 textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront.height/2 - 120);
+                text("자연의 분노", width/2, height - cardFront.height/2 - 120);
                 textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront.height/2 - 20);
+                text("자연의 힘을 소환하여 덩굴로 속박하고", width/2, height - cardFront.height/2 - 60);
+                text("독으로 대미지를 입힘.", width/2, height - cardFront.height/2 - 20);
                 break;
             case 80:
                 fill(0);
                 textSize(30);
                 textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront.height/2 - 120);
+                text("자연의 분노", width/2, height - cardFront.height/2 - 120);
                 textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront.height/2 - 20);
+                text("자연의 힘을 소환하여 덩굴로 속박하고", width/2, height - cardFront.height/2 - 60);
+                text("독으로 대미지를 입힘.", width/2, height - cardFront.height/2 - 20);
                 break;
             case 81:
                 fill(0);
                 textSize(30);
                 textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront.height/2 - 120);
+                text("자연의 분노", width/2, height - cardFront.height/2 - 120);
                 textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront.height/2 - 20);
+                text("자연의 힘을 소환하여 덩굴로 속박하고", width/2, height - cardFront.height/2 - 60);
+                text("독으로 대미지를 입힘.", width/2, height - cardFront.height/2 - 20);
                 break;
             case 82:
                 fill(0);
                 textSize(30);
                 textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront.height/2 - 120);
+                text("자연의 분노", width/2, height - cardFront.height/2 - 120);
                 textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront.height/2 - 20);
+                text("자연의 힘을 소환하여 덩굴로 속박하고", width/2, height - cardFront.height/2 - 60);
+                text("독으로 대미지를 입힘.", width/2, height - cardFront.height/2 - 20);
                 break;
             case 83:
                 fill(0);
                 textSize(30);
                 textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront.height/2 - 120);
+                text("자연의 분노", width/2, height - cardFront.height/2 - 120);
                 textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront.height/2 - 20);
+                text("자연의 힘을 소환하여 덩굴로 속박하고", width/2, height - cardFront.height/2 - 60);
+                text("독으로 대미지를 입힘.", width/2, height - cardFront.height/2 - 20);
                 break;
             case 84:
                 fill(0);
                 textSize(30);
                 textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront.height/2 - 120);
+                text("자연의 분노", width/2, height - cardFront.height/2 - 120);
                 textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront.height/2 - 20);
+                text("자연의 힘을 소환하여 덩굴로 속박하고", width/2, height - cardFront.height/2 - 60);
+                text("독으로 대미지를 입힘.", width/2, height - cardFront.height/2 - 20);
                 break;
             case 85:
                 fill(0);
                 textSize(30);
                 textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront.height/2 - 120);
+                text("자연의 분노", width/2, height - cardFront.height/2 - 120);
                 textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront.height/2 - 20);
+                text("자연의 힘을 소환하여 덩굴로 속박하고", width/2, height - cardFront.height/2 - 60);
+                text("독으로 대미지를 입힘.", width/2, height - cardFront.height/2 - 20);
                 break;
             case 86:
                 fill(0);
@@ -1101,3 +1123,30 @@ function keyPressed_scannerUI() {
     }
 }
 
+function drawRadarChart(centerX, centerY, maxDistance, values) {
+    let angle = TWO_PI / 5; // There are five points in the pentagon
+  
+    beginShape();
+    for (let i = 0; i < 5; i++) {
+      let value = constrain(values[i], 0, 9); // Ensure values are between 0 and 9
+      let distance = map(value, 0, 9, 0, maxDistance);
+      let x = centerX + cos(angle * i - HALF_PI) * distance;
+      let y = centerY + sin(angle * i - HALF_PI) * distance;
+      vertex(x, y);
+    }
+    endShape(CLOSE);
+  
+    // Optionally, draw the outer pentagon for reference
+    stroke(0);
+    noFill();
+    strokeWeight(1);
+    beginShape();
+    for (let i = 0; i < 5; i++) {
+      let x = centerX + cos(angle * i - HALF_PI) * maxDistance;
+      let y = centerY + sin(angle * i - HALF_PI) * maxDistance;
+      vertex(x, y);
+    }
+    endShape(CLOSE);
+  }
+  
+ 

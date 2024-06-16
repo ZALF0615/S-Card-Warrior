@@ -79,16 +79,13 @@ function GameOver(winside) {
 
         ChangeAnimation(1, '승리');
         ChangeAnimation(-1, '패배');
-        //최정원
         
-        //최정원
     } else if (winside == -1) {
         print_log("2P WIN");
 
         ChangeAnimation(1, '패배');
         ChangeAnimation(-1, '승리');
-        //최정원
-        //최정원
+       
     }
 
     /*
@@ -137,5 +134,9 @@ draw_battle = function () {
         textSize(100);
         textAlign(CENTER, CENTER);
         text(isGameOver == 1 ? "1P WIN" : "2P WIN", width / 2, height / 2);
+
+        fill(255);
+        textSize(50);
+        text("Enter을 눌러 처음 화면으로 돌아가세요.", width/2, height/2 + 200);
     }
 }

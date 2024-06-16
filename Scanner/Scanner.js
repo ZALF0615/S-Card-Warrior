@@ -73,9 +73,7 @@ function draw_scanner() {
     background(220);
 
     //스캐너 타이틀
-    elapsedTime = millis() / 1000;
-
-    
+    ellapsedTime = millis() / 1000;
 
     if (isProcessing) {
         noTint();
@@ -193,7 +191,7 @@ function draw_scanner() {
 
     }
 // 스캐너가 깜빡이게 하는 코드
-    let blinkColor = (floor(elapsedTime) % 2 === 0) ? color(227, 66, 86) : color(113, 161, 202);
+    let blinkColor = (floor(ellapsedTime) % 2 === 0) ? color(227, 66, 86) : color(113, 161, 202);
 
     textSize(40);
     textAlign(CENTER);

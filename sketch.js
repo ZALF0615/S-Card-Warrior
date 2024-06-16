@@ -200,7 +200,3 @@ function keyPressed() {
   }
 
 }
-
-function mouseClicked() {
-  if(currentSceneName == 'Scanner') { mouseClicked_scanner(); }
-}

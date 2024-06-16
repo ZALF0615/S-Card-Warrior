@@ -144,7 +144,7 @@ function draw_scannerUI() {
         if(globalPlayer.majorIdx >= 1 && globalPlayer.majorIdx <= 29) {
             //현자
             radarChartColor = color(117, 251, 96, 150);
-            radarLineColor = color(117, 251, 96, 50);
+            radarLineColor = color(117, 251, 96);
         } else if (globalPlayer.majorIdx >= 30 && globalPlayer.majorIdx <= 35) {
             //위자드
             radarChartColor = color(142, 251, 245, 150);
@@ -165,7 +165,7 @@ function draw_scannerUI() {
             //탐험가
             radarChartColor = color(13, 41, 244, 150); 
             radarLineColor = color(13, 41, 244); 
-        } else if (globalPlayer.majorIdx >= 78 && globalPlayer.majorIdx <= 85) {
+        } else if (globalPlayer.majorIdx >= 79 && globalPlayer.majorIdx <= 85) {
             //드루이드
             radarChartColor = color(235, 254, 83, 150); 
             radarLineColor = color(235, 254, 83); 
@@ -178,7 +178,7 @@ function draw_scannerUI() {
         fill(radarChartColor);
         stroke(radarLineColor);
         strokeWeight(3);
-        values = [globalPlayer.grade, globalPlayer.hpMax, globalPlayer.rock, globalPlayer.scissors, globalPlayer.paper];
+        values = [globalPlayer.grade, globalPlayer.id.charAt(6), globalPlayer.rock, globalPlayer.scissors, globalPlayer.paper];
         drawRadarChart(centerX, centerY, 80, values);
         textSize(20);
         fill(radarLineColor);
@@ -248,7 +248,7 @@ function draw_scannerUI() {
             textSize(20);
             fill(0);
             text("데미지를 본인 모든 손의 합만큼 입힘.", width/2, height - cardFront.height/2 - 60);
-        } else if (globalPlayer.majorIdx >= 78 && globalPlayer.majorIdx <= 85) {
+        } else if (globalPlayer.majorIdx >= 79 && globalPlayer.majorIdx <= 85) {
             //드루이드
             fill(radarLineColor);
             textSize(30);
@@ -298,18 +298,6 @@ function drawRadarChart(centerX, centerY, maxDistance, values) {
     }
     endShape(CLOSE);
   
-    // 오각형 모양 아웃라인
-    /*
-    stroke(0);
-    noFill();
-    strokeWeight(1);
-    beginShape();
-    for (let i = 0; i < 5; i++) {
-      let x = centerX + cos(angle * i - HALF_PI) * maxDistance;
-      let y = centerY + sin(angle * i - HALF_PI) * maxDistance;
-      vertex(x, y);
-    }
-      */
     endShape(CLOSE);
   }
 

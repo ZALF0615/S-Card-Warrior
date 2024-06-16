@@ -450,11 +450,11 @@ function displayLoading() {
     // 화면 전체에 어두운 배경, 오른쪽 아래에 로딩 중 텍스트 출력
     // Loading... 텍스트 출력, ... 부분이 계속 변화하도록
 
-    rectMode(CORNER);
+    rectMode(CENTER);
 
     fill(0, 150);
     noStroke();
-    rect(0, 0, width, height);
+    rect(width / 2, height / 2, width, height);
 
     fill(255);
     textSize(70);
@@ -468,6 +468,8 @@ function displayLoading() {
     } else {
         text("Loading...", 20, height - 70);
     }
+
+    textAlign(CENTER, CENTER);
 
 }
 

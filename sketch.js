@@ -23,6 +23,8 @@ function setup() {
 
   currentBGImg = random(bgList);
 
+  setup_menu();
+
 }
 
 function draw() {
@@ -165,6 +167,7 @@ let currentSequenceIndex = 0;
 
 function keyPressed() {
 
+  // ESC 키를 누르면 게임 일시정지
   if (currentSceneName == 'Title') { presskey_title(); }
   if (currentSceneName == 'Tutorial') { keyPressed_tutorial(); }
   else if (currentSceneName == 'Scanner') { keyPressed_scanner(); }

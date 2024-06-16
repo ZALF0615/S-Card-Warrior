@@ -101,11 +101,11 @@ function presskey_title() {
         } else if (selected_button == 2) { // 1인용 모드
             isCPUmode = true;
             playerNumber = 1;
-            ChangeScene('MainGame');
+            ChangeScene('Scanner');
         } else if (selected_button == 3) { // 2인용 모드
             isCPUmode = false;
             playerNumber = 2;
-            ChangeScene('MainGame');
+            ChangeScene('Scanner1');
         }
     }
 

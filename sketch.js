@@ -138,14 +138,14 @@ function ChangeScene(sceneName) {
       let r = random(1000, 9999);
       player2 = new Character("", `9999-9${r}`, "연합전공 정보문화학");
 
-      setRandomCharacters(); // 디버깅 용 (추후 삭제)
+      // setRandomCharacters(); // 디버깅 용 (추후 삭제)
 
     } else if (playerNumber === 2) { // 2인용 모드일 경우
       print_log("2인용 모드");
       player1 = globalPlayer1;
       player2 = globalPlayer2;
 
-      setRandomCharacters(); // 디버깅 용 (추후 삭제)
+      // setRandomCharacters(); // 디버깅 용 (추후 삭제)
     }
 
     imagesToLoad = 0;

@@ -144,6 +144,8 @@ function ChangeScene(sceneName) {
       print_log("2인용 모드");
       player1 = globalPlayer1;
       player2 = globalPlayer2;
+
+      setRandomCharacters(); // 디버깅 용 (추후 삭제)
     }
 
     imagesToLoad = 0;
@@ -173,24 +175,28 @@ function ChangeScene(sceneName) {
 
 function setRandomCharacters() {
 
-  let randomCharacter_1 = new Character("", `2019-1${random(1000, 10000)}`, "인문대학 언어학과");
-  let randomCharacter_2 = new Character("", `2020-1${random(1000, 10000)}`, "자연과학대학 통계학과");
-  let randomCharacter_3 = new Character("", `2021-1${random(1000, 10000)}`, "공과대학 컴퓨터공학부");
-  let randomCharacter_4 = new Character("", `2022-1${random(1000, 10000)}`, "수의과대학 수의학과");
-  let randomCharacter_5 = new Character("", `2024-1${random(1000, 10000)}`, "음악대학 관현악과");
-  let randomCharacter_6 = new Character("", `2023-1${random(1000, 10000)}`, "사회과학대학 심리학과");
-  let randomCharacter_7 = new Character("", `2024-1${random(1000, 10000)}`, "농업생명과학대학 조경·지역시스템공학부");
-  let randomCharacter_8 = new Character("", `2023-1${random(1000, 10000)}`, "연합전공 정보문화학");
+  function createCharacter(year, department) {
+    return new Character("", `20${year}-1${Math.floor(Math.random() * 9000) + 1000}`, department);
+  }
 
-  let c1 = random([randomCharacter_1, randomCharacter_2, randomCharacter_3, randomCharacter_4, randomCharacter_5, randomCharacter_6, randomCharacter_7, randomCharacter_8]);
+  let randomCharacter_1 = createCharacter(19, "인문대학 언어학과");
+  let randomCharacter_2 = createCharacter(20, "자연과학대학 통계학과");
+  let randomCharacter_3 = createCharacter(21, "공과대학 컴퓨터공학부");
+  let randomCharacter_4 = createCharacter(22, "수의과대학 수의학과");
+  let randomCharacter_5 = createCharacter(24, "음악대학 관현악과");
+  let randomCharacter_6 = createCharacter(23, "사회과학대학 심리학과");
+  let randomCharacter_7 = createCharacter(24, "농업생명과학대학 조경·지역시스템공학부");
+  let randomCharacter_8 = createCharacter(23, "연합전공 정보문화학");
 
-  player1 = c1;
+  let characters = [randomCharacter_1, randomCharacter_2, randomCharacter_3, randomCharacter_4, randomCharacter_5, randomCharacter_6, randomCharacter_7, randomCharacter_8];
 
-  let c2 = random([randomCharacter_1, randomCharacter_2, randomCharacter_3, randomCharacter_4, randomCharacter_5, randomCharacter_6, randomCharacter_7, randomCharacter_8]);
+  let c1 = JSON.parse(JSON.stringify(random(characters)));
+  player1 = new Character(c1.name, c1.id, c1.department);
 
-  player2 = c2;
-
+  let c2 = JSON.parse(JSON.stringify(random(characters)));
+  player2 = new Character(c2.name, c2.id, c2.department);
 }
+
 
 let debugSequence = ['+', '+', '+', '+', '+', '+', '+', '+'];
 let currentSequenceIndex = 0;

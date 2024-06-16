@@ -364,7 +364,7 @@ function displaySelectedAction(playerNum) {
 
 function displayBG() {
 
-    background(255);
+    background(220);
     tint(150, 100);
     image(currentBGImg, 0, 0, width, height);
     tint(255);

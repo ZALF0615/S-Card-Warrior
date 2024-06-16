@@ -199,43 +199,51 @@ function Damage(damage, playerNum, hasEffect = false) {
 }
 
 function ProcessSpecialSkill(winSide, jobIdx) {
+    let activePlayer = winSide == 1 ? player1 : player2; // 스킬 사용한 플레이어
+    let counterpartPlayer = winSide == 1 ? player2 : player1; // 스킬 사용당한 플레이어
+
+    let counterpartPlayerAction = winSide == 1 ? selectedAction_2p : selectedAction_1p; // 스킬 사용당한 플레이어의 액션
+
+    Attack(winSide, 4);   // 1p 성공 애니메이션
+
+    let animSpeed = winSide == 1 ? animSpeed_1p : animSpeed_2p;
+    let damage_timing = 22 * animSpeed / 60 * 1000;
+
     switch (jobIdx) {
         case 1: // 현자 (지식의 폭풍) 데미지를 5만큼 입히고, 본인 HP가 5만큼 회복됨.
+            print_log(`${winSide == 1 ? '1' : '2'}p(현자) 스킬 사용`);
 
-            if (winSide == 1) { // 1p 승리 (스킬 사용)
-                print_log("1p(현자) 스킬 사용");
-
-                Attack(1, 4);   // 1p 성공 애니메이션
-                // Attack(-1, -selectedAction_2p); // 2p 실패 애니메이션
-
-                let damage_timing = 22 * animSpeed_1p / 60 * 1000;
+            setTimeout(() => {
+                Damage(5, -winSide, true);
                 setTimeout(() => {
-                    Damage(5, -1, true);
-
-                    setTimeout(() => {
-                        Damage(-5, 1, true);
-                        setTimeout(TurnTaker, 12 * animSpeed_1p / 60 * 1000);
-                    }, 1000);``
-
-                }, damage_timing);
-            } else {
-                print_log("2p(현자) 스킬 사용");
-
-                // Attack(1, selectedAction_1p);   // 성공 애니메이션
-                Attack(-1, 4); // 2p 성공 애니메이션
-
-                let damage_timing = 22 * animSpeed_2p / 60 * 1000;
-                setTimeout(() => {
-                    Damage(5, 1, true);
-
-                    setTimeout(() => {
-                        Damage(-5, -1, true);
-                        setTimeout(TurnTaker, 12 * animSpeed_2p / 60 * 1000);
-                    }, 1000);
-                }, damage_timing);
-            }
+                    Damage(-5, 1, true);
+                    setTimeout(TurnTaker, 12 * animSpeed / 60 * 1000);
+                }, 1000);
+            }, damage_timing);
             break;
-        case 2: // 마법사 (원소 폭발)
+        case 2: // 마법사 (원소 폭발) 상대가 낸 손 +3만큼 데미지를 입히고, 본인 HP가 3만큼 회복됨.
+            print_log(`${winSide == 1 ? '1' : '2'}p(마법사) 스킬 사용`);
+
+            setTimeout(() => {
+                let damage = 0;
+                switch (counterpartPlayerAction) {
+                    case 1: // 가위
+                        damage = counterpartPlayer.scissors + 3;
+                        break;
+                    case 2: // 바위
+                        damage = counterpartPlayer.rock + 3;
+                        break;
+                    case 3: // 보
+                        damage = counterpartPlayer.paper + 3;
+                        break;
+                }
+                Damage(damage, -winSide, true);
+                setTimeout(() => {
+                    Damage(-3, 1, true);
+                    setTimeout(TurnTaker, 12 * animSpeed / 60 * 1000);
+                }, 1000);
+            }, damage_timing);
+
             break;
         case 3: // 메카 파일럿 (잔고장)
             break;

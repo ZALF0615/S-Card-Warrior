@@ -219,6 +219,7 @@ function ProcessSpecialSkill(winSide, jobIdx) {
     switch (jobIdx) {
         case 1: // 현자 (지식의 폭풍) 데미지를 5만큼 입히고, 본인 HP가 5만큼 회복됨.
             print_log(`${winSide == 1 ? '1' : '2'}p(현자) 스킬 사용`);
+            setTimeout(() => { PlaySEOneShot(skillSEs[jobIdx], 0.6); }, 500); // 스킬 SE
 
             setTimeout(() => {
                 Damage(5, -winSide, true);
@@ -230,6 +231,7 @@ function ProcessSpecialSkill(winSide, jobIdx) {
             break;
         case 2: // 마법사 (원소 폭발) 상대가 낸 손 +3만큼 데미지를 입히고, 본인 HP가 3만큼 회복됨.
             print_log(`${winSide == 1 ? '1' : '2'}p(마법사) 스킬 사용`);
+            setTimeout(() => { PlaySEOneShot(skillSEs[jobIdx], 0.6); }, 500); // 스킬 SE
 
             setTimeout(() => {
                 let damage = 0;
@@ -254,6 +256,7 @@ function ProcessSpecialSkill(winSide, jobIdx) {
             break;
         case 3: // 메카 파일럿 (잔고장) 데미지를 상대가 낸 손으 2배만큼 입힘.
             print_log(`${winSide == 1 ? '1' : '2'}p(메카 파일럿) 스킬 사용`);
+            setTimeout(() => { PlaySEOneShot(skillSEs[jobIdx], 0.6); }, 500); // 스킬 SE
 
             setTimeout(() => {
                 let damage = 0;
@@ -274,6 +277,7 @@ function ProcessSpecialSkill(winSide, jobIdx) {
             break;
         case 4: // 힐러 (회복의 빛) 데미지를 5만큼 입히고, 본인 HP가 상대가 낸 손만큼 회복됨.
             print_log(`${winSide == 1 ? '1' : '2'}p(힐러) 스킬 사용`);
+            setTimeout(() => { PlaySEOneShot(skillSEs[jobIdx], 0.6); }, 500); // 스킬 SE
 
             setTimeout(() => {
                 Damage(5, -winSide, true);
@@ -297,6 +301,7 @@ function ProcessSpecialSkill(winSide, jobIdx) {
             break;
         case 5: // 음유시인 (예술의 선율) 데미지를 상대의 잔여 HP 절반만큼 입힘.
             print_log(`${winSide == 1 ? '1' : '2'}p(음유시인) 스킬 사용`);
+            setTimeout(() => { PlaySEOneShot(skillSEs[jobIdx], 0.6); }, 500); // 스킬 SE
 
             setTimeout(() => {
                 let damage = Math.round(counterpartPlayer.hp / 2);
@@ -306,6 +311,7 @@ function ProcessSpecialSkill(winSide, jobIdx) {
             break;
         case 6: // 탐험가 (탐험의 지혜) 데미지를 본인 모든 손의 합만큼 입힘.
             print_log(`${winSide == 1 ? '1' : '2'}p(탐험가) 스킬 사용`);
+            setTimeout(() => { PlaySEOneShot(skillSEs[jobIdx], 0.6); }, 500); // 스킬 SE
 
             setTimeout(() => {
                 let damage = activePlayer.scissors + activePlayer.rock + activePlayer.paper;
@@ -315,6 +321,8 @@ function ProcessSpecialSkill(winSide, jobIdx) {
             break;
         case 7: // 드루이드 (자연의 분노) 데미지를 상대가 낸 손 +6만큼 입힘.
             print_log(`${winSide == 1 ? '1' : '2'}p(드루이드) 스킬 사용`);
+            setTimeout(() => { PlaySEOneShot(skillSEs[jobIdx], 0.6); }, 500); // 스킬 SE
+
             setTimeout(() => {
                 let damage = 0;
                 switch (counterpartPlayerAction) {
@@ -334,6 +342,7 @@ function ProcessSpecialSkill(winSide, jobIdx) {
             break;
         case 8: // 정보의 대마왕 (디지털 혼돈) 데미지를 8-15 사이 랜덤 값으로 입힘.
             print_log(`${winSide == 1 ? '1' : '2'}p(정보의 대마왕) 스킬 사용`);
+            setTimeout(() => { PlaySEOneShot(skillSEs[jobIdx], 0.6); }, 500); // 스킬 SE
 
             setTimeout(() => {
                 let damage = Math.floor(random(8, 16)); // 8~15 사이 랜덤 값
@@ -345,7 +354,7 @@ function ProcessSpecialSkill(winSide, jobIdx) {
 
     activePlayer.skillPoint = 0;
     counterpartPlayer.skillPoint = min(100, counterpartPlayer.skillPoint + 20); // 스킬 포인트 20 회복
-    
+
     winSide == 1 ? isSkillAvailable_1p = false : isSkillAvailable_2p = false;
 }
 

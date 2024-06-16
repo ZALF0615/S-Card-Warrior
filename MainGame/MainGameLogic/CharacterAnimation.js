@@ -1,4 +1,5 @@
 let charaAnimations = {};
+let skillSEs = {};
 
 let currentFrame_1p = 0;
 let currentFrame_2p = 0;
@@ -52,12 +53,16 @@ let isLoadedCharaAnim = [];
 function preload_charaAnim(jobIdx) {
 
     if (!isLoadedCharaAnim[jobIdx]) {
+        
         const jobName = jobs[jobIdx];
         charaAnimations[jobName] = {};
         animations.forEach(anim => {
             charaAnimations[jobName][anim] = [];
             loadFrames(jobName, anim, 0);
         });
+
+        // Skill SE
+        skillSEs[jobIdx] = loadSound(`Asset/Audio/SE/skillSE_${jobName}.wav`);
 
         isLoadedCharaAnim[jobIdx] = true;
     }

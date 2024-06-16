@@ -5,6 +5,7 @@ function setup_title() {
     // bgm.play();
 
     selected_button = 0;
+    isSelected = false;
 }
 
 function draw_title() {

@@ -249,7 +249,14 @@ function ProcessSpecialSkill(winSide, jobIdx) {
             break;
         case 4: // 힐러 (회복의 빛)
             break;
-        case 5: // 음유시인 (예술의 선율)
+        case 5: // 음유시인 (예술의 선율) 데미지를 상대의 잔여 HP 절반만큼 입힘.
+            print_log(`${winSide == 1 ? '1' : '2'}p(음유시인) 스킬 사용`);
+
+            setTimeout(() => {
+                let damage = counterpartPlayer.hp / 2;
+                Damage(damage, -winSide, true);
+                setTimeout(TurnTaker, 12 * animSpeed / 60 * 1000);
+            }, damage_timing);
             break;
         case 6: // 탐험가 (탐험의 지혜)
             break;

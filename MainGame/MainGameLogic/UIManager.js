@@ -244,8 +244,6 @@ function displaySelectedAction(playerNum) {
                 let result_padding = 120;
 
                 fill(getJobSkillColor(playerNum == 1 ? player1.jobIdx : player2.jobIdx));
-                text('10', playerNum == 1 ? x + 200 : x - 200, y);
-
                 text("WIN", x, y - result_padding);
             } else { // 상대가 스킬을 사용한 경우
                 textSize(70);

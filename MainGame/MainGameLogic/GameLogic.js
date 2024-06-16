@@ -74,9 +74,6 @@ function processActions() {
             case 3:
                 damage_1p = player1.paper;
                 break;
-            case 4:
-                damage_1p = 10; // 특수 스킬 데미지
-                break;
         }
 
         let damage_2p = 0;
@@ -90,91 +87,169 @@ function processActions() {
             case 3:
                 damage_2p = player2.paper;
                 break;
-            case 4:
-                damage_2p = 10; // 특수 스킬 데미지
-                break;
         }
 
         let damage = damage_1p + damage_2p;
 
         if (selectedAction_1p == 4 || selectedAction_2p == 4) {
-            damage = 10;
-        }
 
-        print_log(`damage : ${damage_1p} + ${damage_2p} = ${damage}`);
+            let winSide = GetWinSide(selectedAction_1p, selectedAction_2p);
 
-        let winSide = GetWinSide(selectedAction_1p, selectedAction_2p);
+            ProcessSpecialSkill(winSide, winSide == 1 ? player1.jobIdx : player2.jobIdx);
 
-        if (winSide == 0) {
-            // 비김
-            print_log("비김");
+        } else {
+            print_log(`damage : ${damage_1p} + ${damage_2p} = ${damage}`);
 
-            Attack(1, -selectedAction_1p);   // 1p 실패 애니메이션
-            Attack(-1, -selectedAction_2p); // 2p 실패 애니메이션
+            let winSide = GetWinSide(selectedAction_1p, selectedAction_2p);
 
-            let damage_timing = 22 * animSpeed_1p / 60 * 1000;
-            setTimeout(() => {
-                Damage(1, 1);
-                Damage(1, -1);
-                player1.skillPoint = min(100, player1.skillPoint + 10);
-                player2.skillPoint = min(100, player2.skillPoint + 10);
-                setTimeout(TurnTaker, 12 * animSpeed_2p / 60 * 1000);
-            }, damage_timing);
-        } else if (winSide == 1) {
-            // 1p 승리
-            print_log("1p 승리");
-            Attack(1, selectedAction_1p);   // 성공 애니메이션
-            if (selectedAction_1p != 4) { Attack(-1, -selectedAction_2p); } // 실패 애니메이션
+            if (winSide == 0) {
+                // 비김
+                print_log("비김");
 
-            let damage_timing = 22 * animSpeed_1p / 60 * 1000;
-            setTimeout(() => {
-                Damage(damage, -1, selectedAction_1p == 4);
-                setTimeout(TurnTaker, 12 * animSpeed_1p / 60 * 1000);
-            }, damage_timing);
-        } else if (winSide == -1) {
-            // 2p 승리
-            print_log("2p 승리");
-            Attack(-1, selectedAction_2p);   // 성공 애니메이션
-            if (selectedAction_2p != 4) { Attack(1, -selectedAction_1p); } // 실패 애니메이션
+                Attack(1, -selectedAction_1p);   // 1p 실패 애니메이션
+                Attack(-1, -selectedAction_2p); // 2p 실패 애니메이션
 
-            let damage_timing = 22 * animSpeed_2p / 60 * 1000;
-            setTimeout(() => {
-                Damage(damage, 1, selectedAction_2p == 4);
-                setTimeout(TurnTaker, 12 * animSpeed_2p / 60 * 1000);
-            }, damage_timing);
+                let damage_timing = 22 * animSpeed_1p / 60 * 1000;
+                setTimeout(() => {
+                    Damage(1, 1);
+                    Damage(1, -1);
+                    player1.skillPoint = min(100, player1.skillPoint + 10);
+                    player2.skillPoint = min(100, player2.skillPoint + 10);
+                    setTimeout(TurnTaker, 12 * animSpeed_2p / 60 * 1000);
+                }, damage_timing);
+            } else if (winSide == 1) {
+                // 1p 승리
+                print_log("1p 승리");
+                Attack(1, selectedAction_1p);   // 성공 애니메이션
+                if (selectedAction_1p != 4) { Attack(-1, -selectedAction_2p); } // 실패 애니메이션
+
+                let damage_timing = 22 * animSpeed_1p / 60 * 1000;
+                setTimeout(() => {
+                    Damage(damage, -1, selectedAction_1p == 4);
+                    setTimeout(TurnTaker, 12 * animSpeed_1p / 60 * 1000);
+                }, damage_timing);
+            } else if (winSide == -1) {
+                // 2p 승리
+                print_log("2p 승리");
+                Attack(-1, selectedAction_2p);   // 성공 애니메이션
+                if (selectedAction_2p != 4) { Attack(1, -selectedAction_1p); } // 실패 애니메이션
+
+                let damage_timing = 22 * animSpeed_2p / 60 * 1000;
+                setTimeout(() => {
+                    Damage(damage, 1, selectedAction_2p == 4);
+                    setTimeout(TurnTaker, 12 * animSpeed_2p / 60 * 1000);
+                }, damage_timing);
+            }
         }
 
     }
 }
 
-
 function Damage(damage, playerNum, hasEffect = false) {
-    if (playerNum == 1) {
-        player1.hp = max(0, player1.hp - damage);
-        player1.skillPoint = min(100, player1.skillPoint + damage * 3);
 
-        let du = new FloatUI(630, height / 2, `-${damage}`, 255, 0, 0);
-        FloatUIs.push(du);
+    if (damage > 0) {
+        if (playerNum == 1) {
+            player1.hp = max(0, player1.hp - damage);
+            player1.skillPoint = min(100, player1.skillPoint + damage * 3);
 
-        if (hasEffect) { ChangeAnimation(1, '데미지', -1); }
+            let du = new FloatUI(630, height / 2, `-${damage}`, 255, 0, 0);
+            FloatUIs.push(du);
 
-        PlaySEOneShot(damageSE, 0.1);
+            if (hasEffect) { ChangeAnimation(1, '데미지', -1); }
 
-        print_log(`player1.skillPoint : ${player1.skillPoint}`);
-    } else {
-        player2.hp = max(0, player2.hp - damage);
-        player2.skillPoint = min(100, player2.skillPoint + damage * 3);
+            PlaySEOneShot(damageSE, 0.1);
 
-        let du = new FloatUI(width - 630, height / 2, `-${damage}`, 255, 0, 0);
-        FloatUIs.push(du);
+            print_log(`player1.skillPoint : ${player1.skillPoint}`);
+        } else {
+            player2.hp = max(0, player2.hp - damage);
+            player2.skillPoint = min(100, player2.skillPoint + damage * 3);
 
-        if (hasEffect) { ChangeAnimation(-1, '데미지', -1); }
+            let du = new FloatUI(width - 630, height / 2, `-${damage}`, 255, 0, 0);
+            FloatUIs.push(du);
 
-        PlaySEOneShot(damageSE, 0.1);
+            if (hasEffect) { ChangeAnimation(-1, '데미지', -1); }
 
-        print_log(`player2.skillPoint : ${player2.skillPoint}`);
+            PlaySEOneShot(damageSE, 0.1);
+
+            print_log(`player2.skillPoint : ${player2.skillPoint}`);
+        }
+    } else if (damage < 0) { // 데미지 값이 음수일 경우 회복
+        if (playerNum == 1) {
+            player1.hp = min(player1.hpMax, player1.hp - damage);
+
+            let du = new FloatUI(630, height / 2, `+${-damage}`, 0, 220, 0);
+            FloatUIs.push(du);
+
+            if (hasEffect) { ChangeAnimation(1, '승리', -1); }
+
+            PlaySEOneShot(healSE, 0.1);
+        } else {
+            player2.hp = min(player2.hpMax, player2.hp - damage);
+
+            let du = new FloatUI(width - 630, height / 2, `+${-damage}`, 0, 220, 0);
+            FloatUIs.push(du);
+
+            if (hasEffect) { ChangeAnimation(-1, '승리', -1); }
+
+            PlaySEOneShot(healSE, 0.1);
+        }
     }
 
+
+}
+
+function ProcessSpecialSkill(winSide, jobIdx) {
+    switch (jobIdx) {
+        case 1: // 현자 (지식의 폭풍) 데미지를 5만큼 입히고, 본인 HP가 5만큼 회복됨.
+
+            if (winSide == 1) { // 1p 승리 (스킬 사용)
+                print_log("1p(현자) 스킬 사용");
+
+                Attack(1, 4);   // 1p 성공 애니메이션
+                // Attack(-1, -selectedAction_2p); // 2p 실패 애니메이션
+
+                let damage_timing = 22 * animSpeed_1p / 60 * 1000;
+                setTimeout(() => {
+                    Damage(5, -1, true);
+
+                    setTimeout(() => {
+                        Damage(-5, 1, true);
+                        setTimeout(TurnTaker, 12 * animSpeed_1p / 60 * 1000);
+                    }, 1000);``
+
+                }, damage_timing);
+            } else {
+                print_log("2p(현자) 스킬 사용");
+
+                // Attack(1, selectedAction_1p);   // 성공 애니메이션
+                Attack(-1, 4); // 2p 성공 애니메이션
+
+                let damage_timing = 22 * animSpeed_2p / 60 * 1000;
+                setTimeout(() => {
+                    Damage(5, 1, true);
+
+                    setTimeout(() => {
+                        Damage(-5, -1, true);
+                        setTimeout(TurnTaker, 12 * animSpeed_2p / 60 * 1000);
+                    }, 1000);
+                }, damage_timing);
+            }
+            break;
+        case 2: // 마법사 (원소 폭발)
+            break;
+        case 3: // 메카 파일럿 (잔고장)
+            break;
+        case 4: // 힐러 (회복의 빛)
+            break;
+        case 5: // 음유시인 (예술의 선율)
+            break;
+        case 6: // 탐험가 (탐험의 지혜)
+            break;
+        case 7: // 드루이드 (자연의 분노)
+            break;
+        case 8: // 정보의 대마왕 (디지털 혼돈)
+            break;
+    }
 }
 
 function Attack(playerNum, hand) {
@@ -218,9 +293,9 @@ function keyPressed_gamelogic() {
             selectedAction_1p = 3;
         } else if (key === 's') {
 
-            if(isSkillAvailable_1p){
+            if (isSkillAvailable_1p) {
                 selectedAction_1p = 4;
-            }else{
+            } else {
                 print_log("system : 스킬 포인트가 부족합니다.");
                 PlaySEOneShot(cancelSE, 0.1);
             }
@@ -237,9 +312,9 @@ function keyPressed_gamelogic() {
             selectedAction_2p = 3;
         }
         else if (keyCode === DOWN_ARROW) {
-            if(isSkillAvailable_2p){
+            if (isSkillAvailable_2p) {
                 selectedAction_2p = 4;
-            }else{
+            } else {
                 print_log("system : 스킬 포인트가 부족합니다.");
                 PlaySEOneShot(cancelSE, 0.1);
             }
@@ -255,6 +330,12 @@ function keyPressed_gamelogic() {
             print_log("system : set HP to 1");
             player1.hp = 1;
             player2.hp = 1;
+        }
+
+        // 9를 누르면 캐릭터 스킬 사용 가능
+        if (key === '9') {
+            isSkillAvailable_1p = true;
+            isSkillAvailable_2p = true;
         }
 
         if (key === ' ') {

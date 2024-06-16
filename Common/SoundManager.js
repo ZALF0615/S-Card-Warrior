@@ -16,6 +16,6 @@ function preload_Sound(){
     selectSE = loadSound('Asset/Audio/SE/select.mp3');
     piSE = loadSound('Asset/Audio/SE/pi.mp3');
     cancelSE = loadSound('Asset/Audio/SE/cancel.mp3');
-
+    healSE = loadSound('Asset/Audio/SE/heal.mp3');
     bgm = loadSound('Asset/Audio/BGM/wakuwaku_arikui.mp3');
 }

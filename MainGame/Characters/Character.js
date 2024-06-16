@@ -92,3 +92,52 @@ class Character {
         console.log(`skillPoint : ${this.skillPoint}`);
     }
 }
+
+// 직업 idx에 따른 스킬 이름과 설명을 반환하는 함수
+function getSkillInfo(jobIdx) {
+    let skillInfo = {
+        name: '',
+        description: ''
+    };
+
+    switch (jobIdx) {
+        case 1: // 현자
+            skillInfo.name = "지식의 폭풍";
+            skillInfo.description = "데미지를 5만큼 입히고,\n본인 HP가 5만큼 회복됨.";
+            break;
+        case 2: // 마법사
+            skillInfo.name = "원소 폭발";
+            skillInfo.description = "상대의 손 +3만큼 \n데미지를 입히고,\n본인 HP가 3만큼 회복됨.";
+            break;
+        case 3: // 메카파일럿
+            skillInfo.name = "메카 변환";
+            skillInfo.description = "데미지를 상대의 손\n2배만큼 입힘.";
+            break;
+        case 4: // 힐러
+            skillInfo.name = "회복의 빛";
+            skillInfo.description = "데미지를 5만큼 입히고,\n본인 HP가 상대의 손만큼 회복됨.";
+            break;
+        case 5: // 음유시인
+            skillInfo.name = "예술의 선율";
+            skillInfo.description = "데미지를 상대의\n잔여 HP 절반만큼 입힘.";
+            break;
+        case 6: // 탐험가
+            skillInfo.name = "탐험의 지혜";
+            skillInfo.description = "데미지를 본인\n모든 손의 합만큼 입힘.";
+            break;
+        case 7: // 드루이드
+            skillInfo.name = "자연의 분노";
+            skillInfo.description = "데미지를 상대의 손\n+6만큼 입힘.";
+            break;
+        case 8: // 정보대마왕
+            skillInfo.name = "디지털 혼돈";
+            skillInfo.description = "데미지를 8~15 사이\n랜덤 값을 입힘.";
+            break;
+        default:
+            skillInfo.name = "Unknown Skill";
+            skillInfo.description = "No description available.";
+            break;
+    }
+
+    return skillInfo;
+}

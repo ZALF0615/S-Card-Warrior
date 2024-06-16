@@ -83,55 +83,104 @@ function displayStatus(player1, player2) {
     y = 190;
 
     // 각 플레이어 스탯
-    let player1Stat = [player1.id.slice(0, 6), player1.id.charAt(6), player1.rock, player1.scissors, player1.paper];
-    let player2Stat = [player2.id.slice(0, 6), player1.id.charAt(6), player2.rock, player2.scissors, player2.paper];
+    let player1Stat = [player1.id.slice(2, 6), player1.id.charAt(6), player1.rock, player1.scissors, player1.paper];
+    let player2Stat = [player2.id.slice(2, 6), player1.id.charAt(6), player2.rock, player2.scissors, player2.paper];
 
     rectMode(CORNER);
 
     // 1P 
     fill(0, 0, 0, 150);
     noStroke();
-    rect(x, y, 350, 270);
+    rect(x, y, 190, 270);
 
     textFont(font_galmuri7);
     fill(255);
     textSize(30);
     textAlign(LEFT, CENTER);
 
-    text("학년", x + 70, y + 30);
-    text("체력", x + 70, y + 80);
-    text("가위", x + 70, y + 130);
-    text("바위", x + 70, y + 180);
-    text("보", x + 70, y + 230);
+    text("학년", x + 20, y + 30);
+    text("체력", x + 20, y + 80);
+    text("가위", x + 20, y + 130);
+    text("바위", x + 20, y + 180);
+    text("보", x + 20, y + 230);
 
     // 각 항목의 값 출력
     for (let i = 0; i < player1Stat.length; i++) {
-        text(player1Stat[i], x + 180, y + 30 + 50 * i);
+        text(player1Stat[i], x + 110, y + 30 + 50 * i);
+    }
+
+    if (isSkillAvailable_1p) {
+        // 스킬 배경
+        fill(0, 0, 0, 150);
+        rect(x + 190, y, 300, 270);
+
+        // 스킬 이름, 설명 출력
+        let skillName = getSkillInfo(player1.jobIdx).name;
+        let skillDesc = getSkillInfo(player1.jobIdx).description;
+
+        textAlign(CENTER, CENTER);
+
+        fill(255);
+        textSize(20);
+        text('스킬 설명', x + 340, y + 30);
+
+        fill(getJobSkillColor(player1.jobIdx));
+        textSize(30);
+        text(skillName, x + 340, y + 80 + 20);
+
+        fill(255);
+        textSize(20);
+        text(skillDesc, x + 340, y + 150 + 20);
     }
 
     // 2P
-    x = width - 370;
+    x = width - 180 - 30;
     y = 190;
 
     // 2P
 
     fill(0, 0, 0, 150);
     noStroke();
-    rect(x, y, 350, 270);
+    rect(x, y, 190, 270);
 
     fill(255);
     textSize(30);
     textAlign(LEFT, CENTER);
 
-    text("학년", x + 70, y + 30);
-    text("체력", x + 70, y + 80);
-    text("가위", x + 70, y + 130);
-    text("바위", x + 70, y + 180);
-    text("보", x + 70, y + 230);
+    text("학년", x + 20, y + 30);
+    text("체력", x + 20, y + 80);
+    text("가위", x + 20, y + 130);
+    text("바위", x + 20, y + 180);
+    text("보", x + 20, y + 230);
 
     // 각 항목의 값 출력
     for (let i = 0; i < player2Stat.length; i++) {
-        text(player2Stat[i], x + 180, y + 30 + 50 * i);
+        text(player2Stat[i], x + 110, y + 30 + 50 * i);
+    }
+
+    if (isSkillAvailable_2p) {
+
+        // 스킬 배경
+        fill(0, 0, 0, 150);
+        rect(x - 300, y, 300, 270);
+
+        // 스킬 이름, 설명 출력
+        let skillName2 = getSkillInfo(player2.jobIdx).name;
+        let skillDesc2 = getSkillInfo(player2.jobIdx).description;
+
+        textAlign(CENTER, CENTER);
+
+        fill(255);
+        textSize(20);
+        text('스킬 설명', x - 150, y + 30);
+
+        fill(getJobSkillColor(player2.jobIdx));
+        textSize(30);
+        text(skillName2, x - 150, y + 80 + 20);
+
+        fill(255);
+        textSize(20);
+        text(skillDesc2, x - 150, y + 150 + 20);
     }
 }
 
@@ -588,6 +637,8 @@ function preload_UI() {
 
     warriorCard_front = loadImage('Asset/UI/CharacterCard/warrior_card_front_bg.png');
     warriorCard_back = loadImage('Asset/UI/CharacterCard/warrior_card_back_bg.png');
+
+    skillBG = loadImage('Asset/UI/skillBG.png');
 
     font_galmuri7 = loadFont('Asset/Font/Galmuri7.ttf');
 

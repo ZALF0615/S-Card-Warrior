@@ -201,7 +201,7 @@ function getRandomCharacter(include_lucifer = false) {
   let r = random(1000, 10000);
 
   // 1~85 사이의 랜덤한 전공 인덱스
-  let majorIdx = floor(random(1, include_lucifer ? 87 : 86));
+  let majorIdx = floor(random(1, include_lucifer ? 86 : 85));
   let major = GetDepartmentList()[majorIdx];
   print_log(`majorIdx: ${majorIdx}, major: ${major}`);
 

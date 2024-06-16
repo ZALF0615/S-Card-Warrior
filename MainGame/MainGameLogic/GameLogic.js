@@ -200,6 +200,18 @@ function Damage(damage, playerNum, hasEffect = false) {
 
             PlaySEOneShot(healSE, 0.1);
         }
+    }else{ // 데미지가 0일 경우
+        if (playerNum == 1) {
+            player1.hp = min(player1.hpMax, player1.hp - damage);
+
+            let du = new FloatUI(630, height / 2, `MISS`, 0, 0, 255);
+            FloatUIs.push(du);
+        } else {
+            player2.hp = min(player2.hpMax, player2.hp - damage);
+
+            let du = new FloatUI(width - 630, height / 2, `MISS`, 0, 0, 255);
+            FloatUIs.push(du);
+        }
     }
 
 

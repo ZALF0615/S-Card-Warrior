@@ -20,6 +20,9 @@ function setup() {
   playerNumber = 0;
 
   // bgm.play();
+
+  currentBGImg = random(bgList);
+
 }
 
 function draw() {
@@ -69,47 +72,47 @@ function draw() {
     }
 
     // 화면 왼쪽 위에 현재 프레임레이트 출력 (배경 검은색, 글자 흰색)
-      fill(0, 100);
-      noStroke();
-      rectMode(CORNER);
+    fill(0, 100);
+    noStroke();
+    rectMode(CORNER);
 
-      rect(0, 0, 300, 30);
-      fill(255);
-      textSize(20);
-      textAlign(LEFT, CENTER);
-      text("FPS: " + frameRate().toFixed(0), 7, 15);
+    rect(0, 0, 300, 30);
+    fill(255);
+    textSize(20);
+    textAlign(LEFT, CENTER);
+    text("FPS: " + frameRate().toFixed(0), 7, 15);
 
-      // deltaTime은 1초에 60번 실행되는 프레임에서 1프레임당 걸리는 시간을 의미 (deltatime = 1 / frameRate)
+    // deltaTime은 1초에 60번 실행되는 프레임에서 1프레임당 걸리는 시간을 의미 (deltatime = 1 / frameRate)
 
-      fill(255);
-      textSize(20);
-      textAlign(LEFT, CENTER);
-      // text("DeltaTime: " + deltaTime.toFixed(3), 107, 15);
-      text("SpeedRate: " + (frameRate() / 60).toFixed(2), 107, 15);
+    fill(255);
+    textSize(20);
+    textAlign(LEFT, CENTER);
+    // text("DeltaTime: " + deltaTime.toFixed(3), 107, 15);
+    text("SpeedRate: " + (frameRate() / 60).toFixed(2), 107, 15);
 
-      // 화면 왼쪽 위에 현재 프레임카운트 출력 (배경 검은색, 글자 흰색)
-      fill(0, 100);
-      noStroke();
-      rectMode(CORNER);
-      rect(0, 30, 200, 30);
+    // 화면 왼쪽 위에 현재 프레임카운트 출력 (배경 검은색, 글자 흰색)
+    fill(0, 100);
+    noStroke();
+    rectMode(CORNER);
+    rect(0, 30, 200, 30);
 
-      fill(255);
-      textSize(20);
-      textAlign(LEFT, CENTER);
-      text("FrameCount: " + frameCount, 7, 45);
+    fill(255);
+    textSize(20);
+    textAlign(LEFT, CENTER);
+    text("FrameCount: " + frameCount, 7, 45);
 
-      // deltaTime을 반영하여, 화면상 실제 경과 시간(s)을 출력
+    // deltaTime을 반영하여, 화면상 실제 경과 시간(s)을 출력
 
-      fill(0, 100);
-      noStroke();
-      rectMode(CORNER);
-      rect(0, 60, 500, 30);
+    fill(0, 100);
+    noStroke();
+    rectMode(CORNER);
+    rect(0, 60, 500, 30);
 
-      fill(255);
-      textSize(20);
-      textAlign(LEFT, CENTER);
-      text("Elapsed Time: " + elapsedTime.toFixed(2) + "s", 7, 75);
-      text("Elapsed Frame: " + elapsedFrame, 250, 75);
+    fill(255);
+    textSize(20);
+    textAlign(LEFT, CENTER);
+    text("Elapsed Time: " + elapsedTime.toFixed(2) + "s", 7, 75);
+    text("Elapsed Frame: " + elapsedFrame, 250, 75);
   }
 
 }

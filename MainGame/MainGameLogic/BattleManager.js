@@ -21,6 +21,8 @@ function InitGame() {
 
     ChangeAnimation(1, '준비');
     ChangeAnimation(-1, '준비');
+
+    currentBGImg = random(bgList);
 }
 
 function TurnTaker() {

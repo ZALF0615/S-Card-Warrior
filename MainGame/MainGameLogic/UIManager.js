@@ -362,12 +362,10 @@ function displaySelectedAction(playerNum) {
 
 
 function displayBG() {
-    // 배경 리스트 중 랜덤 배경 출력
-    let bg = random(bgList);
 
     background(255);
     tint(150, 100);
-    image(bg, 0, 0, width, height);
+    image(currentBGImg, 0, 0, width, height);
     tint(255);
 
 }
@@ -403,6 +401,7 @@ let skillIconList = [];
 let skillcommnadList = [];
 
 let bgList = [];
+let currentBGImg = null;
 
 let player_Info_BG; // 플레이어 정보 배경 이미지
 let hp_bar_total_image; // 체력바 이미지
@@ -484,6 +483,11 @@ function preload_UI() {
 
     font_galmuri7 = loadFont('Asset/Font/Galmuri7.ttf');
 
-    bg_1 = loadImage('Asset/BG/IBK_1.png');
+    bg_1 = loadImage('Asset/BG/BG_1.png');
+    bg_2 = loadImage('Asset/BG/BG_2.png');
+    bg_3 = loadImage('Asset/BG/BG_3.png');
+
     bgList.push(bg_1);
+    bgList.push(bg_2);
+    bgList.push(bg_3);
 }

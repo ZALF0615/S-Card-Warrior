@@ -1,13 +1,12 @@
 let tutorial_images = [];
 let tutorial_index = -1;
 
-let img;
-
 let dataLoaded = false;
 
 setup_tutorial = function () {
     if (!dataLoaded) {
         preload_tutorial();
+        dataLoaded = true;
     }
 }
 

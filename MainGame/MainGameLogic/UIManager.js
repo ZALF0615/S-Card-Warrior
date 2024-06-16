@@ -106,7 +106,6 @@ function displayStatus(player1, player2) {
 
     // 각 항목의 값 출력
     for (let i = 0; i < player1Stat.length; i++) {
-        player1Stat[i] = player1Stat[i] == 10 ? "0 (10)" : player1Stat[i];
         text(player1Stat[i], x + 180, y + 30 + 50 * i);
     }
 
@@ -132,7 +131,6 @@ function displayStatus(player1, player2) {
 
     // 각 항목의 값 출력
     for (let i = 0; i < player2Stat.length; i++) {
-        player2Stat[i] = player2Stat[i] == 10 ? "0 (10)" : player2Stat[i];
         text(player2Stat[i], x + 180, y + 30 + 50 * i);
     }
 }
@@ -212,6 +210,7 @@ function displayAction(x, y, playerNum) {
 }
 
 function displaySelectedAction(playerNum) {
+    if (isGameOver !== 0) { return; }
 
     if (showActions) { // 액션 숨기기
         imageCenter(command_skill_BG, playerNum == 1 ? 630 : width - 630, 380, 130, 130);
@@ -246,8 +245,6 @@ function displaySelectedAction(playerNum) {
                 let result_padding = 120;
 
                 fill(getJobSkillColor(playerNum == 1 ? player1.jobIdx : player2.jobIdx));
-                text('10', playerNum == 1 ? x + 200 : x - 200, y);
-
                 text("WIN", x, y - result_padding);
             } else { // 상대가 스킬을 사용한 경우
                 textSize(70);
@@ -366,47 +363,142 @@ function displaySelectedAction(playerNum) {
 
 
 function displayBG() {
-    // 배경 리스트 중 랜덤 배경 출력
-    let bg = random(bgList);
 
-    background(255);
+    background(220);
     tint(150, 100);
-    image(bg, 0, 0, width, height);
+    image(currentBGImg, 0, 0, width, height);
     tint(255);
 
 }
 
+let continueFlag = false;
+let currentContinueCount = 0;
+
+let clearFlag = false;
+
+function GameOverUI() {
+    // 어두운 배경
+    // fill(0, 150);
+    // noStroke();
+    // rect(0, 0, width, height);
+
+    // 1인 모드일 경우 YOU WIN / YOU LOSE 이미지 띄움
+    // 2인 모드일 경우 1P WIN / 2P WIN 이미지 띄움
+
+    // 각 이미지는 0.75배로 축소하여 출력, 화면 중앙에서 조금 위에 출력
+
+    let ratio = 0.55;
+
+    if (isCPUmode) { // 1인 모드
+        if (isGameOver == 1) {
+            imageCenter(you_win_img, width / 2, height / 2 - 200, you_win_img.width * ratio, you_win_img.height * ratio);
+        }
+        else if (isGameOver == -1) {
+            imageCenter(you_lose_img, width / 2, height / 2 - 200, you_lose_img.width * ratio, you_lose_img.height * ratio);
+        }
+    } else {
+        if (isGameOver == 1) {
+            imageCenter(player1_win_img, width / 2, height / 2 - 200, player1_win_img.width * ratio, player1_win_img.height * ratio);
+        }
+        else if (isGameOver == -1) {
+            imageCenter(player2_win_img, width / 2, height / 2 - 200, player2_win_img.width * ratio, player2_win_img.height * ratio);
+        }
+    }
+
+    // 컨티뉴 플래그가 켜지면 컨티뉴 카운트 다운 출력
+    if (continueFlag) {
+
+        // 어두운 배경
+        fill(0, 150);
+        noStroke();
+        rect(0, 0, width, height);
+
+        if (currentContinueCount > 0) {
+            fill(255);
+            textSize(70);
+            textAlign(CENTER, CENTER);
+            text('CONTINUE?', width / 2, height / 2 - 300);
+            text('SPACE를 눌러 다시하기', width / 2, height / 2 + 350);
+
+            textSize(380);
+            text(currentContinueCount, width / 2, height / 2);
+
+
+        } else {
+            // 게임 오버 텍스트 띄움
+            fill(255);
+            textSize(70);
+            textAlign(CENTER, CENTER);
+            text("GAME OVER", width / 2, height / 2);
+        }
+    }
+
+    if (clearFlag) {
+        // 스페이스를 눌러 다음으로 텍스트 화면 하단에 띄우기
+        fill(0);
+        textSize(70);
+        textAlign(CENTER, CENTER);
+
+        text("SPACE를 눌러 다음으로", width / 2, height - 100);
+    }
+
+}
+
+let isLoading = false;
+
+function displayLoading() {
+    // 화면 전체에 어두운 배경, 오른쪽 아래에 로딩 중 텍스트 출력
+    // Loading... 텍스트 출력, ... 부분이 계속 변화하도록
+
+    rectMode(CORNER);
+
+    fill(0, 150);
+    noStroke();
+    rect(0, 0, width, height);
+
+    fill(255);
+    textSize(70);
+
+    textAlign(LEFT, CENTER);
+
+    if (frameCount % 60 < 20) {
+        text("Loading.", 20, height - 70);
+    } else if (frameCount % 60 < 40) {
+        text("Loading..", 20, height - 70);
+    } else {
+        text("Loading...", 20, height - 70);
+    }
+
+}
+
 function getJobSkillColor(jobIdx, trans = false) {
-    // 1: SAGE : green
-    // 2: WIZARD : skyblue
-    // 3: MECHA_PILOT : gray
-    // 4: HEALER : gray
-    // 5: BARD : pink
-    // 6: EXPLORER : blue
-    // 7: DRUID : gray
-    // 8: LUCIFER : purple
-    // all color alpha 100
 
     switch (jobIdx) {
         case 1:
-            return color(0, 255, 0, trans ? 100 : 255); // green
+            return color(117, 251, 96, trans ? 100 : 255);
         case 2:
-            return color(0, 255, 255, trans ? 100 : 255); // skyblue
+            return color(142, 251, 245, trans ? 100 : 255);
+        case 3:
+            return color(252, 243, 81, trans ? 100 : 255);
+        case 4:
+            return color(63, 7, 244, trans ? 100 : 255);
         case 5:
-            return color(255, 0, 255, trans ? 100 : 255); // pink
+            return color(233, 51, 181, trans ? 100 : 255);
         case 6:
-            return color(0, 0, 255, trans ? 100 : 255); // blue
+            return color(13, 41, 244, trans ? 100 : 255);
+        case 7:
+            return color(235, 254, 83, trans ? 100 : 255);
         case 8:
-            return color(255, 0, 255, trans ? 100 : 255);  // purple
-        default:
-            return color(255, 255, 255, trans ? 100 : 255);     // white
+            return color(148, 28, 245, trans ? 100 : 255);
     }
 }
+
 
 let skillIconList = [];
 let skillcommnadList = [];
 
 let bgList = [];
+let currentBGImg = null;
 
 let player_Info_BG; // 플레이어 정보 배경 이미지
 let hp_bar_total_image; // 체력바 이미지
@@ -444,6 +536,11 @@ function preload_UI() {
     input_button_RIGHT = loadImage('Asset/UI/battle_input_button_right.png');
 
     command_selected_cover = loadImage('Asset/UI/battle_command_selected_cover.png');
+
+    you_win_img = loadImage('Asset/UI/1P_mode_you_win.png');
+    you_lose_img = loadImage('Asset/UI/1P_mode_you_lose.png');
+    player1_win_img = loadImage('Asset/UI/2P_mode_1P_win.png');
+    player2_win_img = loadImage('Asset/UI/2P_mode_2P_win.png');
 
     skill_icon_SAGE = loadImage('Asset/UI/skill_icon_SAGE.png');
     skill_icon_WIZARD = loadImage('Asset/UI/skill_icon_WIZARD.png');
@@ -488,6 +585,11 @@ function preload_UI() {
 
     font_galmuri7 = loadFont('Asset/Font/Galmuri7.ttf');
 
-    bg_1 = loadImage('Asset/BG/IBK_1.png');
+    bg_1 = loadImage('Asset/BG/BG_1.png');
+    bg_2 = loadImage('Asset/BG/BG_2.png');
+    bg_3 = loadImage('Asset/BG/BG_3.png');
+
     bgList.push(bg_1);
+    bgList.push(bg_2);
+    bgList.push(bg_3);
 }

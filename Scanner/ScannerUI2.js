@@ -14,12 +14,11 @@ let gameReady2 = false;
 function setup_scannerUI2() {
     cardFront2 = loadImage('Asset/UI/CharacterCard/warrior_card_front_bg.png');
     cardBack2 = loadImage('Asset/UI/CharacterCard/warrior_card_back_bg.png');
-    cardSage2 = loadImage('Asset/Character/현자/현자_기본/현자_기본_000.png');
+    cardSage2 = loadImage('Asset/Character/현자/현자_기본/F0.png');
     cardExplorer2 = loadImage('Asset/Character/탐험가/탐험가_기본/F0.png');
-    cardWizard2 = loadImage('Asset/Character/마법사/마법사_기본/마법사_기본_000.png');
-    cardBard2 = loadImage('Asset/Character/음유시인/음유시인/음유시인_기본/F0.png');
-    cardLucifer2 = loadImage('Asset/Character/정보대마왕/lucifer.png');
-
+    cardWizard2 = loadImage('Asset/Character/마법사/마법사_기본/F0.png');
+    cardBard2 = loadImage('Asset/Character/음유시인/음유시인_기본/F0.png');
+    cardLucifer2 = loadImage('Asset/Character/정보대마왕/정보대마왕_기본/F0.png');
 }
 
 function draw_scannerUI2() {

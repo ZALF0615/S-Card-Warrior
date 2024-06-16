@@ -1,4 +1,5 @@
 let charaAnimations = {};
+let skillSEs = {};
 
 let currentFrame_1p = 0;
 let currentFrame_2p = 0;
@@ -8,7 +9,7 @@ let currentAnimation_2p = '준비';
 let animSpeed_1p = 7; // 5프레임에 한번씩 움직임 (커질수록 느려짐)
 let animSpeed_2p = 7; // 5프레임에 한번씩 움직임 (커질수록 느려짐)
 
-const jobs = { 1: '현자', 2: '마법사', 5: '음유시인', 6: '탐험가', 8: '정보대마왕' }; // 직업 리스트
+const jobs = { 1: '현자', 2: '마법사', 3: '메카파일럿', 4: '힐러', 5: '음유시인', 6: '탐험가', 7: '드루이드', 8: '정보대마왕' }; // 직업 리스트
 const animations = ['준비', '데미지', '승리', '패배', '공격', '바위_성공', '바위_실패', '가위_성공', '가위_실패', '보_성공', '보_실패', '특수스킬'];
 
 function drawCharacters() {
@@ -41,31 +42,76 @@ function drawCharacters() {
         currentFrame_2p = (currentFrame_2p + 1) % charaAnimations[jobs[player2.jobIdx]][currentAnimation_2p].length;
     }
 
+    // 준비상태일 경우 아래에 1P / 2P 표시
+
+    if (showActions) {
+        fill(getJobSkillColor(player1.jobIdx));
+        stroke(0);
+        strokeWeight(10);
+        textSize(50);
+        textAlign(CENTER, CENTER);
+        text('1P', x1 + 200, y - 20);
+    }
+
+    if (showActions) {
+        fill(getJobSkillColor(player2.jobIdx));
+        stroke(0);
+        strokeWeight(10);
+        textSize(50);
+        textAlign(CENTER, CENTER);
+        text(isCPUmode ? 'CPU' : '2P', x2 - 200, y - 20);
+    }
+
 }
 
-function preload_charaAnim() {
-    Object.entries(jobs).forEach(([jobIdx, jobName]) => {
+let imagesToLoad = 0;
+let imagesLoaded = 0;
+let onLoadCompleteCallback = null;
+
+let isLoadedCharaAnim = [];
+
+function preload_charaAnim(jobIdx) {
+
+    if (!isLoadedCharaAnim[jobIdx]) {
+
+        const jobName = jobs[jobIdx];
         charaAnimations[jobName] = {};
         animations.forEach(anim => {
             charaAnimations[jobName][anim] = [];
             loadFrames(jobName, anim, 0);
         });
-    });
+
+        // Skill SE
+        skillSEs[jobIdx] = loadSound(`Asset/Audio/SE/skillSE_${jobName}.wav`);
+
+        isLoadedCharaAnim[jobIdx] = true;
+        return true;
+    }else{
+        return false;
+    }
 }
 
 function loadFrames(job, anim, i) {
     let filePath = `Asset/Character/${job}/${job}_${anim}/F${i.toString()}.png`;
+    imagesToLoad++; // 로드할 이미지의 수 증가
     loadImage(filePath, img => {
         // 이미지 로드 성공
-        // print_log(`Loaded: ${filePath}`);
         charaAnimations[job][anim].push(img);
+        imagesLoaded++; // 로드된 이미지의 수 증가
+        if (imagesLoaded === imagesToLoad && onLoadCompleteCallback) {
+            onLoadCompleteCallback();
+        }
         // 다음 프레임 로드
         loadFrames(job, anim, i + 1);
     }, err => {
         // 이미지 로드 실패
-        // print_log(`Failed to load: ${filePath}`);
+        imagesToLoad--; // 실패 시 로드할 이미지 수 감소
+        if (imagesLoaded === imagesToLoad && onLoadCompleteCallback) {
+            onLoadCompleteCallback();
+        }
     });
 }
+
 
 let animationTimeout_1p;
 let animationTimeout_2p;

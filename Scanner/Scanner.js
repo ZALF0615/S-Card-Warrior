@@ -26,6 +26,13 @@ let mobileIDphoto;
 
 let pressStartIcon;
 
+let selectedCard = 1;
+
+let smallKeyIcon;
+let smallArrowIcon;
+
+let ellapsedTime;
+
 
 //1인 플레이어가 진행할 때 오는 스캐너입니다.
 
@@ -54,101 +61,129 @@ function setup_scanner() {
 
     pressStartIcon = loadImage('Asset/UI/ScannerCards/warrior_generation_s_card_scan_1P.png');
 
+    smallKeyIcon = loadImage('Asset/UI/ScannerCards/button_short_bg.png');
+    smallArrowIcon = loadImage('Asset/UI/ScannerCards/button_short_bg.png');
+
     capture = createCapture(VIDEO);
-    capture.size(800, 540);
+    capture.size(1200, 730);
     capture.hide();
 }
 
 function draw_scanner() {
     background(220);
 
+    //스캐너 타이틀
+    elapsedTime = millis() / 1000;
+
+    
+
     if (isProcessing) {
         noTint();
-        fill(0);
-        textSize(50);
+        fill(113, 161, 202);
+        textSize(100);
         noStroke();
-        text('학생증 스캔중...', width / 2, height /2);
+        textAlign(CENTER);
+        text('학생증 스캔중...', width / 2, height /2 - 60);
+        text('SCANNING...', width / 2, height /2 + 60);
     } else {
         noTint();
-        image(capture, width / 2 - 400, height / 2 - 240);
+        image(capture, width / 2 - 600, height / 2 - 475);
         noStroke();
         fill(0);
         textSize(50);
         textAlign(CENTER, CENTER);
+ 
+        //S 카드 정보
+       noStroke();
+       noFill();
+       smallKeyIcon.resize(70, 40);
+       noTint();
+       image(smallKeyIcon, 90, 450);
+       textSize(23);
+       fill(0);
+       textAlign(CENTER, CENTER);
+       text("S-Card가 인식되지 않을 경우,", 190, 435);
+       text("왼쪽  Ctrl  키를 눌러 랜덤한", 190, 470);
+       text("카드를 뽑을 수 있습니다.", 190, 505);
+       textSize(27);
+       fill(227, 66, 86);
+       text("학생증이 화면의 가이드에", width - 180, 350);
+       text("최대한 정확히", width - 180, 400);
+       text("맞게 조절해주세요!", width - 180, 450);
+       noFill();
+       smallArrowIcon.resize(40, 40);
+       noTint();
+       image(smallArrowIcon, width - 320, 550 - smallArrowIcon.height/2);
+       noTint();
+       image(smallArrowIcon, width - 270, 550 - smallArrowIcon.height/2);
+       fill(0);
+       text("←  → 키를 이용하여", width - 180, 550);
+       text("학생증을 선택해주세요.", width - 180, 600);
+      
 
-        //text('스페이스바를 눌러 캐릭터를 생성해주세요!', width / 2, height - 100);
-        image(pressStartIcon, width / 2 - pressStartIcon.width/2, height - 100 - pressStartIcon.height/2);
-        textSize(30);
-        fill(255, 102, 102);
-        text('모바일 혹은 카드 학생증의 학생 정보 부분이 네모 칸에 맞게 조절해주세요.', width / 2, 150)
+        //Q를 눌러 스캐닝 시작 버튼
+        pressStartIcon.resize(322, 72)
+        image(pressStartIcon, 20, height/2 - 265);
+       
 
         //학생증 전환 버튼
         
         fill(113, 161, 202);
-        rect(width/8, height/2 - 100, 300, 80);
+        rect(width/2 - 500 + 120, height-170, 250, 80);
+        rect(width/2 + 100, height-170, 250, 80);
+        rect(width/2 + 120 + 500, height-170, 350, 80);
 
-        rect(width/8, height/2 + 100, 300, 80);
-        
-        rect(width - width/8, height/2 + 20, 320, 120);
         textSize(50);
         fill(0);
-        text("구 학생증", width/8, height/2-100);
-        text("신 학생증", width/8, height/2+100);
-        text("모바일 학생증", width - width/8, height/2 + 20);
+        text("구 학생증", width/2 - 500 + 120, height-170);
+        text("신 학생증", width/2 + 100, height-170);
+        text("모바일 학생증", width/2 + 500 + 120, height-170);
 
         oldIDicon.resize(200, 120);
-        newIDicon.resize(120, 200);
-        mobileIDicon.resize(120, 200);
+        newIDicon.resize(120, 185);
+        mobileIDicon.resize(120, 175);
 
-        image(oldIDicon, width/8 - oldIDicon.width/2, height/2 - 160 - oldIDicon.height);
-        image(newIDicon, width/8 - newIDicon.width/2, height/2 + 160);
-        image(mobileIDicon, width - width/8 - mobileIDicon.width/2, height/2 - 60 - mobileIDicon.height);
+        image(oldIDicon, width/2 - 750, height-170 - oldIDicon.height/2);
+        image(newIDicon, width/2 - 180, height-170 - newIDicon.height/2);
+        image(mobileIDicon, width/2 + 290, height-170 - mobileIDicon.height/2);
         
         
-
-            if(oldID){
-            //투명한 학생증
-            noTint();
-            noFill();
-            stroke(227, 66, 86);
-            strokeWeight(10);
-            rect(width/8, height/2 - 100, 310, 90);
-            oldIDphoto.resize(708, 400);
-            tint(255, 90);
-            image(oldIDphoto, width/2 - oldIDphoto.width/2, height/2 - 210);
-            //stroke(227, 66, 86);
-            //strokeWeight(10);
-            //rect(width/2 + 75, height/2 - 25, 200, 220);
-            } else if(newID) {
+//투명 학생증 가이드
+            if(selectedCard == 1){
+                //구 학생증
                 noTint();
                 noFill();
                 stroke(227, 66, 86);
                 strokeWeight(10);
-                rect(width/8, height/2 + 100, 310, 90);
-                newIDphoto.resize(380, 540);
-                tint(255, 70);
-                image(newIDphoto, width/2 - newIDphoto.width/2, height/2 - newIDphoto.height/2 + 27);
-                //stroke(227, 66, 86);
-                //strokeWeight(10);
-                //rect(width/2 - 115, height/2 + 50, 315, 280);    
-            } else if(mobileID) {
+                rect(width/2 - 500 + 120, height-170, 250, 80);
+                oldIDphoto.resize(1200, 640);
+                tint(255, 90);
+                image(oldIDphoto, width/2 - oldIDphoto.width/2, height/2 - 430);
+            } else if(selectedCard == 2) {
+                //신 학생증
                 noTint();
                 noFill();
                 stroke(227, 66, 86);
                 strokeWeight(10);
-                rect(width - width/8, height/2 + 20, 330, 130);
-                mobileIDphoto.resize(420, 520);
+                rect(width/2 + 100, height-170, 250, 80);
+                newIDphoto.resize(550, 730);
                 tint(255, 70);
-                image(mobileIDphoto, width/2 - mobileIDphoto.width/2, height/2 - mobileIDphoto.height/2 + 25);
-                //stroke(227, 66, 86);
-                //strokeWeight(10);
-                //rect(width/2 + 75, height/2 + 65, 320, 180);
-                
+                image(newIDphoto, width/2 - newIDphoto.width/2, height/2 - newIDphoto.height/2 - 110);   
+            } else if(selectedCard == 3) {
+                //모바일 학생증
+                noTint();
+                noFill();
+                stroke(227, 66, 86);
+                strokeWeight(10);
+                rect(width/2 + 120 + 500, height-170, 350, 80);
+                mobileIDphoto.resize(630, 730);
+                tint(255, 70);
+                image(mobileIDphoto, width/2 - mobileIDphoto.width/2, height/2 - mobileIDphoto.height/2 - 110);   
             }
 
         if((OCR_pressed > 0 && playerId === null) || (OCR_pressed > 1 && playerDept === null) || (OCR_pressed > 1 && playerId === null && playerDept === null)) {
 
-            fill(0);
+            fill(227, 66, 86);
             textSize(45);
             noStroke();
             text('캐릭터 생성에 실패했습니다. 다시 시도해주십시오.', width/2, 100);
@@ -157,8 +192,14 @@ function draw_scanner() {
        
 
     }
+// 스캐너가 깜빡이게 하는 코드
+    let blinkColor = (floor(elapsedTime) % 2 === 0) ? color(227, 66, 86) : color(113, 161, 202);
 
-   
+    textSize(40);
+    textAlign(CENTER);
+    noStroke();
+    fill(blinkColor);
+    text("S C A N N E R", width / 2, 30);
 
     if (playerId !== null && playerDept !== null) {
         createCharacter();
@@ -166,18 +207,8 @@ function draw_scanner() {
         ChangeScene('ScannerUI'); 
         }
     }
-   
-  
-
-    // S-Card가 잘 인식되지 않을 경우, 왼쪽 컨트롤 키를 눌러 랜덤한 카드를 뽑을 수 있습니다. 라고 텍스트 안내 (좌측 상단)
-    fill(0);
-    textSize(30);
-    noStroke();
-
-    text("S-Card가 잘 인식되지 않을 경우, 왼쪽 컨트롤 키를 눌러 랜덤한 카드를 뽑을 수 있습니다.", width / 2, 20);
 
 
-    //S-Card 별로 UI바꾸기
 
 }
 
@@ -279,28 +310,28 @@ function keyPressed_scanner() {
         
         if (!isProcessing) {
             isProcessing = true;
-            if (oldID) {
+            if (selectedCard == 1) {
                 // Capture only the red rectangle area
                 let x = width / 2 + 75;
                 let y = height / 2 - 25;
-                let w = 200;
-                let h = 220;
-                img = capture.get(x - (width / 2 - 480) - 190, y - (height / 2 - 360) - 250, w, h - 40);
-                img.save('test', 'png');
-            } else if(mobileID) {
+                let w = 260;
+                let h = 300;
+                img = capture.get(x - (width / 2 - 480) - 10, y - (height / 2 - 360) - 260, w + 90, h + 20);
+               // img.save('test', 'png');
+            } else if(selectedCard == 3) {
                 let x = width / 2 + 75;
                 let y = height / 2 - 25;
-                let w = 200;
-                let h = 220;
-                img = capture.get(x - (width / 2 - 480) - 230, y - (height / 2 - 360) + 50, w, h - 145);
-                img.save('test', 'png');
-            } else if(newID) {
+                let w = 400;
+                let h = 400;
+                img = capture.get(x - (width / 2 - 480) - 100, y - (height / 2 - 360) + 100, w, h - 145);
+               // img.save('test', 'png');
+            } else if(selectedCard == 2) {
                 let x = width / 2 + 75;
                 let y = height / 2 - 25;
-                let w = 200;
-                let h = 180;
-                img = capture.get(x - (width / 2 - 480) - 345, y - (height / 2 - 360) - 220, w, h);
-                img.save('test', 'png');
+                let w = 300;
+                let h = 350;
+                img = capture.get(x - (width / 2 - 480) - 200, y - (height / 2 - 360) - 180, w - 80, h - 80);
+              //  img.save('test', 'png');
             }
             processOCR();
         }
@@ -329,6 +360,14 @@ function keyPressed_scanner() {
 
         ChangeScene('ScannerUI'); 
     }
+
+    if (keyCode == LEFT_ARROW || key == 'a') {
+        selectedCard = max(1, selectedCard - 1);
+        //PlaySEOneShot(piSE, 0.2);
+    } else if (keyCode == RIGHT_ARROW || key == 'd') {
+        selectedCard = min(3, selectedCard + 1);
+        //PlaySEOneShot(piSE, 0.2);
+    }
 }
 function createCharacter() {
         console.log("This is name: "+playerName);
@@ -341,24 +380,5 @@ function createCharacter() {
         globalPlayer = singleP;
     } else {
         console.log("Try again");
-    }
-}
-
-function mouseClicked_scanner(){
-
-    if(width/8 <= mouseX && mouseX <= width/8+300 && height/2 - 100 <= mouseY && mouseY <= height/2 - 20){
-        oldID = true;
-        newID = false;
-        mobileID = false;
-        }
-    if(width/8 <= mouseX && mouseX <= width/8+300 && height/2 + 100 <= mouseY && mouseY <= height/2 + 180){
-        oldID = false;
-        newID = true;
-        mobileID = false;
-    }
-     if(width - width/8 <= mouseX && mouseX <= width - width/8+320 && height/2 + 20 <= mouseY && mouseY <= height/2 + 140){
-        oldID = false;
-        newID = false;
-        mobileID = true;
     }
 }

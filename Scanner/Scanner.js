@@ -2,6 +2,8 @@ let capture;
 let img;
 let isProcessing = false;
 
+let OCR_pressed;
+
 let singleP;
 
 let playerName = "이름 없음";
@@ -10,6 +12,18 @@ let playerMajor = "";
 let playerDept = "";
 let playerCollege = "";
 
+let oldID = true;
+let newID = false;
+let mobileID = false;
+
+let oldIDicon;
+let newIDicon;
+let mobileIDicon;
+
+let oldIDphoto;
+let newIDphoto;
+let mobileIDphoto;
+
 
 //1인 플레이어가 진행할 때 오는 스캐너입니다.
 
@@ -17,13 +31,27 @@ function setup_scanner() {
 
     isProcessing = false;
     playerName = "이름 없음";
-    playerId = "";
-    playerMajor = "";
-    playerDept = "";
+    playerId = null;
+    playerMajor = null;
+    playerDept = null;
     playerCollege = "";
+    OCR_pressed = 0;
+
+    oldID = true;
+    newID = false;
+    mobileID = false;
+
+
+    oldIDphoto = loadImage('Asset/UI/ScannerCards/old_student_id.png');
+    mobileIDphoto = loadImage('Asset/UI/ScannerCards/mobile_student_id.jpeg');
+    newIDphoto = loadImage('Asset/UI/ScannerCards/new_student_id.png');
+
+    oldIDicon = loadImage('Asset/UI/ScannerCards/old_student_icon.png');
+    newIDicon = loadImage('Asset/UI/ScannerCards/new_student_icon.png');
+    mobileIDicon = loadImage('Asset/UI/ScannerCards/mobile_student_icon.jpeg');
 
     capture = createCapture(VIDEO);
-    capture.size(640, 480);
+    capture.size(960, 720);
     capture.hide();
 }
 
@@ -31,43 +59,122 @@ function draw_scanner() {
     background(220);
 
     if (isProcessing) {
+        noTint();
         fill(0);
         textSize(50);
         noStroke();
-        text('OCR 처리중...', width / 2, height - 50);
+        text('학생증 스캔중...', width / 2, height /2);
     } else {
-        image(capture, width / 2 - 320, height / 2 - 250);
+        noTint();
+        image(capture, width / 2 - 480, height / 2 - 360);
         noStroke();
         fill(0);
         textSize(50);
         textAlign(CENTER, CENTER);
 
-        text('스페이스바를 눌러 캐릭터를 생성해주세요!', width / 2, height - 200);
+        text('스페이스바를 눌러 캐릭터를 생성해주세요!', width / 2, height - 100);
         textSize(30);
         fill(255, 102, 102);
-        text('모바일 혹은 카드 학생증의 학생 정보 부분이 네모 칸에 맞게 조절해주세요.', width / 2, height - 150)
-        stroke(255, 102, 102);
-        strokeWeight(5);
-        rectMode(CENTER);
-        noFill();
-        rect(width / 2, height / 2 - 20, 250, 360);
+        text('모바일 혹은 카드 학생증의 학생 정보 부분이 네모 칸에 맞게 조절해주세요.', width / 2, height - 50)
+
+        //학생증 전환 버튼
+        
+        fill(113, 161, 202);
+        rect(width/8, height/2 - 100, 300, 80);
+
+        rect(width/8, height/2 + 100, 300, 80);
+        
+        rect(width - width/8, height/2 + 20, 320, 120);
+        textSize(50);
+        fill(0);
+        text("구 학생증", width/8, height/2-100);
+        text("신 학생증", width/8, height/2+100);
+        text("모바일 학생증", width - width/8, height/2 + 20);
+
+        oldIDicon.resize(200, 120);
+        newIDicon.resize(120, 200);
+        mobileIDicon.resize(120, 200);
+
+        image(oldIDicon, width/8 - oldIDicon.width/2, height/2 - 160 - oldIDicon.height);
+        image(newIDicon, width/8 - newIDicon.width/2, height/2 + 160);
+        image(mobileIDicon, width - width/8 - mobileIDicon.width/2, height/2 - 60 - mobileIDicon.height);
+        
+        
+
+            if(oldID){
+            //투명한 학생증
+            noTint();
+            noFill();
+            stroke(227, 66, 86);
+            strokeWeight(10);
+            rect(width/8, height/2 - 100, 310, 90);
+            oldIDphoto.resize(960, 700);
+            tint(255, 70);
+            image(oldIDphoto, width/2 - oldIDphoto.width/2, height/2 - 350);
+            stroke(227, 66, 86);
+            strokeWeight(10);
+            rect(width/2 + 75, height/2 - 25, 400, 410);
+            } else if(newID) {
+                noTint();
+                noFill();
+                stroke(227, 66, 86);
+                strokeWeight(10);
+                rect(width/8, height/2 + 100, 310, 90);
+                newIDphoto.resize(700, 720);
+                tint(255, 70);
+                image(newIDphoto, width/2 - newIDphoto.width/2 + 50, height/2 - 360);
+                stroke(227, 66, 86);
+                strokeWeight(10);
+                rect(width/2 - 115, height/2 + 50, 315, 280);
+                
+    
+            } else if(mobileID) {
+                noTint();
+                noFill();
+                stroke(227, 66, 86);
+                strokeWeight(10);
+                rect(width - width/8, height/2 + 20, 330, 130);
+                mobileIDphoto.resize(900, 720);
+                tint(255, 70);
+                image(mobileIDphoto, width/2 - mobileIDphoto.width/2, height/2 - 360);
+                stroke(227, 66, 86);
+                strokeWeight(10);
+                rect(width/2 + 75, height/2 + 65, 320, 180);
+                
+            }
+
+        if((OCR_pressed > 1 && playerId === null) || (OCR_pressed > 1 && playerDept === null) || (OCR_pressed > 1 && playerId === null && playerDept === null)) {
+
+            fill(0);
+            textSize(30);
+            noStroke();
+            text('캐릭터 생성에 실패했습니다. 다시 시도해주십시오.', width/2, 150);
+    
+        }
+       
 
     }
 
+   
 
-    if (playerName !== "이름 없음") {
+    if (playerId !== null && playerDept !== null) {
         createCharacter();
-        if (singleP && singleP.majorIdx !== null) {
-            ChangeScene('ScannerUI');
+        if(singleP){
+        ChangeScene('ScannerUI'); 
         }
     }
+   
+  
 
     // S-Card가 잘 인식되지 않을 경우, 왼쪽 컨트롤 키를 눌러 랜덤한 카드를 뽑을 수 있습니다. 라고 텍스트 안내 (좌측 상단)
     fill(0);
-    textSize(20);
+    textSize(30);
     noStroke();
 
-    text("S-Card가 잘 인식되지 않을 경우, 왼쪽 컨트롤 키를 눌러 랜덤한 카드를 뽑을 수 있습니다.", width / 2, 10);
+    text("S-Card가 잘 인식되지 않을 경우, 왼쪽 컨트롤 키를 눌러 랜덤한 카드를 뽑을 수 있습니다.", width / 2, 20);
+
+
+    //S-Card 별로 UI바꾸기
 
 }
 
@@ -165,11 +272,13 @@ function extractName(text) {
 
 function keyPressed_scanner() {
     if (key === ' ') {
+        
         if (!isProcessing) {
             isProcessing = true;
             img = capture.get();
             processOCR();
         }
+        OCR_pressed = OCR_pressed + 1;
     }
 
     // 랜덤한 카드 뽑기(왼쪽 컨트롤)
@@ -191,17 +300,39 @@ function keyPressed_scanner() {
         playerDept = c.major;
 
         createCharacter();
+
+        ChangeScene('ScannerUI'); 
     }
 }
 function createCharacter() {
-    if (playerName !== "이름 없음") {
+        console.log("This is name: "+playerName);
+        console.log("This is major: "+playerDept);
+        console.log("This is id: "+playerId);
+    if (playerId !== null && playerDept !== null) {
         singleP = new Character(playerName, playerId, playerDept);
-        console.log(singleP.name);
-        console.log(singleP.major);
-        console.log(singleP.id);
+        
         //글로벌 변수인 캐릭터에 생성된 캐릭터를 assign
         globalPlayer = singleP;
     } else {
         console.log("Try again");
+    }
+}
+
+function mouseClicked_scanner(){
+
+    if(width/8 <= mouseX && mouseX <= width/8+300 && height/2 - 100 <= mouseY && mouseY <= height/2 - 20){
+        oldID = true;
+        newID = false;
+        mobileID = false;
+        }
+    if(width/8 <= mouseX && mouseX <= width/8+300 && height/2 + 100 <= mouseY && mouseY <= height/2 + 180){
+        oldID = false;
+        newID = true;
+        mobileID = false;
+    }
+     if(width - width/8 <= mouseX && mouseX <= width - width/8+320 && height/2 + 20 <= mouseY && mouseY <= height/2 + 140){
+        oldID = false;
+        newID = false;
+        mobileID = true;
     }
 }

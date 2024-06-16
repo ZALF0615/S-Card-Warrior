@@ -27,14 +27,15 @@ function draw_scannerUI() {
     fill(51, 133, 255);
     textSize(40);
     noStroke();
-    text("게임 준비를 위해서는 R을 누른 후 Enter!", width/2, 100);
+    text("게임 진행을 위해서는 Enter!", width/2, 100);
     textSize(35);
     fill(0);
     text("캐릭터를 다시 생성하기 위해서는 z를 누르세요.", width/2, height - 50);
     text("캐릭터가 생성되었습니다!", width/2, height - 100);
-
+    noTint();
     //캐릭터 생성 화면
     if(cardFlip == false) {
+    
     image(cardFront, width/2 - cardFront.width/2, height/2 - cardFront.height/2);
     textSize(25);
     text("뒤집으려면 F를 누르세요!", width/2 - cardFront.width, height - cardFront.height/2);
@@ -326,6 +327,11 @@ function draw_scannerUI() {
         
         fill('red');
         ellipse(width/2-2, height/2 - cardFront.height/4 + 12, 5, 5);
+        stroke('red');
+        strokeWeight(3);
+        line(width/2-2, height/2 - cardFront.height/4 + 12, width/2 - 2, height/2 - cardFront.height/4 - 68);
+
+        noStroke();
 
         switch(globalPlayer.majorIdx) {
             case 1:
@@ -1079,16 +1085,7 @@ function draw_scannerUI() {
         }
 
     }
-
-    if(gameReady == true) {
-        fill(0, 100);
-        rectMode(CORNER);
-        rect(width/2 - cardFront.width/2, height/2 - cardFront.height/2, cardFront.width, cardFront.height);
-        fill(255);
-        textSize(60);
-        text("READY", width/2, height/2);
-
-    } 
+ 
 }
 
 function keyPressed_scannerUI() {
@@ -1098,9 +1095,7 @@ function keyPressed_scannerUI() {
     if (key === 'f') {
         cardFlip = !cardFlip;
     }
-    if (key === 'r') {
-        gameReady = !gameReady;
-    }
+
     if (gameReady == true && key === 'Enter') {
         ChangeScene('MainGame');
     }

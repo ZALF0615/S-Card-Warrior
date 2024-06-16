@@ -79,16 +79,29 @@ function GameOver(winside) {
 
         ChangeAnimation(1, '승리');
         ChangeAnimation(-1, '패배');
+        //최정원
+        
+        //최정원
     } else if (winside == -1) {
         print_log("2P WIN");
 
         ChangeAnimation(1, '패배');
         ChangeAnimation(-1, '승리');
+        //최정원
+        //최정원
     }
 
+    /*
     setTimeout(() => {
         ChangeScene("Title");
     }, 5000);
+    */
+   //최정원
+   //특정 키를 누를 때까지 장면이 바뀌지 않게 한다.
+   if(keyCode === ENTER) {
+    ChangeScene("Title");
+   }
+   //최정원
 }
 
 let FloatUIs = [];

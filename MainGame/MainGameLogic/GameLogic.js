@@ -207,7 +207,16 @@ function Attack(playerNum, hand) {
 
 function keyPressed_gamelogic() {
 
-    if (isGameOver) { return; }
+   // if (isGameOver) { return; }
+   //게임 오버 시 엔터 키를 눌러야지만 원래 화면으로 돌아가기 가능
+   //최정원
+   if (isGameOver && keyCode === ENTER) {
+   
+        ChangeScene('Title');
+        return;
+    
+   }
+   //최정원
 
     if (selectedAction_1p == 0) {
         if (key === 'a') {

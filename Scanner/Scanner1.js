@@ -52,7 +52,7 @@ function draw_scanner1() {
     }
    
 
-    if (player1Name !== "이름 없음") {
+    if (player1Name !== "이름 없음" ) {
         createCharacter1();
         if (p1 && p1.majorIdx !== null) {
         ChangeScene('ScannerUI1');  

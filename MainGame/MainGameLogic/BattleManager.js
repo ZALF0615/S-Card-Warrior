@@ -39,7 +39,9 @@ function InitGame() {
     TurnTaker();
 
     StopBGM();
-    PlayBallteBGM();
+
+    if (!isMutingBGM) { PlayBallteBGM(); }
+
 }
 
 function TurnTaker() {

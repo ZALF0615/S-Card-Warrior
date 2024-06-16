@@ -78,6 +78,8 @@ function MuteBGM() {
                 currentBattleBGM.play();
             }
 
+        } else {
+            PlayBallteBGM();
         }
     } else {
         if (currentBGM) {

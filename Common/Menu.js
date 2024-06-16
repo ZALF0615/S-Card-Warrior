@@ -10,9 +10,11 @@ function displayMenu() {
         let b = buttons[i];
 
         fill(255);
-        if (selectedButtonIndex == i) { fill('red'); }
+
         stroke(0);
-        strokeWeight(5);
+        if (selectedButtonIndex == i) { stroke('blue'); strokeWeight(20); }
+        else { stroke(0); strokeWeight(5); }
+
         rectMode(CENTER);
         rect(b.x, b.y, b.w, b.h);
 
@@ -28,6 +30,12 @@ function displayMenu() {
     textSize(30);
     textAlign(CENTER, CENTER);
     text('↑ W, S ↓ 로 이동   SPACE 로 결정', width / 2, height - 50);
+
+    // 왼쪽 위에 "SHIFT를 눌러 배경음 켜고 끄기" 텍스트 출력
+    fill(255);
+    textSize(30);
+    textAlign(LEFT, TOP);
+    text('SHIFT를 눌러 배경음 켜고 끄기', 10, 10);
 
 }
 

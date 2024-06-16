@@ -81,12 +81,18 @@ function draw_title() {
 let title_logo;
 let selected_button = 0;
 
+let isSelected = false;
+
 function preload_title() {
 
 }
 
 function presskey_title() {
+
+    if (isSelected) { return; }
+
     if (key == ' ' && selected_button != 0) {
+        isSelected = true;
         PlaySEOneShot(selectSE, 0.2);
 
         if (selected_button == 1) { // 튜토리얼

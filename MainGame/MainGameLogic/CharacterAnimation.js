@@ -42,6 +42,26 @@ function drawCharacters() {
         currentFrame_2p = (currentFrame_2p + 1) % charaAnimations[jobs[player2.jobIdx]][currentAnimation_2p].length;
     }
 
+    // 준비상태일 경우 아래에 1P / 2P 표시
+
+    if (showActions) {
+        fill(getJobSkillColor(player1.jobIdx));
+        stroke(0);
+        strokeWeight(10);
+        textSize(50);
+        textAlign(CENTER, CENTER);
+        text('1P', x1 + 200, y - 20);
+    }
+
+    if (showActions) {
+        fill(getJobSkillColor(player2.jobIdx));
+        stroke(0);
+        strokeWeight(10);
+        textSize(50);
+        textAlign(CENTER, CENTER);
+        text(isCPUmode ? 'CPU' : '2P', x2 - 200, y - 20);
+    }
+
 }
 
 let imagesToLoad = 0;

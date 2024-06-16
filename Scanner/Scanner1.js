@@ -71,6 +71,9 @@ capture1.hide();
 function draw_scanner1() {
     background(220);
 
+    textAlign(CENTER, CENTER);
+    rectMode(CENTER);
+
      //스캐너 타이틀
      ellapsedTime1 = millis() / 1000;
 

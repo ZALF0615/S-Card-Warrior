@@ -37,6 +37,7 @@ let ellapsedTime2;
 
 function setup_scanner2() {
 
+
 isProcessing2 = false;
 player2Name = "이름 없음";
 player2Id = null
@@ -70,6 +71,9 @@ capture2.hide();
 
 function draw_scanner2() {
     background(220);
+
+    textAlign(CENTER, CENTER);
+    rectMode(CENTER);
 
      //스캐너 타이틀
      ellapsedTime2 = millis() / 1000;

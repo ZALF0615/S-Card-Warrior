@@ -70,6 +70,10 @@ function setup_scanner() {
 }
 
 function draw_scanner() {
+
+    textAlign(CENTER, CENTER);
+    rectMode(CENTER);
+
     background(220);
 
     //스캐너 타이틀

@@ -98,11 +98,11 @@ function displayStatus(player1, player2) {
     textSize(30);
     textAlign(LEFT, CENTER);
 
-    text("GD", x + 70, y + 30);
-    text("HP", x + 70, y + 80);
-    text("RO", x + 70, y + 130);
-    text("SC", x + 70, y + 180);
-    text("PA", x + 70, y + 230);
+    text("학년", x + 70, y + 30);
+    text("체력", x + 70, y + 80);
+    text("가위", x + 70, y + 130);
+    text("바위", x + 70, y + 180);
+    text("보", x + 70, y + 230);
 
     // 각 항목의 값 출력
     for (let i = 0; i < player1Stat.length; i++) {
@@ -123,11 +123,11 @@ function displayStatus(player1, player2) {
     textSize(30);
     textAlign(LEFT, CENTER);
 
-    text("GD", x + 70, y + 30);
-    text("HP", x + 70, y + 80);
-    text("RO", x + 70, y + 130);
-    text("SC", x + 70, y + 180);
-    text("PA", x + 70, y + 230);
+    text("학년", x + 70, y + 30);
+    text("체력", x + 70, y + 80);
+    text("가위", x + 70, y + 130);
+    text("바위", x + 70, y + 180);
+    text("보", x + 70, y + 230);
 
     // 각 항목의 값 출력
     for (let i = 0; i < player2Stat.length; i++) {
@@ -203,7 +203,7 @@ function displayAction(x, y, playerNum) {
             strokeWeight(10);
             textSize(30);
             textAlign(CENTER, CENTER);
-            text("낼 손을 선택하세요", x, y - 300);
+            // text("낼 손을 선택하세요", x, y - 300);
 
             noStroke();
         }
@@ -449,8 +449,6 @@ let isLoading = false;
 
 function displayLoading() {
     // 화면 전체에 어두운 배경, 오른쪽 아래에 로딩 중 텍스트 출력
-    // Loading... 텍스트 출력, ... 부분이 계속 변화하도록
-
     rectMode(CENTER);
 
     fill(0, 150);
@@ -587,6 +585,9 @@ function preload_UI() {
     skillcommnadList.push(command_skill_EXPLORER);
     skillcommnadList.push(command_skill_DRUID);
     skillcommnadList.push(command_skill_LUCIFER);
+
+    warriorCard_front = loadImage('Asset/UI/CharacterCard/warrior_card_front_bg.png');
+    warriorCard_back = loadImage('Asset/UI/CharacterCard/warrior_card_back_bg.png');
 
     font_galmuri7 = loadFont('Asset/Font/Galmuri7.ttf');
 

@@ -322,7 +322,7 @@ function drawRadarChart2(centerX2, centerY2, maxDistance2, values2) {
     for (let i = 0; i < 10; i++) {
         console.log("number of loops: " + i);
         if (i < 6) {
-            fill(colors2=[0]);
+            fill(colors2[0]);
         } else if (i === 6) {
             fill(colors2[1]);
         } else if (i === 7) {

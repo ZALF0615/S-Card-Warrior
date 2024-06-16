@@ -65,6 +65,8 @@ function preload_charaAnim(jobIdx) {
         skillSEs[jobIdx] = loadSound(`Asset/Audio/SE/skillSE_${jobName}.wav`);
 
         isLoadedCharaAnim[jobIdx] = true;
+    }else{
+        onLoadCompleteCallback();
     }
 }
 

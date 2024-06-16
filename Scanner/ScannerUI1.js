@@ -7,9 +7,24 @@ let cardWizard1;
 let cardExplorer1;
 let cardBard1;
 let cardLucifer1;
+let cardMech1;
+let cardDruid1;
+let cardHealer1;
 
-let cardFlip1 = false;
-let gameReady1 = false;
+let cardFlip1;
+let gameReady1 = true;
+let flipIcon1;
+let values1 = [3,4,3,3,3]; // 시계방향으로 radar chart의 값이 들어감
+let centerX1;
+let centerY1;
+
+let radarChartColor1;
+let radarLineColor1;
+
+let smallZbutton1;
+let longButton1;
+
+let playerIDtext1;
 
 function setup_scannerUI1() {
     cardFront1 = loadImage('Asset/UI/CharacterCard/warrior_card_front_bg.png');
@@ -19,27 +34,55 @@ function setup_scannerUI1() {
     cardWizard1 = loadImage('Asset/Character/마법사/마법사_기본/F0.png');
     cardBard1 = loadImage('Asset/Character/음유시인/음유시인_기본/F0.png');
     cardLucifer1 = loadImage('Asset/Character/정보대마왕/정보대마왕_기본/F0.png');
+    cardDruid1 = loadImage('Asset/Character/드루이드/드루이드_기본/F0.png');
+    cardMech1 = loadImage('Asset/Character/메카파일럿/메카 파일럿_기본/F0.png');
+    cardHealer1 = loadImage('Asset/Character/힐러/힐러_기본/F0.png');
+    flipIcon1 = loadImage('Asset/UI/ScannerCards/warrior_generation_flip_card_icon (2).png');
+    smallZbutton1 = loadImage('Asset/UI/ScannerCards/button_short_bg.png');
+    longButton1 = loadImage('Asset/UI/ScannerCards/button_long_bg.png');
 
+    cardFlip1 = false;
+
+    centerX1 = width / 2 - 2;
+    centerY1 = height / 2 - cardFront1.height / 4 - 148;
+
+    radarChartColor1 = color(220, 100, 100);
+    radarLineColor1 = color(100,100,100,100);
 }
 
 function draw_scannerUI1() {
     background(255);
     fill(51, 133, 255);
-    textSize(40);
+    textSize(75);
     noStroke();
-    text("두 번째 캐릭터 생성을 위해서는 R을 누른 후 Enter!", width/2, 100);
-    textSize(35);
+    longButton1.resize(220, 100);
+    image(longButton1, width/2 + 240, 110 - longButton1.height/2);
+    text("2P 생성을 위해서는           !", width/2, 100);
+    fill(255);
+    textSize(60);
+    text("Enter", width/2 + 355, 100);
+    textSize(40);
     fill(0);
-    text("캐릭터를 다시 생성하기 위해서는 z를 누르세요.", width/2, height - 50);
-    text("첫 번째 캐릭터가 생성되었습니다!", width/2, height - 100);
-
+    //z 뒤 작은 버튼
+    image(smallZbutton1, width/2 + 120 + smallZbutton1.width, height - 95 - smallZbutton1.height/2 );
+    text("캐릭터를 다시 생성하기 위해서는  Z 를 누르세요.", width/2, height - 100);
+    fill(51, 133, 255);
+    textSize(70);
+    text("1P가 생성되었습니다!", width/2, height - 170);
+    noTint();
     //캐릭터 생성 화면
+    fill(0);
     if(cardFlip1 == false) {
+    //캐릭터 카드 프레임 및 뒤집기 아이콘
     image(cardFront1, width/2 - cardFront1.width/2, height/2 - cardFront1.height/2);
-    textSize(25);
-    text("뒤집으려면 F를 누르세요!", width/2 - cardFront1.width, height - cardFront1.height/2);
+    textSize(30);
+    image(smallZbutton1, width/2 - cardFront1.width - 140, height/2 - smallZbutton1.height/2);
+    text(" F   를 눌러 뒤집기", width/2 - cardFront1.width, height/2);
     image(cardFront1, width/2 - cardFront1.width/2, height/2 - cardFront1.height/2);
-    
+    flipIcon1.resize(107, 103);
+    image(flipIcon1, width/2 - cardFront1.width + flipIcon1.width, height/2 - flipIcon1.height/2);
+        
+    //가위 바위 보 HP 스탯 보여주는 텍스트
     textSize(40);
     stroke(255, 26, 117);
     strokeWeight(5);
@@ -55,1040 +98,176 @@ function draw_scannerUI1() {
     fill(80);
     textSize(35);
     text(globalPlayer1.subtitle, width/2, height - cardFront1.height/2);
-    switch(globalPlayer1.majorIdx) {
-        case 1:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 2:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 3:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 4:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 5:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 6:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 7:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 8:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 9:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 10:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 11:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 12:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 13:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 14:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 15:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 16:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 17:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 18:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 19:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 20:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 21:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 22:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 23:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 24:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 25:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 26:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 27:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 28:
-            image(cardSage1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 29:
-            image(cardSage, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 30:
-            image(cardWizard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 31:
-            image(cardWizard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 32:
-            image(cardWizard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 33:
-            image(cardWizard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 34:
-            image(cardWizard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 35:
-            image(cardWizard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 36:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 37:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 38:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 39:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 40:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 41:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 42:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 43:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 44:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 45:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 46:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 47:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 48:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 49:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 50:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 51:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 52:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 53:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 54:
-            image(cardBard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 55:
-            image(cardBard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 56:
-            image(cardBard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 57:
-            image(cardBard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 58:
-            image(cardBard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 59:
-            image(cardBard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 60:
-            image(cardBard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 61:
-            image(cardBard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 62:
-            image(cardBard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 63:
-            image(cardBard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 64:
-            image(cardBard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 65:
-            image(cardBard1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 66:
-            image(cardExplorer1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 67:
-            image(cardExplorer1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 68:
-            image(cardExplorer1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 69:
-            image(cardExplorer1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 70:
-            image(cardExplorer1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 71:
-            image(cardExplorer1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 72:
-            image(cardExplorer1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 73:
-            image(cardExplorer1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 74:
-            image(cardExplorer1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 75:
-            image(cardExplorer1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 76:
-            image(cardExplorer1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 77:
-            image(cardExplorer1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 78:
-            image(cardExplorer1, width/2 - cardFront1.width/2 + 60, height/2 - cardFront1.height/2 + 120);
-            break;
-        case 79:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 80:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 81:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 82:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 83:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 84:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 85:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        case 86:
-            image(cardLucifer1,  width/2 - cardFront1.width/2 + 140, height/2 - cardFront1.height/2 + 140, cardFront1.width - 280, cardFront1.height - 350);
-            break;
-        default:
-            break;
 
-    }
+    //학번에 따라 달라지는 이미지
+
+    if(globalPlayer1.majorIdx >= 1 && globalPlayer1.majorIdx <= 29) {
+        //고대의 현자
+        image(cardSage1, width/2 - cardFront1.width/2 + 50, height/2 - cardFront1.height/2 + 120);
+    } else if (globalPlayer1.majorIdx >= 30 && globalPlayer1.majorIdx <= 35) {
+        //위자드
+        image(cardWizard1, width/2 - cardFront1.width/2 + 50, height/2 - cardFront1.height/2 + 120);
+    } else if (globalPlayer1.majorIdx >= 36 && globalPlayer1.majorIdx <= 47) {
+        //메카 파일럿
+        image(cardMech1,  width/2 - cardFront1.width/2 + 50, height/2 - cardFront1.height/2 + 120); 
+    } else if (globalPlayer1.majorIdx >= 48 && globalPlayer1.majorIdx <= 53) {
+        //힐러
+        image(cardHealer1,  width/2 - cardFront1.width/2 + 50, height/2 - cardFront1.height/2 + 120);    
+    } else if (globalPlayer1.majorIdx >= 54 && globalPlayer1.majorIdx <= 65) {
+        //음유시인
+        image(cardBard1, width/2 - cardFront1.width/2 + 50, height/2 - cardFront1.height/2 + 120);
+    } else if (globalPlayer1.majorIdx >= 66 && globalPlayer1.majorIdx <= 78) {
+        //탐험가
+        image(cardExplorer1, width/2 - cardFront1.width/2 + 50, height/2 - cardFront1.height/2 + 120);
+    } else if (globalPlayer1.majorIdx >= 79 && globalPlayer1.majorIdx <= 85) {
+        //드루이드
+      //image(cardDruid,  width/2 - cardFront.width/2 + 140, height/2 - cardFront.height/2 + 140, cardFront.width - 280, cardFront.height - 350);
+      image(cardDruid1, width/2 - cardFront1.width/2 + 50, height/2 - cardFront1.height/2 + 120); 
+    } else if (globalPlayer1.majorIdx == 86) {
+        //루시퍼
+        image(cardLucifer1,  width/2 - cardFront1.width/2 + 50, height/2 - cardFront1.height/2 + 120); 
+    } 
+
     
     } else {
         image(cardBack1, width/2 - cardFront1.width/2, height/2 - cardFront1.height/2);
-        textSize(25);
-        text("뒤집으려면 F를 누르세요!", width/2 - cardFront1.width, height - cardFront1.height/2);
-        
-        fill('red');
-        ellipse(width/2-2, height/2 - cardFront1.height/4 + 12, 5, 5);
+        textSize(30);
+        image(smallZbutton1, width/2 - cardFront1.width - 140, height/2 - smallZbutton1.height/2);
+        text(" F   를 눌러 뒤집기", width/2 - cardFront1.width, height/2);
+        flipIcon1.resize(107, 103);
+        image(flipIcon1, width/2 - cardFront1.width + flipIcon1.width, height/2 - flipIcon1.height/2);
+        //line(width/2-2, height/2 - cardFront.height/4 + 12, width/2 - 2, height/2 - cardFront.height/4 - 68);
 
-        switch(globalPlayer1.majorIdx) {
-            case 1:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 2:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 3:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 4:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 5:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 6:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 7:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 8:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 9:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 10:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 11:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 12:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 13:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 14:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 15:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 16:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 17:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 18:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 19:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 20:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 21:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 22:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 23:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 24:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 25:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 26:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 27:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 28:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 29:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("지혜의 눈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("이번 라운드에 상대방이 선택한 액션", width/2, height - cardFront1.height/2 - 60);
-                break;
-            case 30:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("원소 폭발", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("상대의 손과 상관 없이 이번 라운드 승리", width/2, height - cardFront1.height/2 - 60);
-                text("이때 대미지는 상대가 낸 손 +5", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 31:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("원소 폭발", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("상대의 손과 상관 없이 이번 라운드 승리", width/2, height - cardFront1.height/2 - 60);
-                text("이때 대미지는 상대가 낸 손 +5", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 32:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("원소 폭발", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("상대의 손과 상관 없이 이번 라운드 승리", width/2, height - cardFront1.height/2 - 60);
-                text("이때 대미지는 상대가 낸 손 +5", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 33:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("원소 폭발", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("상대의 손과 상관 없이 이번 라운드 승리", width/2, height - cardFront1.height/2 - 60);
-                text("이때 대미지는 상대가 낸 손 +5", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 34:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("원소 폭발", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("상대의 손과 상관 없이 이번 라운드 승리", width/2, height - cardFront1.height/2 - 60);
-                text("이때 대미지는 상대가 낸 손 +5", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 35:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("원소 폭발", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("상대의 손과 상관 없이 이번 라운드 승리", width/2, height - cardFront1.height/2 - 60);
-                text("이때 대미지는 상대가 낸 손 +5", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 36:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 37:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 38:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 39:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 40:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 41:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 42:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 43:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 44:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 45:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 46:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 47:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 48:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 49:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 50:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 51:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 52:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 53:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 54:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("포르티시모", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 승리 시 상대에게", width/2, height - cardFront1.height/2 - 60);
-                text("들어가는 대미지가 2배가 됩니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 55:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("포르티시모", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 승리 시 상대에게", width/2, height - cardFront1.height/2 - 60);
-                text("들어가는 대미지가 2배가 됩니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 56:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("포르티시모", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 승리 시 상대에게", width/2, height - cardFront1.height/2 - 60);
-                text("들어가는 대미지가 2배가 됩니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 57:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("포르티시모", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 승리 시 상대에게", width/2, height - cardFront1.height/2 - 60);
-                text("들어가는 대미지가 2배가 됩니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 58:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("포르티시모", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 승리 시 상대에게", width/2, height - cardFront1.height/2 - 60);
-                text("들어가는 대미지가 2배가 됩니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 59:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("포르티시모", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 승리 시 상대에게", width/2, height - cardFront1.height/2 - 60);
-                text("들어가는 대미지가 2배가 됩니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 60:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("포르티시모", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 승리 시 상대에게", width/2, height - cardFront1.height/2 - 60);
-                text("들어가는 대미지가 2배가 됩니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 61:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("포르티시모", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 승리 시 상대에게", width/2, height - cardFront1.height/2 - 60);
-                text("들어가는 대미지가 2배가 됩니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 62:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("포르티시모", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 승리 시 상대에게", width/2, height - cardFront1.height/2 - 60);
-                text("들어가는 대미지가 2배가 됩니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 63:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("포르티시모", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 승리 시 상대에게", width/2, height - cardFront1.height/2 - 60);
-                text("들어가는 대미지가 2배가 됩니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 64:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("포르티시모", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 승리 시 상대에게", width/2, height - cardFront1.height/2 - 60);
-                text("들어가는 대미지가 2배가 됩니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 65:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("포르티시모", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 승리 시 상대에게", width/2, height - cardFront1.height/2 - 60);
-                text("들어가는 대미지가 2배가 됩니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 66:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("탐험의 지혜", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 비겼을 경우", width/2, height - cardFront1.height/2 - 60);
-                text("자신의 승리로 간주합니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 67:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("탐험의 지혜", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 비겼을 경우", width/2, height - cardFront1.height/2 - 60);
-                text("자신의 승리로 간주합니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 68:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("탐험의 지혜", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 비겼을 경우", width/2, height - cardFront1.height/2 - 60);
-                text("자신의 승리로 간주합니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 69:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("탐험의 지혜", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 비겼을 경우", width/2, height - cardFront1.height/2 - 60);
-                text("자신의 승리로 간주합니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 70:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("탐험의 지혜", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 비겼을 경우", width/2, height - cardFront1.height/2 - 60);
-                text("자신의 승리로 간주합니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 71:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("탐험의 지혜", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 비겼을 경우", width/2, height - cardFront1.height/2 - 60);
-                text("자신의 승리로 간주합니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 72:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("탐험의 지혜", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 비겼을 경우", width/2, height - cardFront1.height/2 - 60);
-                text("자신의 승리로 간주합니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 73:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("탐험의 지혜", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 비겼을 경우", width/2, height - cardFront1.height/2 - 60);
-                text("자신의 승리로 간주합니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 74:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("탐험의 지혜", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 비겼을 경우", width/2, height - cardFront1.height/2 - 60);
-                text("자신의 승리로 간주합니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 75:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("탐험의 지혜", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 비겼을 경우", width/2, height - cardFront1.height/2 - 60);
-                text("자신의 승리로 간주합니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 76:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("탐험의 지혜", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 비겼을 경우", width/2, height - cardFront1.height/2 - 60);
-                text("자신의 승리로 간주합니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 77:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("탐험의 지혜", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 비겼을 경우", width/2, height - cardFront1.height/2 - 60);
-                text("자신의 승리로 간주합니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 78:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("탐험의 지혜", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 비겼을 경우", width/2, height - cardFront1.height/2 - 60);
-                text("자신의 승리로 간주합니다.", width/2, height - cardFront1.height/2 - 20); 
-                break;
-            case 79:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 80:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 81:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 82:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 83:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 84:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 85:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            case 86:
-                fill(0);
-                textSize(30);
-                textAlign(CENTER, CENTER);
-                text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
-                textSize(20);
-                text("3라운드 동안 두 플레이어의 모든 손의", width/2, height - cardFront1.height/2 - 60);
-                text("대미지가 랜덤한 값으로 바뀝니다.", width/2, height - cardFront1.height/2 - 20);
-                break;
-            default:
-                break;
-    
-        }
+        //Radar chart 오각 차트
+            //직업별 오각 차트 내부 색
+        if(globalPlayer1.majorIdx >= 1 && globalPlayer1.majorIdx <= 29) {
+            //현자
+            radarChartColor1 = color(117, 251, 96, 150);
+            radarLineColor1 = color(117, 251, 96);
+        } else if (globalPlayer1.majorIdx >= 30 && globalPlayer1.majorIdx <= 35) {
+            //위자드
+            radarChartColor1 = color(142, 251, 245, 150);
+            radarLineColor1 = color(142, 251, 245);
+        } else if (globalPlayer1.majorIdx >= 36 && globalPlayer1.majorIdx <= 47) {
+            //메카 파일럿
+            radarChartColor1 = color(252, 243, 81, 150); 
+            radarLineColor1 = color( 252, 243, 81); 
+        } else if (globalPlayer1.majorIdx >= 48 && globalPlayer1.majorIdx <= 53) {
+            //힐러
+            radarChartColor1 = color(63, 7, 244, 150);
+            radarLineColor1 = color(63, 7, 244);
+        } else if (globalPlayer1.majorIdx >= 54 && globalPlayer1.majorIdx <= 65) {
+            //음유시인
+            radarChartColor1 = color(233, 51, 181, 150);
+            radarLineColor1 = color(233, 51, 181);
+        } else if (globalPlayer1.majorIdx >= 66 && globalPlayer1.majorIdx <= 78) {
+            //탐험가
+            radarChartColor1 = color(13, 41, 244, 150); 
+            radarLineColor1 = color(13, 41, 244); 
+        } else if (globalPlayer1.majorIdx >= 79 && globalPlayer1.majorIdx <= 85) {
+            //드루이드
+            radarChartColor1 = color(235, 254, 83, 150); 
+            radarLineColor1 = color(235, 254, 83); 
+        } else if (globalPlayer1.majorIdx == 86) {
+            //루시퍼
+            radarChartColor1 = color(148, 28, 245, 150); 
+            radarLineColor1 = color(148, 28, 245); 
+        } 
+
+        fill(radarChartColor1);
+        stroke(radarLineColor1);
+        strokeWeight(3);
+        values1 = [globalPlayer1.grade, globalPlayer1.id.charAt(6), globalPlayer1.rock, globalPlayer1.scissors, globalPlayer1.paper];
+        drawRadarChart1(centerX1, centerY1, 80, values1);
+        textSize(20);
+        fill(radarLineColor1);
+        noStroke();
+        //플레이어 ID
+        //text(globalPlayer.id.slice(0, 10), centerX + 70, centerY + cardFront.height/5 - 10);
+        playerIDtext1 = globalPlayer1.id.slice(0, 10);
+        drawColoredText1(playerIDtext1, centerX1 - 11, centerY1 + cardFront1.height / 5 - 10);
+
+        noStroke();
+        //각 캐릭터 스킬, 캐릭터 카드 뒷면 글자. 
+        if(globalPlayer1.majorIdx >= 1 && globalPlayer1.majorIdx <= 29) {
+            //현자
+            fill(radarLineColor1);
+            textSize(30);
+            textAlign(CENTER, CENTER);
+            text("지식의 폭풍", width/2, height - cardFront1.height/2 - 120);
+            textSize(20);
+            fill(0);
+            text("데미지를 5만큼 입히고,", width/2, height - cardFront1.height/2 - 60);
+            text("본인 HP가 5만큼 회복됨.", width/2, height - cardFront1.height/2 - 20);
+        } else if (globalPlayer1.majorIdx >= 30 && globalPlayer1.majorIdx <= 35) {
+            //위자드
+            fill(radarLineColor1);
+            textSize(30);
+            textAlign(CENTER, CENTER);
+            text("원소 폭발", width/2, height - cardFront1.height/2 - 120);
+            textSize(20);
+            fill(0);
+            text("상대의 손 +3만큼 데미지를 입히고", width/2, height - cardFront1.height/2 - 60);
+            text("본인 HP가 3만큼 회복됨.", width/2, height - cardFront1.height/2 - 20);
+        } else if (globalPlayer1.majorIdx >= 36 && globalPlayer1.majorIdx <= 47) {
+            //메카 파일럿
+            fill(radarLineColor1);
+            textSize(30);
+            textAlign(CENTER, CENTER);
+            text("잔고장", width/2, height - cardFront1.height/2 - 120);
+            textSize(20);
+            fill(0);
+            text("데미지를 상대의 손 2배만큼 입힘", width/2, height - cardFront1.height/2 - 60);
+            
+        } else if (globalPlayer1.majorIdx >= 48 && globalPlayer1.majorIdx <= 53) {
+            //힐러
+            fill(radarLineColor1);
+            textSize(30);
+            textAlign(CENTER, CENTER);
+            text("회복의 빛", width/2, height - cardFront1.height/2 - 120);
+            textSize(20);
+            fill(0);
+            text("데미지를 5만큼 입히고,", width/2, height - cardFront1.height/2 - 60);
+            text("본인 HP가 상대의 손만큼 회복됨.", width/2, height - cardFront1.height/2 - 20);  
+        } else if (globalPlayer1.majorIdx >= 54 && globalPlayer1.majorIdx <= 65) {
+            //음유시인
+            fill(radarLineColor1);
+            textSize(30);
+            textAlign(CENTER, CENTER);
+            text("예술의 선율", width/2, height - cardFront1.height/2 - 120);
+            textSize(20);
+            fill(0);
+            text("데미지를 상대의 잔여 HP 절반만큼 입힘.", width/2, height - cardFront1.height/2 - 60);
+        } else if (globalPlayer1.majorIdx >= 66 && globalPlayer1.majorIdx <= 78) {
+            //탐험가
+            fill(radarLineColor1);
+            textSize(30);
+            textAlign(CENTER, CENTER);
+            text("탐험의 지혜", width/2, height - cardFront1.height/2 - 120);
+            textSize(20);
+            fill(0);
+            text("데미지를 본인 모든 손의 합만큼 입힘.", width/2, height - cardFront1.height/2 - 60);
+        } else if (globalPlayer1.majorIdx >= 79 && globalPlayer1.majorIdx <= 85) {
+            //드루이드
+            fill(radarLineColor1);
+            textSize(30);
+            textAlign(CENTER, CENTER);
+            text("자연의 분노", width/2, height - cardFront1.height/2 - 120);
+            textSize(20);
+            fill(0);
+            text("데미지를 상대의 손 +6만큼 입힘", width/2, height - cardFront1.height/2 - 60);
+        } else if (globalPlayer1.majorIdx == 86) {
+            //루시퍼
+            fill(radarLineColor1);
+            textSize(30);
+            textAlign(CENTER, CENTER);
+            text("디지털 혼돈", width/2, height - cardFront1.height/2 - 120);
+            textSize(20);
+            fill(0);
+            text("데미지를 8~15 사이 랜덤 값을 입힘.", width/2, height - cardFront1.height/2 - 60);
+        } 
 
     }
-
-    if(gameReady1 == true) {
-        fill(0, 100);
-        rectMode(CORNER);
-        rect(width/2 - cardFront1.width/2, height/2 - cardFront1.height/2, cardFront1.width, cardFront1.height);
-        fill(255);
-        textSize(60);
-        text("READY", width/2, height/2);
-
-    } 
 }
 
 function keyPressed_scannerUI1() {
@@ -1098,11 +277,58 @@ function keyPressed_scannerUI1() {
     if (key === 'f') {
         cardFlip1 = !cardFlip1;
     }
-    if (key === 'r') {
-        gameReady1 = !gameReady1;
-    }
-    if (gameReady1 == true && key === 'Enter') {
+    if (gameReady1 == true && keyCode === ENTER) {
         ChangeScene('Scanner2');
     }
 }
 
+function drawRadarChart1(centerX1, centerY1, maxDistance1, values1) {
+    let angle1 = TWO_PI / 5; // There are five points in the pentagon
+  
+    beginShape();
+    for (let i = 0; i < 5; i++) {
+      let value1 = constrain(values1[i], 0, 9); // Ensure values are between 0 and 9
+      let distance1 = map(value1, 0, 9, 0, maxDistance1);
+      let x1 = centerX1 + cos(angle1 * i - HALF_PI) * distance1;
+      let y1 = centerY1 + sin(angle1 * i - HALF_PI) * distance1;
+      vertex(x1, y1);
+    }
+    endShape(CLOSE);
+  
+    endShape(CLOSE);
+  }
+
+  //Warrior Id의 각 문자 색 바꾸는 용도
+  function drawColoredText1(txt1, x1, y1) {
+    let colors1 = [
+        color(254, 174, 17),  // for characters 1 to 5
+        color(242, 69, 64),   // for character 6
+        color(25, 117, 255),  // for character 7
+        color(8, 168, 52),    // for character 8
+        color(112, 19, 226)   // for character 9
+    ];
+
+    // Ensure we only use the first 10 characters of the text
+    fronttxt1 = txt1.slice(0, 4);
+    backtxt1 = txt1.slice(5, 10);
+
+    for (let i = 0; i < txt1.length; i++) {
+        console.log("number of loops: " + i);
+        if (i < 6) {
+            fill(colors1[0]);
+        } else if (i === 6) {
+            fill(colors1[1]);
+        } else if (i === 7) {
+            fill(colors1[2]);
+        } else if (i === 8) {
+            fill(colors1[3]);
+        } else if (i === 9) {
+            fill(colors1[4]);
+        } else {
+            fill(0); // Default color for any remaining characters
+        }
+        text(txt1.charAt(i), x1 + i * 12, y1);
+    }
+}
+  
+ 

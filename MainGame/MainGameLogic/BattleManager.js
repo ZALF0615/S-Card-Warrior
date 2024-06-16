@@ -83,7 +83,6 @@ function GameOver(winside) {
     if (isCPUmode) {
         if (winside == 1) {
             print_log("YOU WIN");
-
             ChangeAnimation(1, '승리');
             ChangeAnimation(-1, '패배');
 
@@ -129,6 +128,7 @@ function GameOver(winside) {
             }, 5000);
         }
     }
+
 }
 
 let FloatUIs = [];

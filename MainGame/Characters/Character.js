@@ -34,7 +34,7 @@ class Character {
             // textAlign(CENTER, CENTER);
             // text("캐릭터 생성 실패! 다시 시도해주세요!", width/2, height/2 - 200);
 
-            this.majorIdx = 86;
+            //this.majorIdx = 86;
         }
      
         
@@ -47,7 +47,9 @@ class Character {
         
 
         // 이름의 앞 두글자와 뒤 두글자를 붙여서 직업을 정함
-        this.name = this.name.slice(0, 2) + characterData[this.majorIdx].name;
+        // 이름에 쓰레기 값이 들어가는 것에 대비해 그냥 학자 이름으로 함
+        //this.name = this.name.slice(0, 2) + characterData[this.majorIdx].name;
+        this.name = characterData[this.majorIdx].name;
 
         // 학년
         let degree = parseInt(this.id.charAt(5)); // 학위

@@ -29,15 +29,16 @@ let playerIDtext;
 function setup_scannerUI() {
     cardFront = loadImage('Asset/UI/CharacterCard/warrior_card_front_bg.png');
     cardBack = loadImage('Asset/UI/CharacterCard/warrior_card_back_bg.png');
+
     cardSage = loadImage('Asset/Character/현자/현자_기본/F0.png');
-    cardExplorer = loadImage('Asset/Character/탐험가/탐험가_기본/F0.png');
     cardWizard = loadImage('Asset/Character/마법사/마법사_기본/F0.png');
+    cardExplorer = loadImage('Asset/Character/탐험가/탐험가_기본/F0.png');
     cardBard = loadImage('Asset/Character/음유시인/음유시인_기본/F0.png');
-    cardDruid = loadImage('Asset/Character/드루이드/드루이드_기본/F0.png');
-    cardLucifer = loadImage('Asset/Character/정보대마왕/정보대마왕_기본/F0.png');
     cardDruid = loadImage('Asset/Character/드루이드/드루이드_기본/F0.png');
     cardMech = loadImage('Asset/Character/메카파일럿/메카 파일럿_기본/F0.png');
     cardHealer = loadImage('Asset/Character/힐러/힐러_기본/F0.png');
+    cardLucifer = loadImage('Asset/Character/정보대마왕/정보대마왕_기본/F0.png');
+
     flipIcon = loadImage('Asset/UI/ScannerCards/warrior_generation_flip_card_icon (2).png');
     smallZbutton = loadImage('Asset/UI/ScannerCards/button_short_bg.png');
     longButton = loadImage('Asset/UI/ScannerCards/button_long_bg.png');
@@ -53,6 +54,10 @@ function setup_scannerUI() {
 }
 
 function draw_scannerUI() {
+
+    textAlign(CENTER, CENTER);
+    rectMode(CENTER);
+
     background(255);
     fill(51, 133, 255);
     textSize(75);
@@ -216,7 +221,7 @@ function draw_scannerUI() {
             fill(radarLineColor);
             textSize(30);
             textAlign(CENTER, CENTER);
-            text("잔고장", width/2, height - cardFront.height/2 - 120);
+            text("메카 변환", width/2, height - cardFront.height/2 - 120);
             textSize(20);
             fill(0);
             text("데미지를 상대의 손 2배만큼 입힘", width/2, height - cardFront.height/2 - 60);

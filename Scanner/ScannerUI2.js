@@ -51,6 +51,10 @@ function setup_scannerUI2() {
 }
 
 function draw_scannerUI2() {
+
+    textAlign(CENTER, CENTER);
+    rectMode(CENTER);
+
     background(255);
     fill(51, 133, 255);
     textSize(75);
@@ -219,7 +223,7 @@ function draw_scannerUI2() {
             fill(radarLineColor2);
             textSize(30);
             textAlign(CENTER, CENTER);
-            text("잔고장", width/2, height - cardFront2.height/2 - 120);
+            text("메카 변환", width/2, height - cardFront2.height/2 - 120);
             textSize(20);
             fill(0);
             text("데미지를 상대의 손 2배만큼 입힘", width/2, height - cardFront2.height/2 - 60);

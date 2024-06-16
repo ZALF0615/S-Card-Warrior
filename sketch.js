@@ -150,8 +150,10 @@ function ChangeScene(sceneName) {
       currentSceneName = sceneName;
     };
 
-    preload_charaAnim(player1.jobIdx);
-    preload_charaAnim(player2.jobIdx);
+    let res1 = preload_charaAnim(player1.jobIdx);
+    let res2 = preload_charaAnim(player2.jobIdx);
+
+    if (!res1 && !res2) { onLoadCompleteCallback(); } // 이미 모든 이미지가 로드됨
 
   } else if (sceneName === 'ScannerUI') { setup_scannerUI(); }
   else if (sceneName === 'Scanner1') { setup_scanner1(); }

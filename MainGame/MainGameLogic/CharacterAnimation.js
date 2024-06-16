@@ -47,15 +47,21 @@ let imagesToLoad = 0;
 let imagesLoaded = 0;
 let onLoadCompleteCallback = null;
 
-function preload_charaAnim(jobIdx) {
-    const jobName = jobs[jobIdx];
-    charaAnimations[jobName] = {};
-    animations.forEach(anim => {
-        charaAnimations[jobName][anim] = [];
-        loadFrames(jobName, anim, 0);
-    });
-}
+let isLoadedCharaAnim = [];
 
+function preload_charaAnim(jobIdx) {
+
+    if (!isLoadedCharaAnim[jobIdx]) {
+        const jobName = jobs[jobIdx];
+        charaAnimations[jobName] = {};
+        animations.forEach(anim => {
+            charaAnimations[jobName][anim] = [];
+            loadFrames(jobName, anim, 0);
+        });
+
+        isLoadedCharaAnim[jobIdx] = true;
+    }
+}
 
 function loadFrames(job, anim, i) {
     let filePath = `Asset/Character/${job}/${job}_${anim}/F${i.toString()}.png`;

@@ -346,9 +346,10 @@ function keyPressed_scanner() {
         let randomCharacter_2 = new Character("테이", `2020-1${r}`, "사회과학대학 사회학과");
         let randomCharacter_3 = new Character("피아", `2021-1${r}`, "인문대학 미학과");
         let randomCharacter_4 = new Character("마르", `2022-1${r}`, "자연과학대학 화학부");
+        let randomCharacter_7 = new Character("테라", `2024-1${r}`, "농업생명과학대학 산림과학부");
         let randomCharacter_5 = new Character("이브", `2023-1${r}`, "연합전공 정보문화학");
 
-        let c = random([randomCharacter_1, randomCharacter_2, randomCharacter_3, randomCharacter_4, randomCharacter_5]);
+        let c = random([randomCharacter_1, randomCharacter_2, randomCharacter_3, randomCharacter_4, randomCharacter_5, randomCharacter_7]);
 
         playerName = c.name;
         playerId = c.id;

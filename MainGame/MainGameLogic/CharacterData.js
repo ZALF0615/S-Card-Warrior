@@ -6,7 +6,7 @@ const characterData = {
     5: { department: "인문대학 중어중문학과", college: "인문대학", major: "중어중문학과", job: "현자", title: "고대의 현자", name: "소크라테스", job_idx: 1 },
     6: { department: "인문대학 노어노문학과", college: "인문대학", major: "노어노문학과", job: "현자", title: "고대의 현자", name: "소크라테스", job_idx: 1 },
     7: { department: "인문대학 서어서문학과", college: "인문대학", major: "서어서문학과", job: "현자", title: "고대의 현자", name: "소크라테스", job_idx: 1 },
-    8: { department: "인문대학 언어학과", college: "인문대학", major: "언어학과", job: "현자", title: "고대의 현자", name: "노엄 춈스키", job_idx: 1 },
+    8: { department: "인문대학 언어학과", college: "인문대학", major: "언어학과", job: "현자", title: "고대의 현자", name: "춈스키", job_idx: 1 },
     9: { department: "인문대학 아시아언어문명학부", college: "인문대학", major: "아시아언어문명학부", job: "현자", title: "고대의 현자", name: "소크라테스", job_idx: 1 },
     10: { department: "인문대학 역사학부", college: "인문대학", major: "역사학부", job: "현자", title: "고대의 현자", name: "소크라테스", job_idx: 1 },
     11: { department: "인문대학 철학과", college: "인문대학", major: "철학과", job: "현자", title: "고대의 현자", name: "소크라테스", job_idx: 1 },

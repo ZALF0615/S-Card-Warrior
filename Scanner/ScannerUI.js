@@ -33,6 +33,7 @@ function setup_scannerUI() {
     cardExplorer = loadImage('Asset/Character/탐험가/탐험가_기본/F0.png');
     cardWizard = loadImage('Asset/Character/마법사/마법사_기본/F0.png');
     cardBard = loadImage('Asset/Character/음유시인/음유시인_기본/F0.png');
+    cardDruid = loadImage('Asset/Character/드루이드/드루이드_기본/F0.png');
     cardLucifer = loadImage('Asset/Character/정보대마왕/정보대마왕_기본/F0.png');
     cardDruid = loadImage('Asset/Character/드루이드/드루이드_기본/F0.png');
     cardMech = loadImage('Asset/Character/메카파일럿/메카 파일럿_기본/F0.png');

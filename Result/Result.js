@@ -120,7 +120,7 @@ function keyPressed_result() {
     if (key === ' ' && endingFlag) {
 
         PlaySEOneShot(selectSE, 0.2);
-
+        PlaySEOneShot(clearSE, 0.4);
         endingFlag = false;
         thankyouFlag = true;
 

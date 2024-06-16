@@ -242,8 +242,7 @@ function keyPressed() {
 
   // 쉬프트 키를 누르면 배경음악 꺼져 있으면 켜고 있으면 꺼짐
   if (keyCode === SHIFT) {
-    if (bgm.isPlaying()) { bgm.pause(); }
-    else { bgm.play(); }
+    MuteBGM();
   }
 
 

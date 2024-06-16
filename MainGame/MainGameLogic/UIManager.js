@@ -638,8 +638,6 @@ function preload_UI() {
     warriorCard_front = loadImage('Asset/UI/CharacterCard/warrior_card_front_bg.png');
     warriorCard_back = loadImage('Asset/UI/CharacterCard/warrior_card_back_bg.png');
 
-    skillBG = loadImage('Asset/UI/skillBG.png');
-
     font_galmuri7 = loadFont('Asset/Font/Galmuri7.ttf');
 
     bg_1 = loadImage('Asset/BG/BG_1.png');

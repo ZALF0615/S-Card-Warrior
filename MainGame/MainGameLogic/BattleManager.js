@@ -37,6 +37,9 @@ function InitGame() {
     currentBGImg = random(bgList);
 
     TurnTaker();
+
+    StopBGM();
+    PlayBallteBGM();
 }
 
 function TurnTaker() {
@@ -80,12 +83,14 @@ function GameOver(winside) {
 
     isGameOver = winside;
 
+    StopBattleBGM();
+
     if (isCPUmode) {
         if (winside == 1) {
             print_log("YOU WIN");
             ChangeAnimation(1, '승리');
             ChangeAnimation(-1, '패배');
-
+            PlaySEOneShot(victorySE, 0.4);
             // 5초 뒤에 클리어 프래그 온
             setTimeout(() => {
                 clearFlag = true;
@@ -96,6 +101,7 @@ function GameOver(winside) {
 
             ChangeAnimation(1, '패배');
             ChangeAnimation(-1, '승리');
+            PlaySEOneShot(defeatSE, 0.4);
 
             // 5초 뒤에 컨티뉴 카운트 시작
             setTimeout(() => {
@@ -111,7 +117,7 @@ function GameOver(winside) {
 
             ChangeAnimation(1, '승리');
             ChangeAnimation(-1, '패배');
-
+            PlaySEOneShot(victorySE, 0.4);
             // 5초 뒤에 클리어 프래그 온
             setTimeout(() => {
                 clearFlag = true;
@@ -121,7 +127,7 @@ function GameOver(winside) {
 
             ChangeAnimation(1, '패배');
             ChangeAnimation(-1, '승리');
-
+            PlaySEOneShot(victorySE, 0.4);
             // 5초 뒤에 클리어 프래그 온
             setTimeout(() => {
                 clearFlag = true;

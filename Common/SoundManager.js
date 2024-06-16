@@ -1,16 +1,48 @@
 let command_select;
 
-function PlaySEOneShot(sound, volume = 1.0){
+function PlaySEOneShot(sound, volume = 1.0) {
     sound.setVolume(volume);
     sound.play();
 }
 
-function PlayBGM(sound, volume = 1.0){
-    sound.setVolume(volume);
-    sound.loop();
+let currentBGM = null;
+
+function PlayBGM(sound, volume = 1.0) {
+    if (currentBGM) {
+        currentBGM.stop();
+    }
+
+    currentBGM = sound;
+    currentBGM.setVolume(volume);
+    currentBGM.loop();
+}
+function StopBGM() {
+    if (currentBGM) {
+        currentBGM.stop();
+    }
 }
 
-function preload_Sound(){
+let battleBGMList = [];
+
+let currentBattleBGM;
+
+function PlayBallteBGM() {
+    let idx = Math.floor(random(battleBGMList.length));
+    currentBattleBGM = battleBGMList[idx];
+    // 재생중일 경우 종료 후 다시 재생
+
+    currentBattleBGM.stop();
+    currentBattleBGM.setVolume(0.2);
+    currentBattleBGM.loop();
+}
+
+function StopBattleBGM() {
+    if (currentBattleBGM) {
+        currentBattleBGM.stop();
+    }
+}
+
+function preload_Sound() {
     command_select = loadSound('Asset/Audio/SE/command_select.mp3');
     damageSE = loadSound('Asset/Audio/SE/damage.mp3');
     selectSE = loadSound('Asset/Audio/SE/select.mp3');
@@ -22,5 +54,39 @@ function preload_Sound(){
     rockSE = loadSound('Asset/Audio/SE/fire.wav');
     paperSE = loadSound('Asset/Audio/SE/water.wav');
 
-    bgm = loadSound('Asset/Audio/BGM/wakuwaku_arikui.mp3');
+    victorySE = loadSound('Asset/Audio/SE/victory.wav');
+    defeatSE = loadSound('Asset/Audio/SE/defeat.wav');
+    clearSE = loadSound('Asset/Audio/SE/clear.wav');
+
+    titleBGM = loadSound('Asset/Audio/BGM/wakuwaku_arikui.mp3');
+
+    battleBGMList.push(loadSound('Asset/Audio/BGM/BGM_1.mp3'));
+    battleBGMList.push(loadSound('Asset/Audio/BGM/BGM_2.mp3'));
+    battleBGMList.push(loadSound('Asset/Audio/BGM/BGM_3.mp3'));
+    battleBGMList.push(loadSound('Asset/Audio/BGM/BGM_4.mp3'));
+}
+
+let isMutingBGM = false;
+
+function MuteBGM() {
+
+    if (currentSceneName == "MainGame") {
+        if (currentBattleBGM) {
+            if (!isMutingBGM) {
+                currentBattleBGM.stop();
+            } else {
+                currentBattleBGM.play();
+            }
+
+        }
+    } else {
+        if (currentBGM) {
+            if (!isMutingBGM) {
+                currentBGM.stop();
+            } else {
+                currentBGM.play();
+            }
+        }
+    }
+    isMutingBGM = !isMutingBGM;
 }

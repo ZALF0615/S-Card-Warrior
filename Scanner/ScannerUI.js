@@ -15,6 +15,9 @@ let values = [3,4,3,3,3]; // 시계방향으로 radar chart의 값이 들어감
 let centerX;
 let centerY;
 
+let radarChartColor;
+let radarLineColor;
+
 function setup_scannerUI() {
     cardFront = loadImage('Asset/UI/CharacterCard/warrior_card_front_bg.png');
     cardBack = loadImage('Asset/UI/CharacterCard/warrior_card_back_bg.png');
@@ -30,6 +33,9 @@ function setup_scannerUI() {
 
     centerX = width / 2 - 2;
     centerY = height / 2 - cardFront.height / 4 - 148;
+
+    radarChartColor = color(220, 100, 100);
+    radarLineColor = color(100,100,100,100);
     
 }
 
@@ -108,14 +114,50 @@ function draw_scannerUI() {
         
         
         //line(width/2-2, height/2 - cardFront.height/4 + 12, width/2 - 2, height/2 - cardFront.height/4 - 68);
-        //radar chart 오각 차트
-        fill( 84, 133, 214, 100);
-        stroke( 84, 133, 214);
-        strokeWeight(1);
+
+        //Radar chart 오각 차트
+            //직업별 오각 차트 내부 색
+        if(globalPlayer.majorIdx >= 1 && globalPlayer.majorIdx <= 29) {
+            //현자
+            radarChartColor = color(188, 133, 50, 150);
+            radarLineColor = color(188, 133, 50);
+        } else if (globalPlayer.majorIdx >= 30 && globalPlayer.majorIdx <= 35) {
+            //위자드
+            radarChartColor = color(115, 50, 188, 150);
+            radarLineColor = color(115, 50, 188);
+        } else if (globalPlayer.majorIdx >= 36 && globalPlayer.majorIdx <= 47) {
+            //메카 파일럿
+            radarChartColor = color(50, 150, 188, 150); 
+            radarLineColor = color(50, 150, 188); 
+        } else if (globalPlayer.majorIdx >= 48 && globalPlayer.majorIdx <= 53) {
+            //힐러
+            radarChartColor = color(115, 194, 163, 150);
+            radarLineColor = color(115, 194, 163);
+        } else if (globalPlayer.majorIdx >= 54 && globalPlayer.majorIdx <= 65) {
+            //음유시인
+            radarChartColor = color(194, 115, 156, 150);
+            radarLineColor = color(194, 115, 156);
+        } else if (globalPlayer.majorIdx >= 66 && globalPlayer.majorIdx <= 78) {
+            //탐험가
+            radarChartColor = color(181, 103, 113, 150); 
+            radarLineColor = color(181, 103, 113); 
+        } else if (globalPlayer.majorIdx >= 78 && globalPlayer.majorIdx <= 85) {
+            //드루이드
+            radarChartColor = color(141, 159, 102, 150); 
+            radarLineColor = color(141, 159, 102); 
+        } else if (globalPlayer.majorIdx == 86) {
+            //루시퍼
+            radarChartColor = color(103, 103, 103, 150); 
+            radarLineColor = color(103, 103, 103); 
+        } 
+
+        fill(radarChartColor);
+        stroke( radarLineColor);
+        strokeWeight(3);
         values = [globalPlayer.grade, globalPlayer.hpMax, globalPlayer.rock, globalPlayer.scissors, globalPlayer.paper];
         drawRadarChart(centerX, centerY, 80, values);
         textSize(12);
-        fill( 84, 133, 214);
+        fill(radarChartColor);
         noStroke();
         text(globalPlayer.id, centerX + 70, centerY + cardFront.height/5 - 10);
 
@@ -223,7 +265,8 @@ function drawRadarChart(centerX, centerY, maxDistance, values) {
     }
     endShape(CLOSE);
   
-    // 오각형 모양
+    // 오각형 모양 아웃라인
+    /*
     stroke(0);
     noFill();
     strokeWeight(1);
@@ -233,6 +276,7 @@ function drawRadarChart(centerX, centerY, maxDistance, values) {
       let y = centerY + sin(angle * i - HALF_PI) * maxDistance;
       vertex(x, y);
     }
+      */
     endShape(CLOSE);
   }
   

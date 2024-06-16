@@ -49,6 +49,7 @@ function draw() {
     displayMenu();
   }
 
+
   if (isDebugMode) {
     for (let i = 0; i < messages.length; i++) {
       // 화면 왼쪽 밑에 메시지 출력(디버깅용)
@@ -68,9 +69,6 @@ function draw() {
       textSize(20);
       textAlign(LEFT, CENTER);
       text(m, 7, height - 30 * (i + 1) + 15);
-
-  
-
     }
 
     // 화면 왼쪽 위에 현재 프레임레이트 출력 (배경 검은색, 글자 흰색)
@@ -135,6 +133,9 @@ function ChangeScene(sceneName) {
       // 랜덤 4자리 숫자
       let r = random(1000, 9999);
       player2 = new Character("", `9999-9${r}`, "연합전공 정보문화학");
+
+      setRandomCharacters(); // 디버깅 용 (추후 삭제)
+
     } else if (playerNumber === 2) { // 2인용 모드일 경우
       print_log("2인용 모드");
       player1 = globalPlayer1;
@@ -143,6 +144,7 @@ function ChangeScene(sceneName) {
 
     imagesToLoad = 0;
     imagesLoaded = 0;
+
     onLoadCompleteCallback = () => {
       setup_battle();
       currentSceneName = sceneName;
@@ -160,7 +162,26 @@ function ChangeScene(sceneName) {
 
 }
 
+function setRandomCharacters() {
 
+  let randomCharacter_1 = new Character("", `2019-1${random(1000, 10000)}`, "인문대학 언어학과");
+  let randomCharacter_2 = new Character("", `2020-1${random(1000, 10000)}`, "자연과학대학 통계학과");
+  let randomCharacter_3 = new Character("", `2021-1${random(1000, 10000)}`, "공과대학 컴퓨터공학부");
+  let randomCharacter_4 = new Character("", `2022-1${random(1000, 10000)}`, "수의과대학 수의학과");
+  let randomCharacter_5 = new Character("", `2024-1${random(1000, 10000)}`, "음악대학 관현악과");
+  let randomCharacter_6 = new Character("", `2023-1${random(1000, 10000)}`, "사회과학대학 심리학과");
+  let randomCharacter_7 = new Character("", `2024-1${random(1000, 10000)}`, "농업생명과학대학 조경·지역시스템공학부");
+  let randomCharacter_8 = new Character("", `2023-1${random(1000, 10000)}`, "연합전공 정보문화학");
+
+  let c1 = random([randomCharacter_1, randomCharacter_2, randomCharacter_3, randomCharacter_4, randomCharacter_5, randomCharacter_6, randomCharacter_7, randomCharacter_8]);
+
+  player1 = c1;
+
+  let c2 = random([randomCharacter_1, randomCharacter_2, randomCharacter_3, randomCharacter_4, randomCharacter_5, randomCharacter_6, randomCharacter_7, randomCharacter_8]);
+
+  player2 = c2;
+
+}
 
 let debugSequence = ['+', '+', '+', '+', '+', '+', '+', '+'];
 let currentSequenceIndex = 0;
@@ -168,6 +189,15 @@ let currentSequenceIndex = 0;
 function keyPressed() {
 
   // ESC 키를 누르면 게임 일시정지
+  if (keyCode === ESCAPE && currentSceneName !== 'Title') {
+    isGamePaused = !isGamePaused;
+  }
+
+  if (isGamePaused) { // 게임 일시정지 상태에서는 메뉴에 대한 키 입력만 받음
+    keyPressed_menu();
+    return;
+  }
+
   if (currentSceneName == 'Title') { presskey_title(); }
   if (currentSceneName == 'Tutorial') { keyPressed_tutorial(); }
   else if (currentSceneName == 'Scanner') { keyPressed_scanner(); }
@@ -183,6 +213,7 @@ function keyPressed() {
     if (bgm.isPlaying()) { bgm.pause(); }
     else { bgm.play(); }
   }
+
 
   // 디버그 모드 진입
   const keyName = key.toUpperCase();

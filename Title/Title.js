@@ -3,6 +3,8 @@
 function setup_title() {
     // bgm.stop();
     // bgm.play();
+
+    selected_button = 0;
 }
 
 function draw_title() {
@@ -80,6 +82,7 @@ let title_logo;
 let selected_button = 0;
 
 function preload_title() {
+
 }
 
 function presskey_title() {
@@ -91,11 +94,11 @@ function presskey_title() {
         } else if (selected_button == 2) { // 1인용 모드
             isCPUmode = true;
             playerNumber = 1;
-            ChangeScene('Scanner');
+            ChangeScene('MainGame');
         } else if (selected_button == 3) { // 2인용 모드
             isCPUmode = false;
             playerNumber = 2;
-            ChangeScene('Scanner1');
+            ChangeScene('MainGame');
         }
     }
 

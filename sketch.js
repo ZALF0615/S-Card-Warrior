@@ -136,18 +136,14 @@ function ChangeScene(sceneName) {
     if (playerNumber === 1) { // 1인용 모드일 경우
       print_log("1인용 모드");
       player1 = globalPlayer;
-      // 랜덤 4자리 숫자
-      let r = random(1000, 9999);
-      player2 = new Character("", `9999-9${r}`, "연합전공 정보문화학");
+      player2 = getRandomCharacter(true);
 
-      // setRandomCharacters(); // 디버깅 용 (추후 삭제)
 
     } else if (playerNumber === 2) { // 2인용 모드일 경우
       print_log("2인용 모드");
       player1 = globalPlayer1;
       player2 = globalPlayer2;
 
-      // setRandomCharacters(); // 디버깅 용 (추후 삭제)
     }
 
     imagesToLoad = 0;
@@ -200,6 +196,23 @@ function setRandomCharacters() {
   player2 = new Character(c2.name, c2.id, c2.department);
 }
 
+function getRandomCharacter(include_lucifer = false) {
+  // 랜덤한 네 자리 수
+  let r = random(1000, 10000);
+
+  // 1~85 사이의 랜덤한 전공 인덱스
+  let majorIdx = floor(random(1, include_lucifer ? 87 : 86));
+  let major = GetDepartmentList()[majorIdx];
+  print_log(`majorIdx: ${majorIdx}, major: ${major}`);
+
+  let c = new Character("", `2024-1${r}`, major);
+
+  if(majorIdx === 86) { // 정보대마왕(Lucifer)
+    c = new Character("", `9999-99999`, "연합전공 정보문화학");
+  }
+
+  return c;
+}
 
 let debugSequence = ['+', '+', '+', '+', '+', '+', '+', '+'];
 let currentSequenceIndex = 0;

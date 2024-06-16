@@ -66,9 +66,6 @@ function draw_result() {
 function preload_result() {
     ending_photo_text = loadImage('Asset/UI/ending_photo_text.png');
 
-    preload_charaAnim(1);
-    preload_charaAnim(2);
-
 }
 
 function DisplayWarriorCard_Front(player, x, y) {

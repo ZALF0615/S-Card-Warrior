@@ -340,16 +340,7 @@ function keyPressed_scanner1() {
     // 랜덤한 카드 뽑기(왼쪽 컨트롤)
     if (keyCode === CONTROL) {
 
-        // 랜덤한 네 자리 수
-        let r = random(1000, 10000);
-
-        let randomCharacter_1 = new Character("노르", `2019-1${r}`, "인문대학 언어학과");
-        let randomCharacter_2 = new Character("테이", `2020-1${r}`, "사회과학대학 사회학과");
-        let randomCharacter_3 = new Character("피아", `2021-1${r}`, "인문대학 미학과");
-        let randomCharacter_4 = new Character("마르", `2022-1${r}`, "자연과학대학 화학부");
-        let randomCharacter_5 = new Character("이브", `2023-1${r}`, "연합전공 정보문화학");
-
-        let c = random([randomCharacter_1, randomCharacter_2, randomCharacter_3, randomCharacter_4, randomCharacter_5]);
+        let c = getRandomCharacter();
 
         player1Name = c.name;
         player1Id = c.id;

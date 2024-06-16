@@ -35,7 +35,7 @@ function setup_scannerUI2() {
     cardBard2 = loadImage('Asset/Character/음유시인/음유시인_기본/F0.png');
     cardLucifer2 = loadImage('Asset/Character/정보대마왕/정보대마왕_기본/F0.png');
     cardDruid2 = loadImage('Asset/Character/드루이드/드루이드_기본/F0.png');
-    cardMech2 = loadImage('Asset/Character/메카파일럿/메카 파일럿_기본/F0.png');
+    cardMech2 = loadImage('Asset/Character/메카파일럿/메카파일럿_기본/F0.png');
     cardHealer2 = loadImage('Asset/Character/힐러/힐러_기본/F0.png');
     flipIcon2 = loadImage('Asset/UI/ScannerCards/warrior_generation_flip_card_icon (2).png');
     smallZbutton2 = loadImage('Asset/UI/ScannerCards/button_short_bg.png');
@@ -112,7 +112,7 @@ function draw_scannerUI2() {
         //위자드
         image(cardWizard2, width/2 - cardFront2.width/2 + 50, height/2 - cardFront2.height/2 + 120);
     } else if (globalPlayer2.majorIdx >= 36 && globalPlayer2.majorIdx <= 47) {
-        //메카 파일럿
+        //메카파일럿
         image(cardMech2,  width/2 - cardFront2.width/2 + 50, height/2 - cardFront2.height/2 + 120); 
     } else if (globalPlayer2.majorIdx >= 48 && globalPlayer2.majorIdx <= 53) {
         //힐러
@@ -153,7 +153,7 @@ function draw_scannerUI2() {
             radarChartColor2 = color(142, 251, 245, 150);
             radarLineColor2 = color(142, 251, 245);
         } else if (globalPlayer2.majorIdx >= 36 && globalPlayer2.majorIdx <= 47) {
-            //메카 파일럿
+            //메카파일럿
             radarChartColor2 = color(252, 243, 81, 150); 
             radarLineColor2 = color( 252, 243, 81); 
         } else if (globalPlayer2.majorIdx >= 48 && globalPlayer2.majorIdx <= 53) {
@@ -219,7 +219,7 @@ function draw_scannerUI2() {
             text("상대의 손 +3만큼 데미지를 입히고", width/2, height - cardFront2.height/2 - 60);
             text("본인 HP가 3만큼 회복됨.", width/2, height - cardFront2.height/2 - 20);
         } else if (globalPlayer2.majorIdx >= 36 && globalPlayer2.majorIdx <= 47) {
-            //메카 파일럿
+            //메카파일럿
             fill(radarLineColor2);
             textSize(30);
             textAlign(CENTER, CENTER);

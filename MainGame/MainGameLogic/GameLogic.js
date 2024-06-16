@@ -265,7 +265,28 @@ function ProcessSpecialSkill(winSide, jobIdx) {
                 setTimeout(TurnTaker, 12 * animSpeed / 60 * 1000);
             }, damage_timing);
             break;
-        case 4: // 힐러 (회복의 빛)
+        case 4: // 힐러 (회복의 빛) 데미지를 5만큼 입히고, 본인 HP가 상대가 낸 손만큼 회복됨.
+            print_log(`${winSide == 1 ? '1' : '2'}p(힐러) 스킬 사용`);
+
+            setTimeout(() => {
+                Damage(5, -winSide, true);
+                setTimeout(() => {
+                    let heal = 0;
+                    switch (counterpartPlayerAction) {
+                        case 1: // 가위
+                            heal = counterpartPlayer.scissors;
+                            break;
+                        case 2: // 바위
+                            heal = counterpartPlayer.rock;
+                            break;
+                        case 3: // 보
+                            heal = counterpartPlayer.paper;
+                            break;
+                    }
+                    Damage(-heal, winSide, true);
+                    setTimeout(TurnTaker, 12 * animSpeed / 60 * 1000);
+                }, 1000);
+            }, damage_timing);
             break;
         case 5: // 음유시인 (예술의 선율) 데미지를 상대의 잔여 HP 절반만큼 입힘.
             print_log(`${winSide == 1 ? '1' : '2'}p(음유시인) 스킬 사용`);

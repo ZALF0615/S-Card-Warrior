@@ -24,6 +24,7 @@ function setup() {
   currentBGImg = random(bgList);
 
   setup_menu();
+  setup_title();
 
 }
 
@@ -44,6 +45,7 @@ function draw() {
   else if (currentSceneName == 'ScannerUI1') { draw_scannerUI1(); }
   else if (currentSceneName == 'Scanner2') { draw_scanner2(); }
   else if (currentSceneName == 'ScannerUI2') { draw_scannerUI2(); }
+  else if (currentSceneName == 'Result') { draw_result(); }
 
   if (isGamePaused) {
     displayMenu();
@@ -169,6 +171,7 @@ function ChangeScene(sceneName) {
   else if (sceneName === 'ScannerUI1') { setup_scannerUI1(); }
   else if (sceneName === 'Scanner2') { setup_scanner2(); }
   else if (sceneName === 'ScannerUI2') { setup_scannerUI2(); }
+  else if (sceneName === 'Result') { setup_result(); }
 
 
 }
@@ -222,6 +225,7 @@ function keyPressed() {
   else if (currentSceneName == 'ScannerUI1') { keyPressed_scannerUI1(); }
   else if (currentSceneName == 'Scanner2') { keyPressed_scanner2(); }
   else if (currentSceneName == 'ScannerUI2') { keyPressed_scannerUI2(); }
+  else if (currentSceneName == 'Result') { keyPressed_result(); }
 
   // 쉬프트 키를 누르면 배경음악 꺼져 있으면 켜고 있으면 꺼짐
   if (keyCode === SHIFT) {
@@ -251,6 +255,14 @@ function keyPressed() {
       print_log("FPS 60으로 고정");
       frameRate(60);
     }
+
+    // 8 키 누르면 화면 캡쳐
+    if (key === '8') {
+      Capture();
+
+      print_log("화면 캡쳐 완료: capturedCanvas.png");
+    }
+
   }
 
 }

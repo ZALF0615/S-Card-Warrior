@@ -1,4 +1,7 @@
 function setup_title() {
+
+    print_log('타이틀 화면 로드');
+
     isSelected = false;
     selected_button = 2;
 }

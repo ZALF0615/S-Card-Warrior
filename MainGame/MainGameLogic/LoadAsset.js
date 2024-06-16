@@ -7,4 +7,6 @@ function preload() {
     // preload_charaAnim();
 
     // preload_tutorial();
+
+    preload_result();
 }

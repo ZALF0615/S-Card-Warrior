@@ -419,7 +419,7 @@ function keyPressed_gamelogic() {
     if (isGameOver && clearFlag) {
         if (key === ' ') {
             PlaySEOneShot(piSE); // 삑 소리 재생
-            ChangeScene('Title');
+            ChangeScene('Result');
         }
     }
 

@@ -253,7 +253,7 @@ function ProcessSpecialSkill(winSide, jobIdx) {
             print_log(`${winSide == 1 ? '1' : '2'}p(음유시인) 스킬 사용`);
 
             setTimeout(() => {
-                let damage = counterpartPlayer.hp / 2;
+                let damage = Math.round(counterpartPlayer.hp / 2);
                 Damage(damage, -winSide, true);
                 setTimeout(TurnTaker, 12 * animSpeed / 60 * 1000);
             }, damage_timing);
@@ -262,7 +262,14 @@ function ProcessSpecialSkill(winSide, jobIdx) {
             break;
         case 7: // 드루이드 (자연의 분노)
             break;
-        case 8: // 정보의 대마왕 (디지털 혼돈)
+        case 8: // 정보의 대마왕 (디지털 혼돈) 데미지를 8-15 사이 랜덤 값으로 입힘.
+            print_log(`${winSide == 1 ? '1' : '2'}p(정보의 대마왕) 스킬 사용`);
+
+            setTimeout(() => {
+                let damage = Math.floor(random(8, 16)); // 8~15 사이 랜덤 값
+                Damage(damage, -winSide, true);
+                setTimeout(TurnTaker, 12 * animSpeed / 60 * 1000);
+            }, damage_timing);
             break;
     }
 }

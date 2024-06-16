@@ -245,7 +245,25 @@ function ProcessSpecialSkill(winSide, jobIdx) {
             }, damage_timing);
 
             break;
-        case 3: // 메카 파일럿 (잔고장)
+        case 3: // 메카 파일럿 (잔고장) 데미지를 상대가 낸 손으 2배만큼 입힘.
+            print_log(`${winSide == 1 ? '1' : '2'}p(메카 파일럿) 스킬 사용`);
+
+            setTimeout(() => {
+                let damage = 0;
+                switch (counterpartPlayerAction) {
+                    case 1: // 가위
+                        damage = counterpartPlayer.scissors * 2;
+                        break;
+                    case 2: // 바위
+                        damage = counterpartPlayer.rock * 2;
+                        break;
+                    case 3: // 보
+                        damage = counterpartPlayer.paper * 2;
+                        break;
+                }
+                Damage(damage, -winSide, true);
+                setTimeout(TurnTaker, 12 * animSpeed / 60 * 1000);
+            }, damage_timing);
             break;
         case 4: // 힐러 (회복의 빛)
             break;

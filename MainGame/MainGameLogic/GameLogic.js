@@ -56,8 +56,10 @@ function processActions() {
         // 둘 다 특수 스킬
         print_log("둘 다 특수 스킬: 비김");
 
-        player1.skillPoint = min(100, player1.skillPoint + 10);
-        player2.skillPoint = min(100, player2.skillPoint + 10);
+        player1.skillPoint = 50;
+        player2.skillPoint = 50;
+        isSkillAvailable_1p = false;
+        isSkillAvailable_2p = false;
 
         setTimeout(TurnTaker, 1000);
     } else {
@@ -335,6 +337,11 @@ function ProcessSpecialSkill(winSide, jobIdx) {
             }, damage_timing);
             break;
     }
+
+    activePlayer.skillPoint = 0;
+    counterpartPlayer.skillPoint = min(100, counterpartPlayer.skillPoint + 20); // 스킬 포인트 20 회복
+    
+    winSide == 1 ? isSkillAvailable_1p = false : isSkillAvailable_2p = false;
 }
 
 function Attack(playerNum, hand) {

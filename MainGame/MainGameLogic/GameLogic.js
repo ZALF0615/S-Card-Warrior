@@ -260,7 +260,24 @@ function ProcessSpecialSkill(winSide, jobIdx) {
             break;
         case 6: // 탐험가 (탐험의 지혜)
             break;
-        case 7: // 드루이드 (자연의 분노)
+        case 7: // 드루이드 (자연의 분노) 데미지를 상대가 낸 손 +6만큼 입힘.
+            print_log(`${winSide == 1 ? '1' : '2'}p(드루이드) 스킬 사용`);
+            setTimeout(() => {
+                let damage = 0;
+                switch (counterpartPlayerAction) {
+                    case 1: // 가위
+                        damage = counterpartPlayer.scissors + 6;
+                        break;
+                    case 2: // 바위
+                        damage = counterpartPlayer.rock + 6;
+                        break;
+                    case 3: // 보
+                        damage = counterpartPlayer.paper + 6;
+                        break;
+                }
+                Damage(damage, -winSide, true);
+                setTimeout(TurnTaker, 12 * animSpeed / 60 * 1000);
+            }, damage_timing);
             break;
         case 8: // 정보의 대마왕 (디지털 혼돈) 데미지를 8-15 사이 랜덤 값으로 입힘.
             print_log(`${winSide == 1 ? '1' : '2'}p(정보의 대마왕) 스킬 사용`);

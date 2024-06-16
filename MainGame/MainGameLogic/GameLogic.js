@@ -402,6 +402,20 @@ function Attack(playerNum, hand) {
 
 function keyPressed_gamelogic() {
 
+    if (isGameOver && continueFlag && currentContinueCount > 0) {
+        if (key === ' ') {
+            PlaySEOneShot(piSE); // 삑 소리 재생
+            noLoop();
+
+            setTimeout(() => {
+                loop();
+                InitGame(); // 게임 초기화
+
+            }, 700);
+           
+        }
+    }
+
     if (isGameOver) { return; }
 
     if (selectedAction_1p == 0) {
@@ -440,6 +454,8 @@ function keyPressed_gamelogic() {
             }
         }
     }
+
+
 
     if (isDebugMode) {
         if (key === '0') {

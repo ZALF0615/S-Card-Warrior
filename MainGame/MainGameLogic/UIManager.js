@@ -210,6 +210,7 @@ function displayAction(x, y, playerNum) {
 }
 
 function displaySelectedAction(playerNum) {
+    if (isGameOver !== 0) { return; }
 
     if (showActions) { // 액션 숨기기
         imageCenter(command_skill_BG, playerNum == 1 ? 630 : width - 630, 380, 130, 130);
@@ -370,6 +371,68 @@ function displayBG() {
 
 }
 
+let continueFlag = false;
+let currentContinueCount = 0;
+
+function GameOverUI() {
+    // 어두운 배경
+    // fill(0, 150);
+    // noStroke();
+    // rect(0, 0, width, height);
+
+    // 1인 모드일 경우 YOU WIN / YOU LOSE 이미지 띄움
+    // 2인 모드일 경우 1P WIN / 2P WIN 이미지 띄움
+
+    // 각 이미지는 0.75배로 축소하여 출력, 화면 중앙에서 조금 위에 출력
+
+    let ratio = 0.55;
+
+    if (isCPUmode) { // 1인 모드
+        if (isGameOver == 1) {
+            imageCenter(you_win_img, width / 2, height / 2 - 200, you_win_img.width * ratio, you_win_img.height * ratio);
+        }
+        else if (isGameOver == -1) {
+            imageCenter(you_lose_img, width / 2, height / 2 - 200, you_lose_img.width * ratio, you_lose_img.height * ratio);
+        }
+    }else{
+        if (isGameOver == 1) {
+            imageCenter(player1_win_img, width / 2, height / 2 - 200, player1_win_img.width * ratio, player1_win_img.height * ratio);
+        }
+        else if (isGameOver == -1) {
+            imageCenter(player2_win_img, width / 2, height / 2 - 200, player2_win_img.width * ratio, player2_win_img.height * ratio);
+        }
+    }
+
+    // 컨티뉴 플래그가 켜지면 컨티뉴 카운트 다운 출력
+    if (continueFlag) {
+
+        // 어두운 배경
+        fill(0, 150);
+        noStroke();
+        rect(0, 0, width, height);
+
+        if(currentContinueCount > 0){
+            fill(255);
+            textSize(70);
+            textAlign(CENTER, CENTER);
+            text('CONTINUE?', width / 2, height / 2 - 300);
+            text('SPACE를 눌러 계속하기', width / 2, height / 2 + 350);
+
+            textSize(380);
+            text(currentContinueCount, width / 2, height / 2);
+
+            
+        }else{
+            // 게임 오버 텍스트 띄움
+            fill(255);
+            textSize(70);
+            textAlign(CENTER, CENTER);
+            text("GAME OVER", width / 2, height / 2);
+        }
+    }
+
+}
+
 function getJobSkillColor(jobIdx, trans = false) {
     // 1: SAGE : green
     // 2: WIZARD : skyblue
@@ -396,6 +459,7 @@ function getJobSkillColor(jobIdx, trans = false) {
             return color(255, 255, 255, trans ? 100 : 255);     // white
     }
 }
+
 
 let skillIconList = [];
 let skillcommnadList = [];
@@ -439,6 +503,11 @@ function preload_UI() {
     input_button_RIGHT = loadImage('Asset/UI/battle_input_button_right.png');
 
     command_selected_cover = loadImage('Asset/UI/battle_command_selected_cover.png');
+
+    you_win_img = loadImage('Asset/UI/1P_mode_you_win.png');
+    you_lose_img = loadImage('Asset/UI/1P_mode_you_lose.png');
+    player1_win_img = loadImage('Asset/UI/2P_mode_1P_win.png');
+    player2_win_img = loadImage('Asset/UI/2P_mode_2P_win.png');
 
     skill_icon_SAGE = loadImage('Asset/UI/skill_icon_SAGE.png');
     skill_icon_WIZARD = loadImage('Asset/UI/skill_icon_WIZARD.png');

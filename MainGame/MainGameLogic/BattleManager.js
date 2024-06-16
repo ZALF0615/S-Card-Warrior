@@ -14,15 +14,26 @@ function InitGame() {
     isSkillAvailable_1p = false;
     isSkillAvailable_2p = false;
 
-    TurnTaker();
-
     isGameStart = true;
     isGameOver = 0;
 
+    
     ChangeAnimation(1, '준비');
     ChangeAnimation(-1, '준비');
 
+    player1.hp = player1.hpMax;
+    player2.hp = player2.hpMax;
+
+    player1.skillPoint = 0;
+    player2.skillPoint = 0;
+
+    selectedAction_1p = 0;
+    selectedAction_2p = 0;
+
+    continueFlag = false;
     currentBGImg = random(bgList);
+
+    TurnTaker();
 }
 
 function TurnTaker() {
@@ -66,21 +77,39 @@ function GameOver(winside) {
 
     isGameOver = winside;
 
-    if (winside == 1) {
-        print_log("1P WIN");
+    if (isCPUmode) {
+        if (winside == 1) {
+            print_log("YOU WIN");
 
-        ChangeAnimation(1, '승리');
-        ChangeAnimation(-1, '패배');
-    } else if (winside == -1) {
-        print_log("2P WIN");
+            ChangeAnimation(1, '승리');
+            ChangeAnimation(-1, '패배');
+        } else if (winside == -1) {
+            print_log("YOU LOSE");
 
-        ChangeAnimation(1, '패배');
-        ChangeAnimation(-1, '승리');
+            ChangeAnimation(1, '패배');
+            ChangeAnimation(-1, '승리');
+
+            // 5초 뒤에 컨티뉴 카운트 시작
+            setTimeout(() => {
+                currentContinueCount = 10;
+                continueFlag = true;
+
+                continueCount();
+            }, 5000);
+        }
+    } else {
+        if (winside == 1) {
+            print_log("1P WIN");
+
+            ChangeAnimation(1, '승리');
+            ChangeAnimation(-1, '패배');
+        } else if (winside == -1) {
+            print_log("2P WIN");
+
+            ChangeAnimation(1, '패배');
+            ChangeAnimation(-1, '승리');
+        }
     }
-
-    setTimeout(() => {
-        ChangeScene("Title");
-    }, 5000);
 }
 
 let FloatUIs = [];
@@ -107,14 +136,25 @@ draw_battle = function () {
 
 
     if (isGameOver != 0) {
-        // 화면 전체 어둡게
-        fill(0, 150);
-        noStroke();
-        rect(0, 0, width, height);
-
-        fill(255);
-        textSize(100);
-        textAlign(CENTER, CENTER);
-        text(isGameOver == 1 ? "1P WIN" : "2P WIN", width / 2, height / 2);
+        GameOverUI();
     }
+}
+
+function continueCount() {
+
+    if (isGameOver == 0) { return; } // 컨티뉴 눌림
+
+    // 1초마다 재귀적으로 카운트
+    setTimeout(() => {
+        currentContinueCount--;
+        if (currentContinueCount != 0) {
+            continueCount();
+        } else {
+            // 카운트 종료, 게임오버
+            // 5초 뒤 타이틀로 돌아가기
+            setTimeout(() => {
+                ChangeScene("Title");
+            }, 5000);
+        }
+    }, 1000);
 }

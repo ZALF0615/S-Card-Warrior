@@ -418,7 +418,7 @@ function GameOverUI() {
             textSize(70);
             textAlign(CENTER, CENTER);
             text('CONTINUE?', width / 2, height / 2 - 300);
-            text('SPACE를 눌러 계속하기', width / 2, height / 2 + 350);
+            text('SPACE를 눌러 다시하기', width / 2, height / 2 + 350);
 
             textSize(380);
             text(currentContinueCount, width / 2, height / 2);
@@ -445,29 +445,24 @@ function GameOverUI() {
 }
 
 function getJobSkillColor(jobIdx, trans = false) {
-    // 1: SAGE : green
-    // 2: WIZARD : skyblue
-    // 3: MECHA_PILOT : gray
-    // 4: HEALER : gray
-    // 5: BARD : pink
-    // 6: EXPLORER : blue
-    // 7: DRUID : gray
-    // 8: LUCIFER : purple
-    // all color alpha 100
 
     switch (jobIdx) {
         case 1:
-            return color(0, 255, 0, trans ? 100 : 255); // green
+            return color(117, 251, 96, trans ? 100 : 255);
         case 2:
-            return color(0, 255, 255, trans ? 100 : 255); // skyblue
+            return color(142, 251, 245, trans ? 100 : 255); 
+        case 3:
+            return color(252, 243, 81, trans ? 100 : 255);
+        case 4:
+            return color(63, 7, 244, trans ? 100 : 255);
         case 5:
-            return color(255, 0, 255, trans ? 100 : 255); // pink
+            return color(233, 51, 181, trans ? 100 : 255);
         case 6:
-            return color(0, 0, 255, trans ? 100 : 255); // blue
+            return color(13, 41, 244, trans ? 100 : 255);
+        case 7:
+            return color(235, 254, 83, trans ? 100 : 255);
         case 8:
-            return color(255, 0, 255, trans ? 100 : 255);  // purple
-        default:
-            return color(255, 255, 255, trans ? 100 : 255);     // white
+            return color(148, 28, 245, trans ? 100 : 255);
     }
 }
 

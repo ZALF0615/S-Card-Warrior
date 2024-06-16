@@ -115,6 +115,10 @@ function draw() {
     text("Elapsed Frame: " + elapsedFrame, 250, 75);
   }
 
+  if (isLoading) {
+    displayLoading();
+  }
+
 }
 
 function ChangeScene(sceneName) {
@@ -145,9 +149,12 @@ function ChangeScene(sceneName) {
     imagesToLoad = 0;
     imagesLoaded = 0;
 
+    isLoading = true;
+
     onLoadCompleteCallback = () => {
       setup_battle();
       currentSceneName = sceneName;
+      isLoading = false;
     };
 
     let res1 = preload_charaAnim(player1.jobIdx);

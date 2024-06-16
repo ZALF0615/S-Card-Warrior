@@ -444,13 +444,40 @@ function GameOverUI() {
 
 }
 
+let isLoading = false;
+
+function displayLoading() {
+    // 화면 전체에 어두운 배경, 오른쪽 아래에 로딩 중 텍스트 출력
+    // Loading... 텍스트 출력, ... 부분이 계속 변화하도록
+
+    rectMode(CORNER);
+
+    fill(0, 150);
+    noStroke();
+    rect(0, 0, width, height);
+
+    fill(255);
+    textSize(70);
+
+    textAlign(LEFT, CENTER);
+
+    if (frameCount % 60 < 20) {
+        text("Loading.", 20, height - 70);
+    } else if (frameCount % 60 < 40) {
+        text("Loading..", 20, height - 70);
+    } else {
+        text("Loading...", 20, height - 70);
+    }
+
+}
+
 function getJobSkillColor(jobIdx, trans = false) {
 
     switch (jobIdx) {
         case 1:
             return color(117, 251, 96, trans ? 100 : 255);
         case 2:
-            return color(142, 251, 245, trans ? 100 : 255); 
+            return color(142, 251, 245, trans ? 100 : 255);
         case 3:
             return color(252, 243, 81, trans ? 100 : 255);
         case 4:

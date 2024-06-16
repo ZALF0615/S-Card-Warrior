@@ -18,6 +18,8 @@ let centerY;
 let radarChartColor;
 let radarLineColor;
 
+let smallZbutton;
+
 function setup_scannerUI() {
     cardFront = loadImage('Asset/UI/CharacterCard/warrior_card_front_bg.png');
     cardBack = loadImage('Asset/UI/CharacterCard/warrior_card_back_bg.png');
@@ -28,6 +30,7 @@ function setup_scannerUI() {
     cardLucifer = loadImage('Asset/Character/정보대마왕/정보대마왕_기본/F0.png');
     cardDruid = loadImage('Asset/Character/드루이드/드루이드_기본/F0.png');
     flipIcon = loadImage('Asset/UI/ScannerCards/warrior_generation_flip_card_icon (2).png');
+    smallZbutton = loadImage('Asset/UI/ScannerCards/button_short_bg.png');
 
     cardFlip = false;
 
@@ -42,13 +45,15 @@ function setup_scannerUI() {
 function draw_scannerUI() {
     background(255);
     fill(51, 133, 255);
-    textSize(40);
+    textSize(50);
     noStroke();
     text("게임 진행을 위해서는 Enter!", width/2, 100);
-    textSize(35);
+    textSize(40);
     fill(0);
-    text("캐릭터를 다시 생성하기 위해서는 z를 누르세요.", width/2, height - 50);
-    text("캐릭터가 생성되었습니다!", width/2, height - 100);
+    //z 뒤 작은 버튼
+    image(smallZbutton, width/2 + 120 + smallZbutton.width, height - 115 - smallZbutton.height/2 );
+    text("캐릭터를 다시 생성하기 위해서는  Z 를 누르세요.", width/2, height - 120);
+    text("캐릭터가 생성되었습니다!", width/2, height - 170);
     noTint();
     //캐릭터 생성 화면
     if(cardFlip == false) {
@@ -157,7 +162,7 @@ function draw_scannerUI() {
         values = [globalPlayer.grade, globalPlayer.hpMax, globalPlayer.rock, globalPlayer.scissors, globalPlayer.paper];
         drawRadarChart(centerX, centerY, 80, values);
         textSize(12);
-        fill(radarChartColor);
+        fill(radarLineColor);
         noStroke();
         text(globalPlayer.id, centerX + 70, centerY + cardFront.height/5 - 10);
 
@@ -165,73 +170,79 @@ function draw_scannerUI() {
         //각 캐릭터 스킬, 캐릭터 카드 뒷면 글자. 
         if(globalPlayer.majorIdx >= 1 && globalPlayer.majorIdx <= 29) {
             //현자
-            fill(0);
+            fill(radarLineColor);
             textSize(30);
             textAlign(CENTER, CENTER);
             text("지식의 폭풍", width/2, height - cardFront.height/2 - 120);
             textSize(20);
+            fill(0);
             text("데미지를 5만큼 입히고,", width/2, height - cardFront.height/2 - 60);
             text("본인 HP가 5만큼 회복됨.", width/2, height - cardFront.height/2 - 20);
         } else if (globalPlayer.majorIdx >= 30 && globalPlayer.majorIdx <= 35) {
             //위자드
-            fill(0);
+            fill(radarLineColor);
             textSize(30);
             textAlign(CENTER, CENTER);
             text("원소 폭발", width/2, height - cardFront.height/2 - 120);
             textSize(20);
+            fill(0);
             text("상대의 손 +3만큼 데미지를 입히고", width/2, height - cardFront.height/2 - 60);
             text("본인 HP가 3만큼 회복됨.", width/2, height - cardFront.height/2 - 20);
         } else if (globalPlayer.majorIdx >= 36 && globalPlayer.majorIdx <= 47) {
             //메카 파일럿
-            fill(0);
+            fill(radarLineColor);
             textSize(30);
             textAlign(CENTER, CENTER);
             text("잔고장", width/2, height - cardFront.height/2 - 120);
             textSize(20);
+            fill(0);
             text("데미지를 상대의 손 2배만큼 입힘", width/2, height - cardFront.height/2 - 60);
             
         } else if (globalPlayer.majorIdx >= 48 && globalPlayer.majorIdx <= 53) {
             //힐러
-            fill(0);
+            fill(radarLineColor);
             textSize(30);
             textAlign(CENTER, CENTER);
             text("회복의 빛", width/2, height - cardFront.height/2 - 120);
             textSize(20);
+            fill(0);
             text("데미지를 5만큼 입히고,", width/2, height - cardFront.height/2 - 60);
-            text("본인 HP가 상대의 손만큼 회복됨.", width/2, height - cardFront.height/2 - 20);
-            
+            text("본인 HP가 상대의 손만큼 회복됨.", width/2, height - cardFront.height/2 - 20);  
         } else if (globalPlayer.majorIdx >= 54 && globalPlayer.majorIdx <= 65) {
             //음유시인
-            fill(0);
+            fill(radarLineColor);
             textSize(30);
             textAlign(CENTER, CENTER);
             text("예술의 선율", width/2, height - cardFront.height/2 - 120);
             textSize(20);
+            fill(0);
             text("데미지를 상대의 잔여 HP 절반만큼 입힘.", width/2, height - cardFront.height/2 - 60);
-        
         } else if (globalPlayer.majorIdx >= 66 && globalPlayer.majorIdx <= 78) {
             //탐험가
-            fill(0);
+            fill(radarLineColor);
             textSize(30);
             textAlign(CENTER, CENTER);
             text("탐험의 지혜", width/2, height - cardFront.height/2 - 120);
             textSize(20);
+            fill(0);
             text("데미지를 본인 모든 손의 합만큼 입힘.", width/2, height - cardFront.height/2 - 60);
         } else if (globalPlayer.majorIdx >= 78 && globalPlayer.majorIdx <= 85) {
             //드루이드
-            fill(0);
+            fill(radarLineColor);
             textSize(30);
             textAlign(CENTER, CENTER);
             text("자연의 분노", width/2, height - cardFront.height/2 - 120);
             textSize(20);
+            fill(0);
             text("데미지를 상대의 손 +6만큼 입힘", width/2, height - cardFront.height/2 - 60);
         } else if (globalPlayer.majorIdx == 86) {
             //루시퍼
-            fill(0);
+            fill(radarLineColor);
             textSize(30);
             textAlign(CENTER, CENTER);
             text("디지털 혼돈", width/2, height - cardFront.height/2 - 120);
             textSize(20);
+            fill(0);
             text("데미지를 8~15 사이 랜덤 값을 입힘.", width/2, height - cardFront.height/2 - 60);
         } 
 

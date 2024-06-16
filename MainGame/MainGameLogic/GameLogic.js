@@ -111,6 +111,11 @@ function processActions() {
                 Attack(1, -selectedAction_1p);   // 1p 실패 애니메이션
                 Attack(-1, -selectedAction_2p); // 2p 실패 애니메이션
 
+                let SE = selectedAction_1p == 1 ? scissorsSE : selectedAction_1p == 2 ? rockSE : paperSE;
+                setTimeout(() => {
+                    PlaySEOneShot(SE, 0.6);
+                }, 1000);
+
                 let damage_timing = 22 * animSpeed_1p / 60 * 1000;
                 setTimeout(() => {
                     Damage(1, 1);
@@ -346,15 +351,29 @@ function ProcessSpecialSkill(winSide, jobIdx) {
 
 function Attack(playerNum, hand) {
 
+    let SE = null;
+
     switch (hand) {
         case 1: // 가위
             ChangeAnimation(playerNum, '가위_성공', -1);
+            SE = scissorsSE;
+            setTimeout(() => {
+                PlaySEOneShot(SE, 0.6);
+            }, 700);
             break;
         case 2: // 바위
             ChangeAnimation(playerNum, '바위_성공', -1);
+            SE = rockSE;
+            setTimeout(() => {
+                PlaySEOneShot(SE, 0.6);
+            }, 800);
             break;
         case 3: // 보
             ChangeAnimation(playerNum, '보_성공', -1);
+            SE = paperSE;
+            setTimeout(() => {
+                PlaySEOneShot(SE, 0.6);
+            }, 850);
             break;
         case 4: // 특수 스킬
             ChangeAnimation(playerNum, '특수스킬', -1);

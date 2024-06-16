@@ -9,7 +9,7 @@ let currentAnimation_2p = '준비';
 let animSpeed_1p = 7; // 5프레임에 한번씩 움직임 (커질수록 느려짐)
 let animSpeed_2p = 7; // 5프레임에 한번씩 움직임 (커질수록 느려짐)
 
-const jobs = { 1: '현자', 2: '마법사', 5: '음유시인', 6: '탐험가', 7: '드루이드', 8: '정보대마왕' }; // 직업 리스트
+const jobs = { 1: '현자', 2: '마법사', 3: '메카파일럿', 4: '힐러', 5: '음유시인', 6: '탐험가', 7: '드루이드', 8: '정보대마왕' }; // 직업 리스트
 const animations = ['준비', '데미지', '승리', '패배', '공격', '바위_성공', '바위_실패', '가위_성공', '가위_실패', '보_성공', '보_실패', '특수스킬'];
 
 function drawCharacters() {
@@ -53,7 +53,7 @@ let isLoadedCharaAnim = [];
 function preload_charaAnim(jobIdx) {
 
     if (!isLoadedCharaAnim[jobIdx]) {
-        
+
         const jobName = jobs[jobIdx];
         charaAnimations[jobName] = {};
         animations.forEach(anim => {

@@ -80,7 +80,6 @@ let title_logo;
 let selected_button = 0;
 
 function preload_title() {
-    title_logo = loadImage('Asset/UI/title_logo.png');
 }
 
 function presskey_title() {

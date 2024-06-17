@@ -252,7 +252,7 @@ function displayAction(x, y, playerNum) {
             strokeWeight(10);
             textSize(30);
             textAlign(CENTER, CENTER);
-            // text("낼 손을 선택하세요", x, y - 300);
+            text("낼 손을 선택하세요", x, y - 300);
 
             noStroke();
         }

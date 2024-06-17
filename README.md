@@ -1,4 +1,6 @@
 # S-Card Warrior
+## 플레이 링크
+https://zalf0615.github.io/S-Card-Warrior/
 
 ## 프로젝트 개요
 

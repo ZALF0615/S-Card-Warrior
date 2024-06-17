@@ -37,6 +37,9 @@ function PlayBallteBGM() {
 }
 
 function StopBattleBGM() {
+
+    print_log("StopBattleBGM");
+
     if (currentBattleBGM) {
         currentBattleBGM.stop();
     }

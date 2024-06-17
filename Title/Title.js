@@ -4,8 +4,9 @@ function setup_title() {
 
     isSelected = false;
     selected_button = 2;
-    
+
     PlayBGM(titleBGM, 0.2);
+    StopBattleBGM();
 }
 
 function draw_title() {

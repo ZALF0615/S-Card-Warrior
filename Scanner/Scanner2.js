@@ -99,10 +99,10 @@ function draw_scanner2() {
         //S 카드 정보
         noStroke();
         noFill();
-        smallKeyIcon.resize(70, 40);
+        smallKeyIcon2.resize(70, 40);
         noTint();
-        image(smallKeyIcon, 125, 450);
-        image(smallKeyIcon, 90, 520);
+        image(smallKeyIcon2, 125, 450);
+        image(smallKeyIcon2, 90, 520);
         textSize(23);
         fill(0);
         textAlign(CENTER, CENTER);

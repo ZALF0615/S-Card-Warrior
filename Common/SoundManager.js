@@ -27,6 +27,7 @@ let battleBGMList = [];
 let currentBattleBGM;
 
 function PlayBallteBGM() {
+
     let idx = Math.floor(random(battleBGMList.length));
     currentBattleBGM = battleBGMList[idx];
     // 재생중일 경우 종료 후 다시 재생
@@ -34,6 +35,8 @@ function PlayBallteBGM() {
     currentBattleBGM.stop();
     currentBattleBGM.setVolume(0.2);
     currentBattleBGM.loop();
+
+    print_log("PlayBallteBGM : " + idx);
 }
 
 function StopBattleBGM() {

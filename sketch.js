@@ -221,6 +221,10 @@ let currentSequenceIndex = 0;
 
 function keyPressed() {
 
+  if(isLoading){
+    return; // 로딩 중에는 키 입력 무시
+  }
+
   // ESC 키를 누르면 게임 일시정지
   if (keyCode === ESCAPE && currentSceneName !== 'Title') {
     isGamePaused = !isGamePaused;

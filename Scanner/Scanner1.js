@@ -66,6 +66,8 @@ smallArrowIcon1 = loadImage('Asset/UI/ScannerCards/button_short_bg.png');
 capture1 = createCapture(VIDEO);
 capture1.size(1200, 730);
 capture1.hide();
+
+setup_charaInput();
 }
 
 function draw_scanner1() {
@@ -94,17 +96,20 @@ function draw_scanner1() {
         textAlign(CENTER, CENTER);
  
         //S 카드 정보
-       noStroke();
-       noFill();
-       smallKeyIcon1.resize(70, 40);
-       noTint();
-       image(smallKeyIcon1, 90, 450);
-       textSize(23);
-       fill(0);
-       textAlign(CENTER, CENTER);
-       text("S-Card가 인식되지 않을 경우,", 190, 435);
-       text("왼쪽  Ctrl  키를 눌러 랜덤한", 190, 470);
-       text("카드를 뽑을 수 있습니다.", 190, 505);
+        noStroke();
+        noFill();
+        smallKeyIcon.resize(70, 40);
+        noTint();
+        image(smallKeyIcon, 125, 450);
+        image(smallKeyIcon, 90, 520);
+        textSize(23);
+        fill(0);
+        textAlign(CENTER, CENTER);
+        text("S-Card가 인식되지 않을 경우,", 190, 435);
+        text("왼쪽  Alt  키를 눌러", 190, 470);
+        text("직접 정보를 입력하거나,", 190, 505);
+        text("왼쪽  Ctrl  키를 눌러 랜덤한", 190, 540);
+        text("카드를 뽑을 수 있습니다.", 190, 575);
        textSize(27);
        fill(227, 66, 86);
        text("학생증이 화면의 가이드에", width - 180, 350);
@@ -210,6 +215,8 @@ function draw_scanner1() {
         }
     }
     
+    draw_charaInput();
+
 }
 
 function processOCR1() {
@@ -305,6 +312,11 @@ function extractName1(text) {
 }
 
 function keyPressed_scanner1() {
+
+    if (showInputPopup) {
+        return;
+    }
+    
     if (key === 'q') {
         
         if (!isProcessing1) {
@@ -350,6 +362,9 @@ function keyPressed_scanner1() {
 
         ChangeScene('ScannerUI1'); 
     }
+    if (keyCode === ALT) {
+        showInputPopup = !showInputPopup;
+    }
 
     if (keyCode == LEFT_ARROW || key == 'a') {
         selectedCard1 = max(1, selectedCard1 - 1);
@@ -371,3 +386,4 @@ if (player1Id !== null && player1Dept !== null) {
     console.log("Try again");
 }
 }
+

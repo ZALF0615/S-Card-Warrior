@@ -542,18 +542,41 @@ function handleSubmit() {
 
     let c = new Character('', studentID, college + ' ' + major);
 
-    playerName = c.name;
-    playerId = c.id;
-    playerDept = c.major;
+    if (currentSceneName === 'Scanner') {
+        playerName = c.name;
+        playerId = c.id;
+        playerDept = c.major;
+        createCharacter();
+    } else if (currentSceneName === 'Scanner1') {
+        player1Name = c.name;
+        player1Id = c.id;
+        player1Dept = c.major;
+        createCharacter1();
+    } else if (currentSceneName === 'Scanner2') {
+        player2Name = c.name;
+        player2Id = c.id;
+        player2Dept = c.major;
+        createCharacter2();
+    }
 
-    createCharacter();
+
     // 입력된 값을 처리하고 팝업을 닫기
     showInputPopup = false;
     studentIDInput.hide();
     collegeSelect.hide();
     majorSelect.hide();
     submitButton.hide();
-    ChangeScene('ScannerUI');
+
+    if (currentSceneName === 'Scanner') {
+        ChangeScene('ScannerUI');
+    }
+    else if (currentSceneName === 'Scanner1') {
+        ChangeScene('ScannerUI1');
+    } else if (currentSceneName === 'Scanner2') {
+        ChangeScene('ScannerUI2');
+    }
+
+
 }
 
 function mousePressed() {

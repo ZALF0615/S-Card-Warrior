@@ -46,6 +46,7 @@ function draw() {
   else if (currentSceneName == 'Scanner2') { draw_scanner2(); }
   else if (currentSceneName == 'ScannerUI2') { draw_scannerUI2(); }
   else if (currentSceneName == 'Result') { draw_result(); }
+  else if (currentSceneName == 'ScannerTest') { draw_scannerTest(); }
 
   if (isGamePaused) {
     displayMenu();
@@ -168,6 +169,7 @@ function ChangeScene(sceneName) {
   else if (sceneName === 'Scanner2') { setup_scanner2(); }
   else if (sceneName === 'ScannerUI2') { setup_scannerUI2(); }
   else if (sceneName === 'Result') { setup_result(); }
+  else if (sceneName === 'ScannerTest') { setup_scannerTest(); }
 
 
 }
@@ -239,6 +241,7 @@ function keyPressed() {
   else if (currentSceneName == 'Scanner2') { keyPressed_scanner2(); }
   else if (currentSceneName == 'ScannerUI2') { keyPressed_scannerUI2(); }
   else if (currentSceneName == 'Result') { keyPressed_result(); }
+  else if (currentSceneName == 'ScannerTest') { keyPressed_scannerTest(); }
 
   // 쉬프트 키를 누르면 배경음악 꺼져 있으면 켜고 있으면 꺼짐
   if (keyCode === SHIFT) {

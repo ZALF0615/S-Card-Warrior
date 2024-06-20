@@ -84,7 +84,7 @@ function displayStatus(player1, player2) {
 
     // 각 플레이어 스탯
     let player1Stat = [player1.id.slice(2, 6), player1.id.charAt(6), player1.rock, player1.scissors, player1.paper];
-    let player2Stat = [player2.id.slice(2, 6), player1.id.charAt(6), player2.rock, player2.scissors, player2.paper];
+    let player2Stat = [player2.id.slice(2, 6), player2.id.charAt(6), player2.rock, player2.scissors, player2.paper];
 
     rectMode(CORNER);
 

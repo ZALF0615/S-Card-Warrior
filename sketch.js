@@ -207,13 +207,11 @@ function getRandomCharacter(include_lucifer = false) {
   let major = GetDepartmentList()[majorIdx];
   print_log(`majorIdx: ${majorIdx}, major: ${major}`);
 
-  let c = new Character("", `2024-1${r}`, major);
-
   if(majorIdx === 86) { // 정보대마왕(Lucifer)
-    c = new Character("", `9999-99999`, "연합전공 정보문화학");
+    return new Character("", `9999-99999`, "연합전공 정보문화학");
+  }else{
+    return new Character("", `2024-1${r}`, major);
   }
-
-  return c;
 }
 
 let debugSequence = ['+', '+', '+', '+', '+', '+', '+', '+'];

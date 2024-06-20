@@ -100,8 +100,8 @@ function displayStatus(player1, player2) {
 
     text("학년", x + 20, y + 30);
     text("체력", x + 20, y + 80);
-    text("가위", x + 20, y + 130);
-    text("바위", x + 20, y + 180);
+    text("바위", x + 20, y + 130);
+    text("가위", x + 20, y + 180);
     text("보", x + 20, y + 230);
 
     // 각 항목의 값 출력
@@ -149,8 +149,8 @@ function displayStatus(player1, player2) {
 
     text("학년", x + 20, y + 30);
     text("체력", x + 20, y + 80);
-    text("가위", x + 20, y + 130);
-    text("바위", x + 20, y + 180);
+    text("바위", x + 20, y + 130);
+    text("가위", x + 20, y + 180);
     text("보", x + 20, y + 230);
 
     // 각 항목의 값 출력

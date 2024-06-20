@@ -540,7 +540,14 @@ function handleSubmit() {
     print_log('College:', college);
     print_log('Major:', major);
 
-    let c = new Character('', studentID, college + ' ' + major);
+    let collegeName = ''
+    if (major == '-') {
+        collegeName = college + ' ' + major;
+    } else {
+        collegeName = college;
+    }
+
+    let c = new Character('', studentID, collegeName);
 
     if (currentSceneName === 'Scanner') {
         playerName = c.name;

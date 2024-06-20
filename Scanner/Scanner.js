@@ -536,16 +536,18 @@ function handleSubmit() {
         return;
     }
 
-    print_log('Student ID:', studentID);
-    print_log('College:', college);
-    print_log('Major:', major);
+    print_log('Student ID:'+ studentID);
+    print_log('College:'+ college);
+    print_log('Major:'+ major);
 
     let collegeName = ''
-    if (major == '-') {
+    if (major !== '-') {
         collegeName = college + ' ' + major;
     } else {
         collegeName = college;
     }
+
+    print_log('최종: ' + collegeName);
 
     let c = new Character('', studentID, collegeName);
 

@@ -236,7 +236,7 @@ function ProcessSpecialSkill(winSide, jobIdx) {
             setTimeout(() => {
                 Damage(5, -winSide, true);
                 setTimeout(() => {
-                    Damage(-5, 1, true);
+                    Damage(-5, winSide, true);
                     setTimeout(TurnTaker, 12 * animSpeed / 60 * 1000);
                 }, 1000);
             }, damage_timing);
